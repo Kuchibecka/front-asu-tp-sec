@@ -1,6 +1,5 @@
 import React from 'react';
 import ObjectService from "../service/ObjectService";
-import {method} from "lodash-es";
 
 class ObjectComponent extends React.Component {
 
