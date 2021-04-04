@@ -5,18 +5,9 @@ const OBJECT_REST_API_URL = 'http://localhost:8081/api/object/'
 
 class ObjectService {
 
-    fetchData = (url: string, options: any = {}) => {
-        const headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        };
-        return fetch(url, defaultsDeep(options, {
-            headers,
-        }));
-    };
-
     getObjects() {
-        axios.get(OBJECT_REST_API_URL).then((dataObject) => dataObject);
+        return fetch(OBJECT_REST_API_URL)
+            .then((res => res.json()));
     }
 }
 

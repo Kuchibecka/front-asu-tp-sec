@@ -6,26 +6,18 @@ class ObjectComponent extends React.Component {
 
     constructor(props){
         super(props);
+
         this.state = {
-            objects:[]
-        }
+            objects: [],
+        };
     }
 
+
     componentDidMount() {
-        /*
-        ObjectService.fetchData('http://localhost:8081/api/object/')
-            .then((response) => {
-            this.setState({ objects: response.json()})
-        })
-            .then(data => console.log(data));
-         */
-        fetch('http://localhost:8081/api/object/', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }).then(response => response.json())
-            .then(data => console.log(data));
+        ObjectService.getObjects()
+            .then((res) => {
+                this.setState({objects: res});
+            });
     }
 
     render() {
