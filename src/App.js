@@ -1,13 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
-import ObjectComponent from "./component/ObjectComponent";
+import React from "react";
+import BasicGraph from "./component/GraphComponent";
 
-function App() {
-  return (
-    <div className="App">
-      <ObjectComponent />
-    </div>
-  );
+import ObjectComponent from "./component/Object";
+
+
+export default function App() {
+    return [
+    <ObjectComponent />,
+    <BasicGraph />,
+    ]
 }
 
-export default App;

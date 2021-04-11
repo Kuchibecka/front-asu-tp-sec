@@ -1,6 +1,7 @@
 import React from 'react';
 import ObjectService from "../service/ObjectService";
 
+
 class ObjectComponent extends React.Component {
 
     constructor(props){
