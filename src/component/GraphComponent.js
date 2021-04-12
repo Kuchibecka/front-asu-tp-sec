@@ -2,6 +2,7 @@ import ReactFlow from "react-flow-renderer";
 import React from "react";
 import "../styles.css"
 import ObjectService from "../service/ObjectService";
+import GraphService from "../service/GraphService";
 
 class GraphComponent extends React.Component {
 
@@ -10,27 +11,59 @@ class GraphComponent extends React.Component {
 
         this.state = {
             nodes: [],
+            graph: [],
+            style: [],
         };
     }
 
 
     componentDidMount() {
-        ObjectService.getObjects()
+        GraphService.getObjects()
             .then((res) => {
                 this.setState({nodes: res});
-                console.log(res)
+                console.log("GraphComponent: ", this.state)
             });
+
+        class element {
+            id
+            data
+            position
+
+            constructor(id, data, position) {
+                this.id = id;
+                this.data = data;
+                this.position = position;
+            }
+        }
+
+        let graph = new Array();
+
+        this.nodes.forEach(function (item) {
+            graph.push(
+                element(
+                    item.id,
+                    item.data,
+                    item.position
+                )
+            )
+        });
 
         const graphStyles = {width: "100%", height: "500px"};
 
-        const BasicGraph = () => <ReactFlow elements={elements} style={graphStyles}/>;
+        const BasicGraph = () => <ReactFlow elements={graph} style={graphStyles}/>;
+        this.setState({graph: BasicGraph, style: graphStyles})
     }
 
-
+    render() {
+        return (
+            <ReactFlow elements={this.state.graph} style={this.state.style}/>
+        )
+    }
 }
 
 export default GraphComponent;
 
+/*
 
 class element {
     id
@@ -84,6 +117,7 @@ const elements = [
 const graphStyles = {width: "100%", height: "500px"};
 
 const BasicGraph = () => <ReactFlow elements={elements} style={graphStyles}/>;
+*/
 
 
 
