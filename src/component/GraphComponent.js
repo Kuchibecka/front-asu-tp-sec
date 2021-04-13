@@ -18,43 +18,21 @@ class GraphComponent extends React.Component {
 
 
     componentDidMount() {
-        GraphService.getObjects()
+        // выборка из браузерной строки
+        // this.props.match(id) ? -> id param
+        GraphService.getObjects(5)
             .then((res) => {
                 this.setState({nodes: res});
                 console.log("GraphComponent: ", this.state)
             });
-
-        class element {
-            id
-            data
-            position
-
-            constructor(id, data, position) {
-                this.id = id;
-                this.data = data;
-                this.position = position;
-            }
         }
 
-        let graph = new Array();
-
-        this.nodes.forEach(function (item) {
-            graph.push(
-                element(
-                    item.id,
-                    item.data,
-                    item.position
-                )
-            )
-        });
-
-        const graphStyles = {width: "100%", height: "500px"};
-
-        const BasicGraph = () => <ReactFlow elements={graph} style={graphStyles}/>;
-        this.setState({graph: BasicGraph, style: graphStyles})
-    }
-
     render() {
+    const graphStyles = {width: "100%", height: "500px"};
+
+    const BasicGraph = () => <ReactFlow elements={this.state.nodes} style={graphStyles}/>;
+
+    this.setState({graph: BasicGraph, style: graphStyles})
         return (
             <ReactFlow elements={this.state.graph} style={this.state.style}/>
         )
