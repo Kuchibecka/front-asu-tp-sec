@@ -5,10 +5,9 @@ const OBJECT_REST_API_URLц = 'http://localhost:8081/api/scheme/:id/infections'
 class GraphService {
 
     getObjects(id) {
-        return fetch(`http://localhost:8081/api/scheme/${id}/relations`)
+        return fetch(`http://localhost:8081/api/scheme/${id}/nodes`)
             .then((res => {
-                res.json();
-                console.log(res);
+                return res.json();
             }));
     }
 }

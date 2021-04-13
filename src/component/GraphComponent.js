@@ -30,11 +30,11 @@ class GraphComponent extends React.Component {
     render() {
     const graphStyles = {width: "100%", height: "500px"};
 
-    const BasicGraph = () => <ReactFlow elements={this.state.nodes} style={graphStyles}/>;
+    // const BasicGraph = () => <ReactFlow elements={this.state.nodes} style={graphStyles}/>;
 
-    this.setState({graph: BasicGraph, style: graphStyles})
+    // this.setState({graph: BasicGraph, style: graphStyles})
         return (
-            <ReactFlow elements={this.state.graph} style={this.state.style}/>
+            <ReactFlow elements={this.state.nodes} style={graphStyles}/>
         )
     }
 }
