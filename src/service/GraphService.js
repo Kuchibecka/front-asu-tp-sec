@@ -12,6 +12,5 @@ class GraphService {
     }
 }
 
-// react saga (есть на видосах), redux, redux-thunk  -- для запросов
 
 export default new GraphService();

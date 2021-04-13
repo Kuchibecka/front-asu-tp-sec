@@ -1,8 +1,15 @@
 import ReactFlow from "react-flow-renderer";
 import React from "react";
-import "../styles.css"
-import ObjectService from "../service/ObjectService";
+import "../styles.css";
 import GraphService from "../service/GraphService";
+
+// todo: 1) react saga (есть на видосах), redux, redux-thunk  -- для запросов
+
+// todo: 2.1) react router
+// todo: 2.2) architecture
+
+// todo: 3) css grid / flex
+
 
 class GraphComponent extends React.Component {
 
