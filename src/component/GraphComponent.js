@@ -1,6 +1,5 @@
 import ReactFlow from "react-flow-renderer";
 import React from "react";
-import "../styles.css";
 import GraphService from "../service/GraphService";
 
 // todo: 1) react saga (есть на видосах), redux, redux-thunk  -- для запросов
