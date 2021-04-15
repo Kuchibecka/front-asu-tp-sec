@@ -1,0 +1,1 @@
+//todo: пример реализации есть https://youtu.be/G3GGXIhggGs?t=4610

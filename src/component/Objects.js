@@ -1,9 +1,18 @@
 import React from "react";
+import {connect} from "react-redux"
 import Object from "./Object";
 
-export default ({objects}) => {
-    if (!objects.length) {
+const Posts = ({justObjects}) => {
+    if (!justObjects.length) {
         return <p className="text-center">No objects!</p>
     }
-    return objects.map(object => <Object object={object} key={object} />)
+    return justObjects.map(object => <Object object={object} key={object.id} />)
 }
+
+const mapStateToProps = state => {
+    return {
+        justObjects: state.objects.objects
+    }
+}
+
+export default connect(mapStateToProps, null)(Posts)

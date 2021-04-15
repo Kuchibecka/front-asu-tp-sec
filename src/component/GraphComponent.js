@@ -1,7 +1,7 @@
 import ReactFlow from "react-flow-renderer";
 import React from "react";
-import "../styles.css";
 import GraphService from "../service/GraphService";
+import FetchedScheme from "./FetchedScheme";
 
 // todo: 1) react saga (есть на видосах), redux, redux-thunk  -- для запросов
 
@@ -32,14 +32,14 @@ class GraphComponent extends React.Component {
                 this.setState({nodes: res});
                 console.log("GraphComponent: ", this.state)
             });
-        }
+    }
 
     render() {
-    const graphStyles = {width: "100%", height: "500px"};
+        const graphStyles = {width: "100%", height: "500px"};
 
-    // const BasicGraph = () => <ReactFlow elements={this.state.nodes} style={graphStyles}/>;
+        // const BasicGraph = () => <ReactFlow elements={this.state.nodes} style={graphStyles}/>;
 
-    // this.setState({graph: BasicGraph, style: graphStyles})
+        // this.setState({graph: BasicGraph, style: graphStyles})
         return (
             <ReactFlow elements={this.state.nodes} style={graphStyles}/>
         )
@@ -103,7 +103,6 @@ const graphStyles = {width: "100%", height: "500px"};
 
 const BasicGraph = () => <ReactFlow elements={elements} style={graphStyles}/>;
 */
-
 
 
 // Custom
