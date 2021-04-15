@@ -2,7 +2,6 @@ import React from "react";
 
 import ObjectComponent from "./component/ObjectTable";
 import GraphComponent from "./component/GraphComponent";
-import Object from "./component/Object";
 import Objects from "./component/Objects";
 import ObjectForm from "./component/ObjectForm";
 import FetchedObjects from "./component/FetchedObjects";
@@ -16,18 +15,22 @@ export default function App() {
                     <h1>ASU TP Reactive app</h1>
                 </div>
                 <div className="col">
-                    <Objects />
+                    <Objects/>
                 </div>
                 <div className="col">
-                    <FetchedObjects />
+                    <FetchedObjects/>
                 </div>
             </div>
-            <div className="container pt-2">
-                <ObjectForm />
+            <div className="container pt-3">
+                <ObjectForm/>
             </div>
         </div>,
-    <ObjectComponent />,
-    <GraphComponent />,
+        <div className="container pt-2">
+            <ObjectComponent/>
+        </div>,
+        <div className="container pt-xl-1">
+            <GraphComponent/>
+        </div>,
     ]
 }
 
