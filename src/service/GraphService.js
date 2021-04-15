@@ -1,21 +1,22 @@
-const OBJECT_REST_API_URL = 'http://localhost:8081/api/scheme/5/relations'
-const OBJECT_REST_API_URLц = 'http://localhost:8081/api/scheme/:id/infections'
-
-
 class GraphService {
 
     async getObjects(id) {
+        const NODES_REST_API_URL = 'http://localhost:8081/api/scheme/' + id.toString() + '/nodes'
+        const RELATIONS_REST_API_URL = 'http://localhost:8081/api/scheme/' + id.toString() + '/relations'
+        const VIRUSES_REST_API_URL = 'http://localhost:8081/api/scheme/' + id.toString() + '/viruses'
+        const INFECTIONS_REST_API_URL = 'http://localhost:8081/api/scheme/' + id.toString() + '/infections'
+
         const nodes = await
-            fetch(`http://localhost:8081/api/scheme/${id}/nodes`)
+            fetch(NODES_REST_API_URL)
         const rels = await
-            fetch(`http://localhost:8081/api/scheme/${id}/relations`)
+            fetch(RELATIONS_REST_API_URL)
         const nodesJson = await nodes.json()
         const relsJson = await rels.json()
 
         const viruses = await
-            fetch(`http://localhost:8081/api/scheme/${id}/viruses`)
+            fetch(VIRUSES_REST_API_URL)
         const infections = await
-            fetch(`http://localhost:8081/api/scheme/${id}/infections`)
+            fetch(INFECTIONS_REST_API_URL)
         const virusesJson = await viruses.json()
         const infectionsJson = await infections.json()
 
