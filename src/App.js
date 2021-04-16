@@ -6,9 +6,11 @@ import Objects from "./component/Objects";
 import ObjectForm from "./component/ObjectForm";
 import FetchedObjects from "./component/FetchedObjects";
 
-// todo: Update node, create node and connection
+// todo: 1) Update node, create node and connection
 //  front:  https://reactflow.dev/examples/update-node/
 //  back:   repo.save() method
+
+// todo: 2) Selector for different schemes
 
 
 export default function App() {
