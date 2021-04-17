@@ -12,14 +12,16 @@ import FetchedObjects from "./component/FetchedObjects";
 
 // todo: 2) Selector for different schemes
 
+// todo: 3) Use Atomic Layout
+//          to configure structure of page
+//  https://redd.gitbook.io/atomic-layout/motivation
+
 
 export default function App() {
     return [
-        <span className="boder">
         <div className="row">
             <h1 align="center">ASU TP Reactive app</h1>
-        </div>
-        </span>,
+        </div>,
         <div className="col-sm-12">
             <div className="row">
                 <div className="col-sm-2">
@@ -39,7 +41,6 @@ export default function App() {
                 </div>
             </div>
         </div>
-
     ]
 }
 
