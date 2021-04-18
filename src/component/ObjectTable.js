@@ -4,13 +4,14 @@ import ObjectService from "../service/ObjectService";
 
 class ObjectComponent extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
             objects: [],
         };
         this.createObject = this.createObject.bind(this);
+        this.editObject = this.editObject.bind(this);
     }
 
 
@@ -22,33 +23,43 @@ class ObjectComponent extends React.Component {
     }
 
     createObject() {
-        this.props.history.push('/create-object')
+        this.props.history.push('/create-object/-1');
+    }
+
+    editObject(id){
+        this.props.history.push(`/create-object/${id}`);
     }
 
     render() {
         return (
             <div>
                 <h3 className={"text-center"}> Object list</h3>
-                <button className="btn btn-danger" onClick={this.createObject}>Add new object</button>
+                <button className="btn btn-success" onClick={this.createObject}>Add new object</button>
                 <table className={"table table-striped"}>
                     <thead>
                     <tr>
                         <td> Object Name</td>
                         <td> Object Type</td>
                         <td> Object Id</td>
+                        <td> Actions</td>
                     </tr>
                     </thead>
                     <tbody>
-                    {
-                        this.state.objects.map(
-                            object =>
-                                <tr key={object}>
-                                    <td> {object.name}</td>
-                                    <td> {object.type}</td>
-                                    <td> {object.obj_id}</td>
-                                </tr>
-                        )
-                    }
+                    {this.state.objects.map(object =>
+                        <tr key={object}>
+                            <td> {object.name}</td>
+                            <td> {object.type}</td>
+                            <td> {object.obj_id}</td>
+                            <td>
+                                <button onClick={() => this.editObject(object.obj_id)}
+                                        className="btn btn-primary">Edit
+                                </button>
+                                <button onClick={() => this.deleteObject(object.obj_id)}
+                                        className="btn btn-danger">Delete
+                                </button>
+                            </td>
+                        </tr>
+                    )}
                     </tbody>
                 </table>
             </div>

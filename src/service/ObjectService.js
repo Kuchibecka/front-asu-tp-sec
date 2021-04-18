@@ -11,6 +11,14 @@ class ObjectService {
     createObject(data) {
         return axios.post(OBJECT_REST_API_URL, data)
     }
+
+    getObjectById(id) {
+        return axios.get(OBJECT_REST_API_URL + '/' + id);
+    }
+
+    updateObject(object, id) {
+        return axios.put(OBJECT_REST_API_URL + '/edit/' + id, object);
+    }
 }
 
 export default new ObjectService();

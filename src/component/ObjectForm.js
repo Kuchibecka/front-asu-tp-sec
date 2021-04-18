@@ -5,16 +5,32 @@ import {Alert} from "./Alert";
 import ObjectService from "../service/ObjectService";
 
 class ObjectForm extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
+            id: this.props.match.params.id,
             type: '',
             name: ''
         }
         this.changeInputHandler = this.changeInputHandler.bind(this);
         this.cancel = this.cancel.bind(this);
-        // this.createObject = this.createObject.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.state.id === -1) {
+            return
+        } else {
+            ObjectService.getObjectById(this.state.id)
+                .then((res) => {
+                    let obj = res.data;
+                    this.setState({
+                        type: obj.type,
+                        name: obj.name,
+                        id: this.state.id
+                    });
+                    console.log("Init state: ", this.state)
+                });
+        }
     }
 
     changeInputHandler(event) {
@@ -22,7 +38,6 @@ class ObjectForm extends React.Component {
         const target = event.target;
         const key = target.id
         const value = target.value
-        // console.log("Key: ", key, " Fetched value: ", value)
         this.setState({
             [key]: value
         });
@@ -31,56 +46,69 @@ class ObjectForm extends React.Component {
 
     submitHandler = event => {
         event.preventDefault()
-        // console.log(event.target.type.value)
         const type = event.target.type.value
         const name = event.target.name.value
         if (name.trim() === '') {
             return this.props.showAlert('Название не может быть пустым!')
         }
-        const newObject = {
-            type: Number(type),
-            name: name,
-            virusList: [],
-            securitySWList: [],
-            objectList: [],
-            andCriteriaList: []
+        if (this.state.id == -1) {
+            const newObject = {
+                type: Number(type),
+                name: name,
+                virusList: [],
+                securitySWList: [],
+                objectList: [],
+                andCriteriaList: []
+            }
+            ObjectService.createObject(newObject)
+                .then(res => {
+                    console.log(res);
+                    this.state = {name: '', type: ''};
+                    this.props.history.push('/objects');
+                });
+        } else {
+            const newObject = {
+                obj_id: this.state.id,
+                type: Number(type),
+                name: name,
+                virusList: [],
+                securitySWList: [],
+                objectList: [],
+                andCriteriaList: []
+            }
+            ObjectService.updateObject(newObject, this.state.id)
+                .then(res => {
+                    console.log(res);
+                    this.props.history.push('/objects');
+                })
         }
-        console.log("New object in JSON format: ", JSON.stringify(newObject))
-
-        // todo: post response
-        ObjectService.createObject(newObject)
-            .then(res => {
-                console.log(res)
-                this.props.history.push('/objects');
-            });
-        // todo: post response
-        this.state = {name: '', type: ''}
-        // todo: redirect to objectList !
-
-        /*
-        if (type.trim() === '') {
-            return this.props.showAlert('Тип не может быть пустым!')
-        }
-        */
     }
 
-    cancel(){
+    cancel() {
         this.props.history.push('/objects')
     }
 
+    getTitle() {
+        if (this.state.id == -1){
+            return <h3 className="text-center">Create object</h3>
+        } else {
+            return <h3 className="text-center">Edit object</h3>
+        }
+    }
 
     render() {
         return (
             <div className="container">
                 <div className="row">
                     <div className="card col-md-6 offset-md-3 offset-md-3">
-                        <h3 className="text-center">Create object</h3>
+                        { this.getTitle() }
                         <div className="card-body">
                             <form onSubmit={this.submitHandler}>
                                 {this.props.alert && <Alert text={this.props.alert}/>}
                                 <div class="input-group">
                                     <label htmlFor="type" className="input-group-text">Object type</label>
-                                    <select class="form-select" id="type" onChange={this.changeInputHandler} defaultValue="1">
+                                    <select class="form-select" id="type" onChange={this.changeInputHandler}
+                                            defaultValue="1">
                                         <option value="1">ПК</option>
                                         <option value="2">Контроллер</option>
                                     </select>
@@ -98,7 +126,8 @@ class ObjectForm extends React.Component {
                                     />
                                 </div>
                                 <br/>
-                                <button className="btn btn-success" type="submit" onClick={this.createObject}>Создать</button>
+                                <button className="btn btn-success" type="submit" onClick={this.createObject}>Создать
+                                </button>
                                 <button className="btn btn-danger" type="submit" onClick={this.cancel}>Отмена</button>
                             </form>
                         </div>
@@ -110,7 +139,7 @@ class ObjectForm extends React.Component {
 }
 
 const mapDispatchToProps = {
-    /*createObject,*/ showAlert
+    showAlert
 }
 
 const mapStateToolProps = state => ({

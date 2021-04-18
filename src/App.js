@@ -5,6 +5,7 @@ import ObjectComponent from "./component/ObjectTable";
 import GraphComponent from "./component/GraphComponent";
 import Objects from "./component/Objects";
 import ObjectForm from "./component/ObjectForm";
+import UpdateObjectComponent from "./component/UpdateObjectComponent"
 import FetchedObjects from "./component/FetchedObjects";
 
 
@@ -28,7 +29,9 @@ export default function App() {
                         <Switch> {/*http://localhost:3000/*/}
                             <Route exact path = "/" component = {GraphComponent}/>
                             <Route path = "/objects" component = {ObjectComponent}/>
-                            <Route path = "/create-object" component = {ObjectForm}/>
+                            <Route path = "/create-object/:id" component = {ObjectForm}/>
+
+                            {/*<Route path = "/update-object/:id" component = {UpdateObjectComponent}/>*/}
                         </Switch>
                     </div>
                     {/*<FooterComponent />*/}
