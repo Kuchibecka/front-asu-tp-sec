@@ -19,6 +19,10 @@ class ObjectService {
     updateObject(object, id) {
         return axios.put(OBJECT_REST_API_URL + '/edit/' + id, object);
     }
+
+    deleteObject(id) {
+        return axios.delete(OBJECT_REST_API_URL + '/delete/' + id)
+    }
 }
 
 export default new ObjectService();

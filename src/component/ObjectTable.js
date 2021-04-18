@@ -12,6 +12,7 @@ class ObjectComponent extends React.Component {
         };
         this.createObject = this.createObject.bind(this);
         this.editObject = this.editObject.bind(this);
+        this.deleteObject = this.deleteObject.bind(this);
     }
 
 
@@ -26,8 +27,14 @@ class ObjectComponent extends React.Component {
         this.props.history.push('/create-object/-1');
     }
 
-    editObject(id){
+    editObject(id) {
         this.props.history.push(`/create-object/${id}`);
+    }
+
+    deleteObject(id) {
+        ObjectService.deleteObject(id).then(() => {
+            this.setState({objects: this.state.objects.filter(obj => obj.obj_id !== id)})
+        });
     }
 
     render() {
@@ -54,7 +61,7 @@ class ObjectComponent extends React.Component {
                                 <button onClick={() => this.editObject(object.obj_id)}
                                         className="btn btn-primary">Edit
                                 </button>
-                                <button onClick={() => this.deleteObject(object.obj_id)}
+                                <button style={{marginLeft: "10px"}} onClick={() => this.deleteObject(object.obj_id)}
                                         className="btn btn-danger">Delete
                                 </button>
                             </td>
