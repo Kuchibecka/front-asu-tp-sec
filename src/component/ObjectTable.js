@@ -10,20 +10,26 @@ class ObjectComponent extends React.Component {
         this.state = {
             objects: [],
         };
+        this.createObject = this.createObject.bind(this);
     }
 
 
     componentDidMount() {
         ObjectService.getObjects()
             .then((res) => {
-                this.setState({objects: res});
+                this.setState({objects: res.data});
             });
+    }
+
+    createObject() {
+        this.props.history.push('/create-object')
     }
 
     render() {
         return (
             <div>
                 <h3 className={"text-center"}> Object list</h3>
+                <button className="btn btn-danger" onClick={this.createObject}>Add new object</button>
                 <table className={"table table-striped"}>
                     <thead>
                     <tr>

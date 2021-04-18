@@ -12,17 +12,32 @@ class ObjectForm extends React.Component {
             type: '',
             name: ''
         }
+        this.changeInputHandler = this.changeInputHandler.bind(this);
+        this.cancel = this.cancel.bind(this);
+        // this.createObject = this.createObject.bind(this);
+    }
 
-        this.changeInputHandler = this.changeInputHandler.bind(this)
+    changeInputHandler(event) {
+        event.persist()
+        const target = event.target;
+        const key = target.id
+        const value = target.value
+        // console.log("Key: ", key, " Fetched value: ", value)
+        this.setState({
+            [key]: value
+        });
+        console.log(this.state)
     }
 
     submitHandler = event => {
         event.preventDefault()
-        console.log(event.target.type.value)
+        // console.log(event.target.type.value)
         const type = event.target.type.value
         const name = event.target.name.value
+        if (name.trim() === '') {
+            return this.props.showAlert('Название не может быть пустым!')
+        }
         const newObject = {
-            obj_id: 16,
             type: Number(type),
             name: name,
             virusList: [],
@@ -30,81 +45,66 @@ class ObjectForm extends React.Component {
             objectList: [],
             andCriteriaList: []
         }
-        console.log("New object: ", newObject)
         console.log("New object in JSON format: ", JSON.stringify(newObject))
 
-        ObjectService.createObject(JSON.stringify(newObject))
+        // todo: post response
+        ObjectService.createObject(newObject)
+            .then(res => {
+                console.log(res)
+                this.props.history.push('/objects');
+            });
+        // todo: post response
         this.state = {name: '', type: ''}
-        // console.log("Current state is ", this.state)
-
-
-        /*
-        const {type, name} = this.state
-        console.log(type, name)
-        */
+        // todo: redirect to objectList !
 
         /*
-        if (name.trim() === '') {
-            return this.props.showAlert('Название не может быть пустым!')
-        }
         if (type.trim() === '') {
             return this.props.showAlert('Тип не может быть пустым!')
         }
-        const newObject = {
-            type, name
-        }
-        console.log("newObject: ", newObject)
-        // todo: post response
-        // this.props.createObject(newObject)
-        // todo: post response
-        this.setState({name: '', type: ''})
         */
     }
 
-    changeInputHandler(event) {
-        event.persist()
-        const target = event.target;
-        // console.log(event)
-        const key = target.id
-        const value = target.value
-        // console.log("Key: ", key, " Fetched value: ", value)
-        this.setState({
-            [key]: value
-        });
-        // console.log(this.state)
+    cancel(){
+        this.props.history.push('/objects')
     }
+
 
     render() {
         return (
-            <form method="post"
-                  enctype="application/x-www-form-urlencoded"
-                  action="http://localhost:8081/api/object/new" onSubmit={this.submitHandler}>
-                {this.props.alert && <Alert text={this.props.alert}/>}
-
-                <div className="form-group">
-                    <label htmlFor="type" className="form-label">Object type</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        id="type"
-                        value={this.state.type}
-                        name="type"
-                        onChange={this.changeInputHandler}
-                    />
+            <div className="container">
+                <div className="row">
+                    <div className="card col-md-6 offset-md-3 offset-md-3">
+                        <h3 className="text-center">Create object</h3>
+                        <div className="card-body">
+                            <form onSubmit={this.submitHandler}>
+                                {this.props.alert && <Alert text={this.props.alert}/>}
+                                <div class="input-group">
+                                    <label htmlFor="type" className="input-group-text">Object type</label>
+                                    <select class="form-select" id="type" onChange={this.changeInputHandler} defaultValue="1">
+                                        <option value="1">ПК</option>
+                                        <option value="2">Контроллер</option>
+                                    </select>
+                                </div>
+                                <br/>
+                                <div class="input-group">
+                                    <label htmlFor="type" className="input-group-text">Object name</label>
+                                    <input
+                                        name="name"
+                                        type="text"
+                                        className="form-control"
+                                        id="name"
+                                        value={this.state.name}
+                                        onChange={this.changeInputHandler}
+                                    />
+                                </div>
+                                <br/>
+                                <button className="btn btn-success" type="submit" onClick={this.createObject}>Создать</button>
+                                <button className="btn btn-danger" type="submit" onClick={this.cancel}>Отмена</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="name" className="form-label">Object name</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="name"
-                        value={this.state.name}
-                        name="name"
-                        onChange={this.changeInputHandler}
-                    />
-                </div>
-                <button className="btn btn-success" type="submit">Создать</button>
-            </form>
+            </div>
         )
     }
 }

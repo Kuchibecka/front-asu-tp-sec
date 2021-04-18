@@ -1,10 +1,12 @@
 import React from "react";
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 
 import ObjectComponent from "./component/ObjectTable";
 import GraphComponent from "./component/GraphComponent";
 import Objects from "./component/Objects";
 import ObjectForm from "./component/ObjectForm";
 import FetchedObjects from "./component/FetchedObjects";
+
 
 // todo: 1) Update node, create node and connection
 //  front:  https://reactflow.dev/examples/update-node/
@@ -18,8 +20,21 @@ import FetchedObjects from "./component/FetchedObjects";
 
 
 export default function App() {
-    return [
-        <div className="row">
+    return (
+        <div>
+            <Router>
+                    {/*<HeaderComponent/>*/}
+                    <div className="container">
+                        <Switch> {/*http://localhost:3000/*/}
+                            <Route exact path = "/" component = {GraphComponent}/>
+                            <Route path = "/objects" component = {ObjectComponent}/>
+                            <Route path = "/create-object" component = {ObjectForm}/>
+                        </Switch>
+                    </div>
+                    {/*<FooterComponent />*/}
+            </Router>
+        </div>
+        /*<div className="row">
             <h1 align="center">ASU TP Reactive app</h1>
         </div>,
         <div className="col-sm-12">
@@ -40,7 +55,7 @@ export default function App() {
                     </div>
                 </div>
             </div>
-        </div>
-    ]
+        </div>*/
+    );
 }
 
