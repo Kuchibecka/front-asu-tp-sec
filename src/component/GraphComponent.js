@@ -33,6 +33,8 @@ class GraphComponent extends React.Component {
                 this.setState({schemes: res.data})
                 console.log(this.state.schemes)
             });
+        // todo: v убрать v
+        this.objectInit(11)
     }
 
     objectInit(currentId) {
