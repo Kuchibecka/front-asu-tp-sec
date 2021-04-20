@@ -12,7 +12,6 @@ import FetchedScheme from "./FetchedScheme";
 
 
 class GraphComponent extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -21,6 +20,7 @@ class GraphComponent extends React.Component {
             currentId: '',
             elements: [],
         };
+        this.objectInit = this.objectInit.bind(this)
     }
 
 
@@ -33,12 +33,14 @@ class GraphComponent extends React.Component {
                 this.setState({schemes: res.data})
                 console.log(this.state.schemes)
             });
+    }
 
-
-        // todo: перенести в отдельную функцию, вызывающуюся по onChange селектора
-        GraphService.getObjects(5)
+    objectInit(currentId) {
+        console.log("Current ID: ", currentId)
+        GraphService.getObjects(currentId)
             .then((res) => {
                 this.setState({elements: res});
+                console.log("Fetched from getObjects(): ", res);
                 console.log("GraphComponent: ", this.state)
             });
     }
@@ -48,16 +50,17 @@ class GraphComponent extends React.Component {
         return (
             <div className="container">
                 <div className="input-group">
-                    <label htmlFor="type" className="input-group-text">Object type</label>
-                    {this.state.schemes.map(scheme => {
-                        console.log("Scheme::: ", scheme)
-                        return (
-                            <select className="form-select" id="scheme_id" onChange={this.changeInputHandler} key={scheme}>
-                                <option value={scheme.scheme_id}></option>
-                            </select>
-                        )
+                    <label htmlFor="type" className="input-group-text">Scheme selection</label>
+                    <select className="form-select">
+                        <option>Choose scheme...</option>
+                        {this.state.schemes.map(scheme => {
+                            console.log(scheme);
+                            return (
+                                <option value={scheme.scheme_id} id="scheme_id" key={scheme}>{scheme.name}</option>
+                            )
+                        })
                         }
-                    )}
+                    </select>
                 </div>
                 {/*todo: Показ изображения, если схема не выбрана*/}
                 <ReactFlow elements={this.state.elements} style={graphStyles}/>
