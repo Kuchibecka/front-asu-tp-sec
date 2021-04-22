@@ -1,3 +1,8 @@
+import axios from "axios";
+
+
+const SCHEME_REST_API_URL = 'http://localhost:8081/api/scheme'
+
 class GraphService {
 
     async getObjects(id) {
@@ -22,6 +27,10 @@ class GraphService {
 
         const res = await nodesJson.concat(relsJson).concat(virusesJson).concat(infectionsJson)
         return res
+    }
+
+    async getSchemes() {
+        return await axios.get(SCHEME_REST_API_URL);
     }
 }
 
