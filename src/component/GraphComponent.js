@@ -49,9 +49,10 @@ class GraphComponent extends React.Component {
 
     contentShow() {
         const graphStyles = {width: "100%", height: "500px"};
+        /*todo: Показ изображения, если схема не выбрана*/
         if (this.state.elements.length == 0) {
             return (
-                <h3>SCHEME NOT SPECIFIED</h3>
+                <h3>Схема не выбрана</h3>
             )
         } else {
             return (
@@ -63,7 +64,7 @@ class GraphComponent extends React.Component {
     render() {
 
         return (
-            <div className="container">
+            <div className="container-fluid">
                 <div className="input-group">
                     <label htmlFor="type" className="input-group-text">Scheme selection</label>
                     <select className="form-select" onChange={this.handleTypeSelect}>
@@ -76,8 +77,9 @@ class GraphComponent extends React.Component {
                         }
                     </select>
                 </div>
-                {/*todo: Показ изображения, если схема не выбрана*/}
-                {this.contentShow()}
+                <div class="container-fluid">
+                        {this.contentShow()}
+                </div>
             </div>
         )
     }
