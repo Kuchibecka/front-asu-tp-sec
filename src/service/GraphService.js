@@ -29,8 +29,8 @@ class GraphService {
         return res
     }
 
-    getSchemes() {
-        return axios.get(SCHEME_REST_API_URL);
+    async getSchemes() {
+        return await axios.get(SCHEME_REST_API_URL);
     }
 }
 

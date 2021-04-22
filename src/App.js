@@ -3,10 +3,10 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 
 import ObjectComponent from "./component/ObjectTable";
 import GraphComponent from "./component/GraphComponent";
-import Objects from "./component/Objects";
+// import Objects from "./component/Objects";
 import ObjectForm from "./component/ObjectForm";
-import UpdateObjectComponent from "./component/UpdateObjectComponent"
-import FetchedObjects from "./component/FetchedObjects";
+// import UpdateObjectComponent from "./component/UpdateObjectComponent"
+// import FetchedObjects from "./component/FetchedObjects";
 
 
 // todo: 1) Update node, create node and connection
