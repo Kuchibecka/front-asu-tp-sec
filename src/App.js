@@ -2,9 +2,11 @@ import React from "react";
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 
 import ObjectComponent from "./component/ObjectTable";
-import GraphComponent from "./component/GraphComponent";
 // import Objects from "./component/Objects";
 import ObjectForm from "./component/ObjectForm";
+import SchemeComponent from "./component/Scheme/SchemeComponent";
+// import TreeComponent from "./component/Scheme/TreeComponent";
+// todo: v удалить компонент UpdateObjectComponent за неиспользованием v
 // import UpdateObjectComponent from "./component/UpdateObjectComponent"
 // import FetchedObjects from "./component/FetchedObjects";
 
@@ -24,41 +26,19 @@ export default function App() {
     return (
         <div>
             <Router>
-                    {/*<HeaderComponent/>*/}
-                    <div className="container">
-                        <Switch> {/*http://localhost:3000/*/}
-                            <Route exact path = "/" component = {GraphComponent}/>
-                            <Route path = "/objects" component = {ObjectComponent}/>
-                            <Route path = "/create-object/:id" component = {ObjectForm}/>
+                {/*<HeaderComponent/>*/}
+                <div className="container">
+                    <Switch> {/*http://localhost:3000/*/}
+                        <Route exact path = "/" component = {SchemeComponent}/>
+                        <Route path = "/objects" component = {ObjectComponent}/>
+                        <Route path = "/create-object/:id" component = {ObjectForm}/>
 
-                            {/*<Route path = "/update-object/:id" component = {UpdateObjectComponent}/>*/}
-                        </Switch>
-                    </div>
-                    {/*<FooterComponent />*/}
+                        {/*<Route path = "/update-object/:id" component = {UpdateObjectComponent}/>*/}
+                    </Switch>
+                </div>
+                {/*<FooterComponent />*/}
             </Router>
         </div>
-        /*<div className="row">
-            <h1 align="center">ASU TP Reactive app</h1>
-        </div>,
-        <div className="col-sm-12">
-            <div className="row">
-                <div className="col-sm-2">
-                    <Objects/>
-                </div>
-                <div className="col-sm-8">
-                    <GraphComponent/>
-                </div>
-                <div className="col-sm-2">
-                    <FetchedObjects/>
-                </div>
-                <div className="row">
-                    <div className="container">
-                        <ObjectForm/>
-                        <ObjectComponent/>
-                    </div>
-                </div>
-            </div>
-        </div>*/
     );
 }
 
