@@ -28,7 +28,6 @@ class ObjectForm extends React.Component {
                         name: obj.name,
                         id: this.state.id
                     });
-                    console.log("Init state: ", this.state)
                 });
         }
     }
@@ -41,7 +40,7 @@ class ObjectForm extends React.Component {
         this.setState({
             [key]: value
         });
-        console.log(this.state)
+        
     }
 
     submitHandler = event => {
@@ -61,9 +60,8 @@ class ObjectForm extends React.Component {
                 andCriteriaList: []
             }
             ObjectService.createObject(newObject)
-                .then(res => {
-                    console.log(res);
-                    this.state = {name: '', type: ''};
+                .then(() => {
+                    this.setState({name: '', type: ''});
                     this.props.history.push('/objects');
                 });
         } else {
@@ -77,8 +75,7 @@ class ObjectForm extends React.Component {
                 andCriteriaList: []
             }
             ObjectService.updateObject(newObject, this.state.id)
-                .then(res => {
-                    console.log(res);
+                .then(() => {
                     this.props.history.push('/objects');
                 })
         }

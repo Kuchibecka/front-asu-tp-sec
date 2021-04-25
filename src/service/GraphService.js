@@ -1,15 +1,15 @@
 import axios from "axios";
 
-
-const SCHEME_REST_API_URL = 'http://localhost:8081/api/scheme'
+const SCHEME_REST_API_URL = 'http://localhost:8081/api/scheme/'
 
 class GraphService {
 
     async getObjects(id) {
-        const NODES_REST_API_URL = 'http://localhost:8081/api/scheme/' + id.toString() + '/nodes'
-        const RELATIONS_REST_API_URL = 'http://localhost:8081/api/scheme/' + id.toString() + '/relations'
-        const VIRUSES_REST_API_URL = 'http://localhost:8081/api/scheme/' + id.toString() + '/viruses'
-        const INFECTIONS_REST_API_URL = 'http://localhost:8081/api/scheme/' + id.toString() + '/infections'
+        const NODES_REST_API_URL = SCHEME_REST_API_URL + id.toString() + '/nodes'
+        const RELATIONS_REST_API_URL = SCHEME_REST_API_URL + id.toString() + '/relations'
+        const VIRUSES_REST_API_URL = SCHEME_REST_API_URL + id.toString() + '/viruses'
+        const INFECTIONS_REST_API_URL = SCHEME_REST_API_URL + id.toString() + '/infections'
+        // todo: добавить СЗИ на схему
 
         const nodes = await
             fetch(NODES_REST_API_URL)
@@ -25,8 +25,21 @@ class GraphService {
         const virusesJson = await viruses.json()
         const infectionsJson = await infections.json()
 
-        const res = await nodesJson.concat(relsJson).concat(virusesJson).concat(infectionsJson)
-        return res
+        return await nodesJson.concat(relsJson).concat(virusesJson).concat(infectionsJson)
+    }
+
+    async getTree(id){
+        const TREE_NODES_REST_API_URL = SCHEME_REST_API_URL + id.toString() + '/fault_tree_nodes'
+        const TREE_RELATIONS_REST_API_URL = SCHEME_REST_API_URL + id.toString() + '/fault_tree_relations'
+
+        const treeNodes = await
+            fetch(TREE_NODES_REST_API_URL)
+        const treeRels = await
+            fetch(TREE_RELATIONS_REST_API_URL)
+        const treeNodesJson = await treeNodes.json()
+        const treeRelsJson = await treeRels.json()
+
+        return await treeNodesJson.concat(treeRelsJson)
     }
 
     async getSchemes() {
