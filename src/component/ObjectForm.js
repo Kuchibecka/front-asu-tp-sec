@@ -10,7 +10,12 @@ class ObjectForm extends React.Component {
         this.state = {
             id: this.props.match.params.id,
             type: '',
-            name: ''
+            name: '',
+            description: '',
+            virusList: [],
+            securitySWList: [],
+            objectList: [],
+            andCriteriaList: [],
         }
         this.changeInputHandler = this.changeInputHandler.bind(this);
         this.cancel = this.cancel.bind(this);
@@ -20,13 +25,18 @@ class ObjectForm extends React.Component {
         if (this.state.id === -1) {
             return
         } else {
-            ObjectService.getObjectById(this.state.id)
+            ObjectService.getById(this.state.id)
                 .then((res) => {
                     let obj = res.data;
                     this.setState({
+                        id: this.state.id,
                         type: obj.type,
                         name: obj.name,
-                        id: this.state.id
+                        description: obj.description,
+                        virusList: obj.virusList,
+                        securitySWList: obj.securitySWList,
+                        objectList: obj.objectList,
+                        andCriteriaList: obj.andCriteriaList,
                     });
                 });
         }
@@ -35,18 +45,20 @@ class ObjectForm extends React.Component {
     changeInputHandler(event) {
         event.persist()
         const target = event.target;
+        console.log(target)
         const key = target.id
         const value = target.value
         this.setState({
             [key]: value
         });
-        
+
     }
 
     submitHandler = event => {
         event.preventDefault()
         const type = event.target.type.value
         const name = event.target.name.value
+        const description = event.target.description.value
         if (name.trim() === '') {
             return this.props.showAlert('Название не может быть пустым!')
         }
@@ -54,12 +66,13 @@ class ObjectForm extends React.Component {
             const newObject = {
                 type: Number(type),
                 name: name,
+                description: description,
                 virusList: [],
                 securitySWList: [],
                 objectList: [],
                 andCriteriaList: []
             }
-            ObjectService.createObject(newObject)
+            ObjectService.create(newObject)
                 .then(() => {
                     this.setState({name: '', type: ''});
                     this.props.history.push('/objects');
@@ -69,12 +82,13 @@ class ObjectForm extends React.Component {
                 obj_id: this.state.id,
                 type: Number(type),
                 name: name,
-                virusList: [],
-                securitySWList: [],
-                objectList: [],
-                andCriteriaList: []
+                description: description,
+                virusList: this.state.virusList, // todo: Исправить, оставив прежним!!!!!!!!!
+                securitySWList: this.state.securitySWList,
+                objectList: this.state.objectList,
+                andCriteriaList: this.state.andCriteriaList,
             }
-            ObjectService.updateObject(newObject, this.state.id)
+            ObjectService.update(newObject, this.state.id)
                 .then(() => {
                     this.props.history.push('/objects');
                 })
@@ -86,10 +100,10 @@ class ObjectForm extends React.Component {
     }
 
     getTitle() {
-        if (this.state.id == -1){
-            return <h3 className="text-center">Create object</h3>
+        if (this.state.id == -1) {
+            return <h3 className="text-center">Создание нового объекта</h3>
         } else {
-            return <h3 className="text-center">Edit object</h3>
+            return <h3 className="text-center">Редактирование существующего объекта</h3>
         }
     }
 
@@ -98,12 +112,12 @@ class ObjectForm extends React.Component {
             <div className="container">
                 <div className="row">
                     <div className="card col-md-6 offset-md-3 offset-md-3">
-                        { this.getTitle() }
+                        {this.getTitle()}
                         <div className="card-body">
                             <form onSubmit={this.submitHandler}>
                                 {this.props.alert && <Alert text={this.props.alert}/>}
                                 <div class="input-group">
-                                    <label htmlFor="type" className="input-group-text">Object type</label>
+                                    <label htmlFor="type" className="input-group-text">Тип</label>
                                     <select class="form-select" id="type" onChange={this.changeInputHandler}
                                             defaultValue="1">
                                         <option value="1">ПК</option>
@@ -112,7 +126,7 @@ class ObjectForm extends React.Component {
                                 </div>
                                 <br/>
                                 <div class="input-group">
-                                    <label htmlFor="type" className="input-group-text">Object name</label>
+                                    <label htmlFor="type" className="input-group-text">Название</label>
                                     <input
                                         name="name"
                                         type="text"
@@ -123,9 +137,23 @@ class ObjectForm extends React.Component {
                                     />
                                 </div>
                                 <br/>
-                                <button className="btn btn-success" type="submit" onClick={this.createObject}>Создать
+                                <div className="input-group">
+                                    <label htmlFor="type" className="input-group-text">Описание</label>
+                                    <input
+                                        name="description"
+                                        type="text"
+                                        className="form-control"
+                                        id="description"
+                                        value={this.state.description}
+                                        onChange={this.changeInputHandler}
+                                    />
+                                </div>
+                                <br/>
+                                <button className="btn btn-success" type="submit" onClick={this.createObject}>Сохранить
                                 </button>
-                                <button className="btn btn-danger" type="submit" onClick={this.cancel}>Отмена</button>
+                                <button style={{marginLeft: "10px"}} className="btn btn-danger" type="submit"
+                                        onClick={this.cancel}>Отмена
+                                </button>
                             </form>
                         </div>
                     </div>
