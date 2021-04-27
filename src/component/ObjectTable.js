@@ -17,7 +17,7 @@ class ObjectComponent extends React.Component {
 
 
     componentDidMount() {
-        ObjectService.getObjects()
+        ObjectService.getAll()
             .then((res) => {
                 this.setState({objects: res.data});
             });
@@ -37,32 +37,39 @@ class ObjectComponent extends React.Component {
         });
     }
 
+    getType(type) {
+        if (type == 1) {
+            return <td>ПК</td>
+        }
+        return <td>Контроллер</td>
+    }
+
     render() {
         return (
-            <div>
-                <h3 className={"text-center"}> Object list</h3>
-                <button className="btn btn-success" onClick={this.createObject}>Add new object</button>
+            <div className="container-fluid">
+                <h3 className={"text-center"}> Список объектов</h3>
+                <button className="btn btn-success" onClick={this.createObject}>Добавить новый объект</button>
                 <table className={"table table-striped"}>
                     <thead>
                     <tr>
-                        <td> Object Name</td>
-                        <td> Object Type</td>
-                        <td> Object Id</td>
-                        <td> Actions</td>
+                        <td>Название</td>
+                        <td>Тип</td>
+                        <td>Описание</td>
+                        <td></td>
                     </tr>
                     </thead>
                     <tbody>
                     {this.state.objects.map(object =>
                         <tr key={object}>
                             <td> {object.name}</td>
-                            <td> {object.type}</td>
-                            <td> {object.obj_id}</td>
+                            {this.getType(object.type)}
+                            <td> {object.description}</td>
                             <td>
                                 <button onClick={() => this.editObject(object.obj_id)}
-                                        className="btn btn-primary">Edit
+                                        className="btn btn-primary">Редактировать
                                 </button>
                                 <button style={{marginLeft: "10px"}} onClick={() => this.deleteObject(object.obj_id)}
-                                        className="btn btn-danger">Delete
+                                        className="btn btn-danger">Удалить
                                 </button>
                             </td>
                         </tr>
