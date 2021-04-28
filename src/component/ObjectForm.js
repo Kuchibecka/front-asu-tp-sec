@@ -3,6 +3,15 @@ import {connect} from 'react-redux'
 import {showAlert} from "../redux/actions";
 import {Alert} from "./Alert";
 import ObjectService from "../service/ObjectService";
+import Button from '@material-ui/core/Button';
+import SaveIcon from '@material-ui/icons/Save'
+import CancelIcon from '@material-ui/icons/Cancel'
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import {Card, CardContent, CardHeader, TextField} from "@material-ui/core";
 
 class ObjectForm extends React.Component {
     constructor(props) {
@@ -45,8 +54,7 @@ class ObjectForm extends React.Component {
     changeInputHandler(event) {
         event.persist()
         const target = event.target;
-        console.log(target)
-        const key = target.id
+        const key = target.name
         const value = target.value
         this.setState({
             [key]: value
@@ -62,6 +70,7 @@ class ObjectForm extends React.Component {
         if (name.trim() === '') {
             return this.props.showAlert('Название не может быть пустым!')
         }
+
         if (this.state.id == -1) {
             const newObject = {
                 type: Number(type),
@@ -78,17 +87,17 @@ class ObjectForm extends React.Component {
                     this.props.history.push('/objects');
                 });
         } else {
-            const newObject = {
+            const editedObject = {
                 obj_id: this.state.id,
                 type: Number(type),
                 name: name,
                 description: description,
-                virusList: this.state.virusList, // todo: Исправить, оставив прежним!!!!!!!!!
+                virusList: this.state.virusList,
                 securitySWList: this.state.securitySWList,
                 objectList: this.state.objectList,
                 andCriteriaList: this.state.andCriteriaList,
             }
-            ObjectService.update(newObject, this.state.id)
+            ObjectService.update(editedObject, this.state.id)
                 .then(() => {
                     this.props.history.push('/objects');
                 })
@@ -110,54 +119,77 @@ class ObjectForm extends React.Component {
     render() {
         return (
             <div className="container">
-                <div className="row">
-                    <div className="card col-md-6 offset-md-3 offset-md-3">
-                        {this.getTitle()}
-                        <div className="card-body">
-                            <form onSubmit={this.submitHandler}>
-                                {this.props.alert && <Alert text={this.props.alert}/>}
-                                <div class="input-group">
-                                    <label htmlFor="type" className="input-group-text">Тип</label>
-                                    <select class="form-select" id="type" onChange={this.changeInputHandler}
-                                            defaultValue="1">
-                                        <option value="1">ПК</option>
-                                        <option value="2">Контроллер</option>
-                                    </select>
+                <Card className>
+                    <CardHeader title={this.getTitle()}/>
+                    <CardContent>
+                        <form onSubmit={this.submitHandler}>
+                            {/*{this.props.alert && <Alert text={this.props.alert}/>}*/}
+                            <FormControl>
+                                <div>
+                                    <InputLabel id="Type">Тип</InputLabel>
+                                    <Select
+                                        labelId="Type"
+                                        id="type"
+                                        name="type"
+                                        value={this.state.type}
+                                        onChange={this.changeInputHandler}
+                                    >
+                                        <MenuItem value={1}>ПК</MenuItem>
+                                        <MenuItem value={2}>Контроллер</MenuItem>
+                                    </Select>
+                                    <FormHelperText>Выберите тип объекта</FormHelperText>
                                 </div>
-                                <br/>
-                                <div class="input-group">
-                                    <label htmlFor="type" className="input-group-text">Название</label>
-                                    <input
+                            </FormControl>
+                            <br/>
+                            <FormControl>
+                                <div>
+                                    <TextField
                                         name="name"
-                                        type="text"
-                                        className="form-control"
                                         id="name"
+                                        label="Название"
                                         value={this.state.name}
                                         onChange={this.changeInputHandler}
+                                        multiline
                                     />
                                 </div>
-                                <br/>
-                                <div className="input-group">
-                                    <label htmlFor="type" className="input-group-text">Описание</label>
-                                    <input
+                            </FormControl>
+                            <br/>
+                            <FormControl>
+                                <div>
+                                    <TextField
                                         name="description"
-                                        type="text"
-                                        className="form-control"
                                         id="description"
+                                        label="Описание"
                                         value={this.state.description}
                                         onChange={this.changeInputHandler}
+                                        multiline
                                     />
                                 </div>
-                                <br/>
-                                <button className="btn btn-success" type="submit" onClick={this.createObject}>Сохранить
-                                </button>
-                                <button style={{marginLeft: "10px"}} className="btn btn-danger" type="submit"
-                                        onClick={this.cancel}>Отмена
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                            </FormControl>
+                            <div>
+                                <Button
+                                    variant="contained"
+                                    type="submit"
+                                    color="primary"
+                                    startIcon={<SaveIcon/>}
+                                    onClick={this.createObject}
+                                >
+                                    Сохранить
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    style={{marginLeft: "10px"}}
+                                    type="submit"
+                                    color="secondary"
+                                    startIcon={<CancelIcon/>}
+                                    onClick={this.cancel}
+                                >
+                                    Отмена
+                                </Button>
+                            </div>
+                        </form>
+                    </CardContent>
+                </Card>
             </div>
         )
     }
