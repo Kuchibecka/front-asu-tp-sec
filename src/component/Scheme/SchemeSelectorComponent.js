@@ -28,6 +28,7 @@ class SchemeSelectorComponent extends React.Component {
         await GraphService.getObjects(currentId)
             .then((res) => {
                 this.setState({elements: res});
+                console.log(this.state.elements);
             });
     }
 
