@@ -40,13 +40,15 @@ class SchemeSelectorComponent extends React.Component {
     }
 
     handleSchemeSelect = e => {
-        if (e.target.value !== "Choose scheme...") {
+        if (e.target.value !== "Выберите схему...") {
             this.objectInit(e.target.value)
-                .then(() => this.props.updateElements(this.state.elements))
+                .then(() => this.props.updateElements(this.state.elements));
             this.treeInit(e.target.value)
-                .then(() => this.props.updateTree(this.state.tree))
+                .then(() => this.props.updateTree(this.state.tree));
         } else {
-            this.setState({elements: [], tree: [], currentId: ''})
+            this.state = initialState;
+            this.props.updateElements(this.state.elements)
+            this.props.updateTree(this.state.tree)
         }
     };
 
@@ -54,9 +56,9 @@ class SchemeSelectorComponent extends React.Component {
         return (
             <div className="container">
                 <div className="input-group">
-                    <label htmlFor="type" className="input-group-text">Scheme selection</label>
+                    <label htmlFor="type" className="input-group-text">Выбор схемы</label>
                     <select className="form-select" onChange={this.handleSchemeSelect}>
-                        <option selected>Choose scheme...</option>
+                        <option selected>Выберите схему...</option>
                         {
                             this.state.schemes.map(scheme => {
                                 return (
