@@ -62,9 +62,6 @@ export default class ObjectForm extends React.Component {
         const type = event.target.type.value
         const name = event.target.name.value
         const description = event.target.description.value
-        if (name.trim() === '') {
-            return this.props.showAlert('Название не может быть пустым!')
-        }
 
         if (this.state.id == -1) {
             const newObject = {
