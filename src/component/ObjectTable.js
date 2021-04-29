@@ -1,5 +1,10 @@
 import React from 'react';
 import ObjectService from "../service/ObjectService";
+import {Container, Table, TableBody, TableCell, TableHead, TableRow, Button} from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Modal from '@material-ui/core/Modal';
+import CancelIcon from "@material-ui/icons/Cancel";
 
 
 class ObjectComponent extends React.Component {
@@ -9,6 +14,8 @@ class ObjectComponent extends React.Component {
 
         this.state = {
             objects: [],
+            openModal: false,
+            idToDelete: -1,
         };
         this.createObject = this.createObject.bind(this);
         this.editObject = this.editObject.bind(this);
@@ -35,48 +42,89 @@ class ObjectComponent extends React.Component {
         ObjectService.deleteObject(id).then(() => {
             this.setState({objects: this.state.objects.filter(obj => obj.obj_id !== id)})
         });
+
     }
 
     getType(type) {
         if (type == 1) {
-            return <td>ПК</td>
+            return <TableCell>ПК</TableCell>
         }
-        return <td>Контроллер</td>
+        return <TableCell>Контроллер</TableCell>
+    }
+
+    handleOpen(id) {
+        this.state.openModal = true
+        this.state.idToDelete = id
+        // this.setState({openModal: true, idToDelete: id})
+        console.log(this.state)
+    }
+
+    handleClose() {
+        this.setState({openModal: false, idToDelete: -1})
+        console.log("Close!")
     }
 
     render() {
         return (
-            <div className="container-fluid">
+            <Container>
                 <h3 className={"text-center"}> Список объектов</h3>
                 <button className="btn btn-success" onClick={this.createObject}>Добавить новый объект</button>
-                <table className={"table table-striped"}>
-                    <thead>
-                    <tr>
-                        <td>Название</td>
-                        <td>Тип</td>
-                        <td>Описание</td>
-                        <td></td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.objects.map(object =>
-                        <tr key={object}>
-                            <td> {object.name}</td>
-                            {this.getType(object.type)}
-                            <td> {object.description}</td>
-                            <td>
-                                <button onClick={() => this.editObject(object.obj_id)}
-                                        className="btn btn-primary">Редактировать
-                                </button>
-                                <button style={{marginLeft: "10px"}} onClick={() => this.deleteObject(object.obj_id)}
-                                        className="btn btn-danger">Удалить
-                                </button>
-                            </td>
-                        </tr>
-                    )}
-                    </tbody>
-                </table>
-            </div>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Название</TableCell>
+                            <TableCell>Тип</TableCell>
+                            <TableCell>Описание</TableCell>
+                            <TableCell></TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {this.state.objects.map(object =>
+                            <TableRow key={object}>
+                                <TableCell> {object.name}</TableCell>
+                                {this.getType(object.type)}
+                                <TableCell> {object.description}</TableCell>
+                                <TableCell>
+                                    <Button
+                                        onClick={() => this.editObject(object.obj_id)}
+                                        startIcon={<EditIcon/>}
+                                    />
+                                    {/*<Button
+                                        onClick={() => this.deleteObject(object.obj_id)}
+                                        startIcon={<DeleteIcon/>}
+                                    />*/}
+                                    <Button
+                                        onClick={() => this.handleOpen(object.obj_id)}
+                                        startIcon={<DeleteIcon/>}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
+                    <Modal
+                        open={this.state.openModal}
+                        onClose={() => this.handleClose()}
+                        aria-labelledby="Вы действительно хотите удалить этот объект?"
+                    >
+                        {
+                            <Container>
+                                <Button
+                                    onClick={() => this.deleteObject()}
+                                    startIcon={<DeleteIcon/>}
+                                >
+                                    Да
+                                </Button>
+                                <Button
+                                    onClick={() => this.handleClose()}
+                                    startIcon={<CancelIcon/>}
+                                >
+                                    Нет
+                                </Button>
+                            </Container>
+                        }
+                    </Modal>
+                </Table>
+            </Container>
         )
     }
 }
