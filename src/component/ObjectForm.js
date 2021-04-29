@@ -1,19 +1,15 @@
 import React from "react";
-import {connect} from 'react-redux'
-import {showAlert} from "../redux/actions";
-import {Alert} from "./Alert";
 import ObjectService from "../service/ObjectService";
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save'
 import CancelIcon from '@material-ui/icons/Cancel'
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import {Card, CardContent, CardHeader, TextField} from "@material-ui/core";
+import {Card, CardContent, CardHeader, Container, TextField} from "@material-ui/core";
 
-class ObjectForm extends React.Component {
+export default class ObjectForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -59,7 +55,6 @@ class ObjectForm extends React.Component {
         this.setState({
             [key]: value
         });
-
     }
 
     submitHandler = event => {
@@ -118,16 +113,15 @@ class ObjectForm extends React.Component {
 
     render() {
         return (
-            <div className="container">
-                <Card className>
-                    <CardHeader title={this.getTitle()}/>
+            <Container>
+                <Card style={{borderWidth: 1, borderStyle: "solid", borderRadius: 30}}>
+                    <CardHeader title={this.getTitle()} style={{borderBottom: 1, borderBottomStyle: "solid"}}/>
                     <CardContent>
                         <form onSubmit={this.submitHandler}>
-                            {/*{this.props.alert && <Alert text={this.props.alert}/>}*/}
-                            <FormControl>
-                                <div>
-                                    <InputLabel id="Type">Тип</InputLabel>
+                            <FormControl style={{marginTop: 30}}>
+                                    <InputLabel id="Type">Тип объекта</InputLabel>
                                     <Select
+                                        style={{minWidth: 350, fontSize: 18}}
                                         labelId="Type"
                                         id="type"
                                         name="type"
@@ -137,13 +131,11 @@ class ObjectForm extends React.Component {
                                         <MenuItem value={1}>ПК</MenuItem>
                                         <MenuItem value={2}>Контроллер</MenuItem>
                                     </Select>
-                                    <FormHelperText>Выберите тип объекта</FormHelperText>
-                                </div>
                             </FormControl>
                             <br/>
-                            <FormControl>
-                                <div>
+                            <FormControl style={{marginTop: 25}}>
                                     <TextField
+                                        style={{minWidth: 350}}
                                         name="name"
                                         id="name"
                                         label="Название"
@@ -151,12 +143,11 @@ class ObjectForm extends React.Component {
                                         onChange={this.changeInputHandler}
                                         multiline
                                     />
-                                </div>
                             </FormControl>
                             <br/>
-                            <FormControl>
-                                <div>
+                            <FormControl style={{marginTop: 25}}>
                                     <TextField
+                                        style={{minWidth: 350}}
                                         name="description"
                                         id="description"
                                         label="Описание"
@@ -164,9 +155,9 @@ class ObjectForm extends React.Component {
                                         onChange={this.changeInputHandler}
                                         multiline
                                     />
-                                </div>
                             </FormControl>
-                            <div>
+                            <br/>
+                            <Container style={{marginTop: 40}}>
                                 <Button
                                     variant="contained"
                                     type="submit"
@@ -178,7 +169,7 @@ class ObjectForm extends React.Component {
                                 </Button>
                                 <Button
                                     variant="contained"
-                                    style={{marginLeft: "10px"}}
+                                    style={{marginLeft: 10}}
                                     type="submit"
                                     color="secondary"
                                     startIcon={<CancelIcon/>}
@@ -186,21 +177,11 @@ class ObjectForm extends React.Component {
                                 >
                                     Отмена
                                 </Button>
-                            </div>
+                            </Container>
                         </form>
                     </CardContent>
                 </Card>
-            </div>
+            </Container>
         )
     }
 }
-
-const mapDispatchToProps = {
-    showAlert
-}
-
-const mapStateToolProps = state => ({
-    alert: state.app.alert
-})
-
-export default connect(mapStateToolProps, mapDispatchToProps)(ObjectForm)
