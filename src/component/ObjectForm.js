@@ -59,9 +59,9 @@ export default class ObjectForm extends React.Component {
 
     submitHandler = event => {
         event.preventDefault()
-        const type = event.target.type.value
-        const name = event.target.name.value
-        const description = event.target.description.value
+        const type = event.target.type.value.replace(/\s+/g, ' ').trim()
+        const name = event.target.name.value.replace(/\s+/g, ' ').trim()
+        const description = event.target.description.value.replace(/\s+/g, ' ').trim()
 
         if (this.state.id == -1) {
             const newObject = {
