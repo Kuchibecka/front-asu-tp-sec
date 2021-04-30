@@ -139,6 +139,7 @@ export default class ObjectForm extends React.Component {
                                         value={this.state.name}
                                         onChange={this.changeInputHandler}
                                         multiline
+                                        rowsMax={2}
                                     />
                             </FormControl>
                             <br/>
@@ -151,6 +152,7 @@ export default class ObjectForm extends React.Component {
                                         value={this.state.description}
                                         onChange={this.changeInputHandler}
                                         multiline
+                                        rowsMax={4}
                                     />
                             </FormControl>
                             <br/>

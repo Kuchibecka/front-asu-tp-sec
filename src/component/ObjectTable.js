@@ -88,7 +88,7 @@ class ObjectComponent extends React.Component {
             <Container>
                 <h3 className={"text-center"}> Список объектов</h3>
                 <button className="btn btn-success" onClick={this.createObject}>Добавить новый объект</button>
-                <Table>
+                <Table stickyHeader>
                     <TableHead>
                         <TableRow>
                             <TableCell>Название</TableCell>
@@ -100,9 +100,9 @@ class ObjectComponent extends React.Component {
                     <TableBody>
                         {this.state.objects.map(object =>
                             <TableRow key={object}>
-                                <TableCell> {object.name}</TableCell>
+                                <TableCell> {(object.name.length > 11) ? object.name.substring(0,8) + "..." : object.name }</TableCell>
                                 {this.getType(object.type)}
-                                <TableCell> {object.description}</TableCell>
+                                <TableCell style={{maxWidth: "200px"}}> {(object.description.length > 51) ? object.description.substring(0, 48) + "..." : object.description}</TableCell>
                                 <TableCell>
                                     <Button
                                         onClick={() => this.editObject(object.obj_id)}
