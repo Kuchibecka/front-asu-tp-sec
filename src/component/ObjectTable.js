@@ -137,7 +137,7 @@ class ObjectComponent extends React.Component {
                                     onClick={() => this.handleClose()}
                                     startIcon={<CancelIcon/>}
                                 >
-                                    Нет
+                                    Отмена
                                 </Button>
                             </DialogActions>
                     </Dialog>
