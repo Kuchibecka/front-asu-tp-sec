@@ -1,6 +1,19 @@
 import React from 'react';
 import ObjectService from "../service/ObjectService";
-import {Container, Table, TableBody, TableCell, TableHead, TableRow, Button} from "@material-ui/core";
+import {
+    Container,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
+} from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Modal from '@material-ui/core/Modal';
@@ -14,20 +27,23 @@ class ObjectComponent extends React.Component {
 
         this.state = {
             objects: [],
-            openModal: false,
-            idToDelete: -1,
+            openModal: '',
+            idToDelete: '',
         };
         this.createObject = this.createObject.bind(this);
         this.editObject = this.editObject.bind(this);
         this.deleteObject = this.deleteObject.bind(this);
+        this.handleOpen = this.handleOpen.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
-
 
     componentDidMount() {
         ObjectService.getAll()
             .then((res) => {
-                this.setState({objects: res.data});
+                this.setState({objects: res.data, openModal: false});
             });
+        this.state.openModal = false
+        console.log(this.state)
     }
 
     createObject() {
@@ -40,7 +56,7 @@ class ObjectComponent extends React.Component {
 
     deleteObject(id) {
         ObjectService.deleteObject(id).then(() => {
-            this.setState({objects: this.state.objects.filter(obj => obj.obj_id !== id)})
+            this.setState({objects: this.state.objects.filter(obj => obj.obj_id !== id), openModal: false})
         });
 
     }
@@ -52,14 +68,17 @@ class ObjectComponent extends React.Component {
         return <TableCell>Контроллер</TableCell>
     }
 
-    handleOpen(id) {
-        this.state.openModal = true
-        this.state.idToDelete = id
-        // this.setState({openModal: true, idToDelete: id})
-        console.log(this.state)
+    getModal = () => {
+        console.log(this.state.openModal)
+        return this.state.openModal
     }
 
-    handleClose() {
+    handleOpen = (id) => {
+        this.setState({openModal: true, idToDelete: id})
+        console.log(this.state);
+    }
+
+    handleClose = () => {
         this.setState({openModal: false, idToDelete: -1})
         console.log("Close!")
     }
@@ -89,27 +108,27 @@ class ObjectComponent extends React.Component {
                                         onClick={() => this.editObject(object.obj_id)}
                                         startIcon={<EditIcon/>}
                                     />
-                                    {/*<Button
-                                        onClick={() => this.deleteObject(object.obj_id)}
-                                        startIcon={<DeleteIcon/>}
-                                    />*/}
                                     <Button
-                                        onClick={() => this.handleOpen(object.obj_id)}
+                                        onClick={() => this.setState({idToDelete: object.obj_id, openModal: true})}
                                         startIcon={<DeleteIcon/>}
                                     />
                                 </TableCell>
                             </TableRow>
                         )}
                     </TableBody>
-                    <Modal
+                    <Dialog
                         open={this.state.openModal}
-                        onClose={() => this.handleClose()}
-                        aria-labelledby="Вы действительно хотите удалить этот объект?"
+                        onClose={() => this.handleClose}
                     >
-                        {
-                            <Container>
+                        <DialogTitle id="alert-dialog-title">{"Вы действительно хотите удалить этот объект?"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Нажимая "Да", Вы подтверждаете удаление объекта и всех связей с ним из базы данных
+                            </DialogContentText>
+                        </DialogContent>
+                            <DialogActions>
                                 <Button
-                                    onClick={() => this.deleteObject()}
+                                    onClick={() => this.deleteObject(this.state.idToDelete)}
                                     startIcon={<DeleteIcon/>}
                                 >
                                     Да
@@ -120,9 +139,8 @@ class ObjectComponent extends React.Component {
                                 >
                                     Нет
                                 </Button>
-                            </Container>
-                        }
-                    </Modal>
+                            </DialogActions>
+                    </Dialog>
                 </Table>
             </Container>
         )
