@@ -21,7 +21,7 @@ class ObjectService {
         return await axios.put(OBJECT_REST_API_URL + id + '/edit/', object);
     }
 
-    async deleteObject(id) {
+    async delete(id) {
         return await axios.delete(OBJECT_REST_API_URL + id + '/delete/')
     }
 

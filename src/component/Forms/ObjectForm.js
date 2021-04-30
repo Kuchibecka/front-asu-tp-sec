@@ -1,5 +1,5 @@
 import React from "react";
-import ObjectService from "../service/ObjectService";
+import ObjectService from "../../service/ObjectService";
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save'
 import CancelIcon from '@material-ui/icons/Cancel'
@@ -75,7 +75,7 @@ export default class ObjectForm extends React.Component {
             }
             ObjectService.create(newObject)
                 .then(() => {
-                    this.setState({name: '', type: ''});
+                    this.setState({name: '', type: '', description: ''});
                     this.props.history.push('/objects');
                 });
         } else {
@@ -116,44 +116,44 @@ export default class ObjectForm extends React.Component {
                     <CardContent>
                         <form onSubmit={this.submitHandler}>
                             <FormControl style={{marginTop: 30}}>
-                                    <InputLabel id="Type">Тип объекта</InputLabel>
-                                    <Select
-                                        style={{minWidth: 350, fontSize: 18}}
-                                        labelId="Type"
-                                        id="type"
-                                        name="type"
-                                        value={this.state.type}
-                                        onChange={this.changeInputHandler}
-                                    >
-                                        <MenuItem value={1}>ПК</MenuItem>
-                                        <MenuItem value={2}>Контроллер</MenuItem>
-                                    </Select>
+                                <InputLabel id="Type">Тип объекта</InputLabel>
+                                <Select
+                                    style={{minWidth: 350, fontSize: 18}}
+                                    labelId="Type"
+                                    id="type"
+                                    name="type"
+                                    value={this.state.type}
+                                    onChange={this.changeInputHandler}
+                                >
+                                    <MenuItem value={1}>ПК</MenuItem>
+                                    <MenuItem value={2}>Контроллер</MenuItem>
+                                </Select>
                             </FormControl>
                             <br/>
                             <FormControl style={{marginTop: 25}}>
-                                    <TextField
-                                        style={{minWidth: 350}}
-                                        name="name"
-                                        id="name"
-                                        label="Название"
-                                        value={this.state.name}
-                                        onChange={this.changeInputHandler}
-                                        multiline
-                                        rowsMax={2}
-                                    />
+                                <TextField
+                                    style={{minWidth: 350}}
+                                    name="name"
+                                    id="name"
+                                    label="Название"
+                                    value={this.state.name}
+                                    onChange={this.changeInputHandler}
+                                    multiline
+                                    rowsMax={2}
+                                />
                             </FormControl>
                             <br/>
                             <FormControl style={{marginTop: 25}}>
-                                    <TextField
-                                        style={{minWidth: 350}}
-                                        name="description"
-                                        id="description"
-                                        label="Описание"
-                                        value={this.state.description}
-                                        onChange={this.changeInputHandler}
-                                        multiline
-                                        rowsMax={4}
-                                    />
+                                <TextField
+                                    style={{minWidth: 350}}
+                                    name="description"
+                                    id="description"
+                                    label="Описание"
+                                    value={this.state.description}
+                                    onChange={this.changeInputHandler}
+                                    multiline
+                                    rowsMax={4}
+                                />
                             </FormControl>
                             <br/>
                             <Container style={{marginTop: 40}}>
