@@ -28,7 +28,6 @@ class SchemeSelectorComponent extends React.Component {
         await GraphService.getObjects(currentId)
             .then((res) => {
                 this.setState({elements: res});
-                console.log(this.state.elements);
             });
     }
 
@@ -36,6 +35,7 @@ class SchemeSelectorComponent extends React.Component {
         await GraphService.getTree(currentId)
             .then((res) => {
                 this.setState({tree: res});
+                console.log("Tree initialised: ", res)
             });
     }
 

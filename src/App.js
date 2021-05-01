@@ -12,6 +12,7 @@ import SecuritySwTable from "./component/Tables/SecuritySwTable";
 import SecuritySwForm from "./component/Forms/SecuritySwForm";
 import VirusTable from "./component/Tables/VirusTable";
 import VirusForm from "./component/Forms/VirusForm";
+import ActionComponent from "./component/Scheme/ActionComponent/ActionComponent";
 // todo: 0*) удалить redux + thunk
 
 // todo: 1) Use Atomic Layout
@@ -27,6 +28,7 @@ export default function App() {
                 <div className="container">
                     <Switch> {/*http://localhost:3000/*/}
                         <Route exact path="/" component={SchemeComponent}/>
+                        <Route exact path="/action" component={ActionComponent}/>
 
                         <Route path="/objects" component={ObjectTable}/>
                         <Route path="/object/:id" component={ObjectForm}/>

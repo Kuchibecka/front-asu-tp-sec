@@ -26,10 +26,14 @@ class SchemeComponent extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="container-fluid">
                 <SchemeSelectorComponent updateElements={this.updateElements} updateTree={this.updateTree}/>
-                <ElementsComponent data={this.state.elements}/>
-                <TreeComponent data={this.state.tree}/>
+                <div className="container-fluid" style={{borderStyle: "solid", borderWidth: "thin"}}>
+                    <ElementsComponent data={this.state.elements}/>
+                </div>
+                <div className="container-fluid" style={{borderStyle: "solid", borderWidth: "thin"}}>
+                    <TreeComponent data={this.state.tree}/>
+                </div>
             </div>
         )
     }
