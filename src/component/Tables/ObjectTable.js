@@ -20,7 +20,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from "@material-ui/icons/Cancel";
 
 
-class ObjectTable extends React.Component {
+export default class ObjectTable extends React.Component {
 
     constructor(props) {
         super(props);
@@ -97,7 +97,7 @@ class ObjectTable extends React.Component {
                             <TableCell>Название</TableCell>
                             <TableCell>Тип</TableCell>
                             <TableCell>Описание</TableCell>
-                            <TableCell></TableCell>
+                            <TableCell/>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -161,5 +161,3 @@ class ObjectTable extends React.Component {
         )
     }
 }
-
-export default ObjectTable;

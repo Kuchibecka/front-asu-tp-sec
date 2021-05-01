@@ -3,7 +3,7 @@ import ExploitService from "./ExploitService";
 
 const SECURITYSW_REST_API_URL = 'http://localhost:8081/api/securitysw/'
 
-class SecuritySWService {
+class SecuritySwService {
     async create(data) {
         return await axios.post(SECURITYSW_REST_API_URL, data);
     }
@@ -30,4 +30,4 @@ class SecuritySWService {
     }
 }
 
-export default new SecuritySWService();
+export default new SecuritySwService();

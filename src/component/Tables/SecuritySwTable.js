@@ -1,5 +1,5 @@
 import React from 'react';
-import ExploitService from "../../service/ExploitService";
+import SecuritySwService from "../../service/SecuritySwService";
 import {
     Container,
     Table,
@@ -20,42 +20,42 @@ import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from "@material-ui/icons/Cancel";
 
 
-export default class ExploitTable extends React.Component {
+export default class SecuritySwTable extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            exploits: [],
+            securitySws: [],
             openModal: '',
             idToDelete: '',
         };
-        this.createExploit = this.createExploit.bind(this);
-        this.editExploit = this.editExploit.bind(this);
-        this.deleteExploit = this.deleteExploit.bind(this);
+        this.createSecuritySw = this.createSecuritySw.bind(this);
+        this.editSecuritySw = this.editSecuritySw.bind(this);
+        this.deleteSecuritySw = this.deleteSecuritySw.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
     }
 
     componentDidMount() {
-        ExploitService.getAll()
+        SecuritySwService.getAll()
             .then((res) => {
-                this.setState({exploits: res.data, openModal: false})
+                this.setState({securitySws: res.data, openModal: false})
             });
         this.state.openModal = false
     }
 
-    createExploit() {
-        this.props.history.push('/exploit/-1');
+    createSecuritySw() {
+        this.props.history.push('/securitySw/-1');
     }
 
-    editExploit(id) {
-        this.props.history.push(`/exploit/${id}`);
+    editSecuritySw(id) {
+        this.props.history.push(`/securitySw/${id}`);
     }
 
-    deleteExploit(id) {
-        ExploitService.delete(id).then(() => {
-            this.setState({exploits: this.state.exploits.filter(exp => exp.se_id !== id), openModal: false})
+    deleteSecuritySw(id) {
+        SecuritySwService.delete(id).then(() => {
+            this.setState({securitySws: this.state.securitySws.filter(sec => sec.secSW_id !== id), openModal: false})
         });
     }
 
@@ -75,10 +75,10 @@ export default class ExploitTable extends React.Component {
         return (
             <Container>
                 <h3 style={{borderBottomStyle: "solid", marginTop: "10px", borderBottomWidth: "thin"}}
-                    className={"text-center"}> Список уязвимостей</h3>
+                    className={"text-center"}> Список средств защиты информации (СЗИ)</h3>
                 <Tooltip title="Создать уязвимость">
                     <Button
-                        onClick={this.createExploit}
+                        onClick={this.createSecuritySw}
                         startIcon={<AddIcon/>}
                         style={{backgroundColor: "#b3ffb3", marginTop: "35px"}}
                     />
@@ -87,33 +87,42 @@ export default class ExploitTable extends React.Component {
                     <TableHead>
                         <TableRow>
                             <TableCell>Название</TableCell>
+                            <TableCell>Стоимость</TableCell>
                             <TableCell>Описание</TableCell>
                             <TableCell/>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.state.exploits.map(exploit =>
-                            <TableRow key={exploit}>
-                                <Tooltip title={exploit.name} enterDelay={500} leaveDelay={0}>
+                        {this.state.securitySws.map(securitySw =>
+                            <TableRow key={securitySw}>
+                                <Tooltip title={securitySw.name} enterDelay={500} leaveDelay={0}>
                                     <TableCell>
-                                        {(exploit.name.length > 20) ? exploit.name.substring(0, 17) + "..." : exploit.name}
+                                        {(securitySw.name.length > 20) ? securitySw.name.substring(0, 17) + "..." : securitySw.name}
                                     </TableCell>
                                 </Tooltip>
-                                <Tooltip title={exploit.description} enterDelay={500} leaveDelay={0}>
+                                <Tooltip title={securitySw.price} enterDelay={500} leaveDelay={0}>
+                                    <TableCell>
+                                        {(securitySw.price.length > 7) ? securitySw.price.substring(0, 4) + "..." : securitySw.price}
+                                    </TableCell>
+                                </Tooltip>
+                                <Tooltip title={securitySw.description} enterDelay={500} leaveDelay={0}>
                                     <TableCell style={{maxWidth: "300px"}}>
-                                        {(exploit.description.length > 40) ? exploit.description.substring(0, 37) + "..." : exploit.description}
+                                        {(securitySw.description.length > 40) ? securitySw.description.substring(0, 37) + "..." : securitySw.description}
                                     </TableCell>
                                 </Tooltip>
                                 <TableCell style={{maxWidth: "65px"}}>
                                     <Tooltip title="Редактировать">
                                         <Button
-                                            onClick={() => this.editExploit(exploit.se_id)}
+                                            onClick={() => this.editSecuritySw(securitySw.secSW_id)}
                                             startIcon={<EditIcon/>}
                                         />
                                     </Tooltip>
                                     <Tooltip title="Удалить">
                                         <Button
-                                            onClick={() => this.setState({idToDelete: exploit.se_id, openModal: true})}
+                                            onClick={() => this.setState({
+                                                idToDelete: securitySw.secSW_id,
+                                                openModal: true
+                                            })}
                                             startIcon={<DeleteIcon style={{color: "#ff5555"}}/>}
                                         />
                                     </Tooltip>
@@ -126,19 +135,19 @@ export default class ExploitTable extends React.Component {
                         onClose={() => this.handleClose}
                     >
                         <DialogTitle id="delete-alert">
-                            <h4 className={"text-center"}>"Вы действительно хотите удалить эту уязвимость?"</h4>
+                            <h4 className={"text-center"}>"Вы действительно хотите удалить это СЗИ?"</h4>
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="delete-alert">
                                 <h5 className={"text-center"}>
-                                    Нажимая "Да", Вы подтверждаете удаление из базы данных уязвимости и всех связей с
-                                    ней
+                                    Нажимая "Да", Вы подтверждаете удаление из базы данных СЗИ и всех связей с
+                                    ним
                                 </h5>
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
                             <Button
-                                onClick={() => this.deleteExploit(this.state.idToDelete)}
+                                onClick={() => this.deleteSecuritySw(Number(this.state.idToDelete))}
                                 startIcon={<DeleteIcon style={{color: "#ff5555"}}/>}
                             >
                                 Да

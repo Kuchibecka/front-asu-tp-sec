@@ -1,5 +1,5 @@
 import React from 'react';
-import ExploitService from "../../service/ExploitService";
+import VirusService from "../../service/VirusService";
 import {
     Container,
     Table,
@@ -20,42 +20,42 @@ import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from "@material-ui/icons/Cancel";
 
 
-export default class ExploitTable extends React.Component {
+export default class VirusTable extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            exploits: [],
+            viruses: [],
             openModal: '',
             idToDelete: '',
         };
-        this.createExploit = this.createExploit.bind(this);
-        this.editExploit = this.editExploit.bind(this);
-        this.deleteExploit = this.deleteExploit.bind(this);
+        this.createVirus = this.createVirus.bind(this);
+        this.editVirus = this.editVirus.bind(this);
+        this.deleteVirus = this.deleteVirus.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
     }
 
     componentDidMount() {
-        ExploitService.getAll()
+        VirusService.getAll()
             .then((res) => {
-                this.setState({exploits: res.data, openModal: false})
+                this.setState({viruses: res.data, openModal: false})
             });
         this.state.openModal = false
     }
 
-    createExploit() {
-        this.props.history.push('/exploit/-1');
+    createVirus() {
+        this.props.history.push('/virus/-1');
     }
 
-    editExploit(id) {
-        this.props.history.push(`/exploit/${id}`);
+    editVirus(id) {
+        this.props.history.push(`/virus/${id}`);
     }
 
-    deleteExploit(id) {
-        ExploitService.delete(id).then(() => {
-            this.setState({exploits: this.state.exploits.filter(exp => exp.se_id !== id), openModal: false})
+    deleteVirus(id) {
+        VirusService.delete(id).then(() => {
+            this.setState({viruses: this.state.viruses.filter(virus => virus.virus_id !== id), openModal: false})
         });
     }
 
@@ -75,10 +75,10 @@ export default class ExploitTable extends React.Component {
         return (
             <Container>
                 <h3 style={{borderBottomStyle: "solid", marginTop: "10px", borderBottomWidth: "thin"}}
-                    className={"text-center"}> Список уязвимостей</h3>
+                    className={"text-center"}> Список вирусов</h3>
                 <Tooltip title="Создать уязвимость">
                     <Button
-                        onClick={this.createExploit}
+                        onClick={this.createVirus}
                         startIcon={<AddIcon/>}
                         style={{backgroundColor: "#b3ffb3", marginTop: "35px"}}
                     />
@@ -92,28 +92,28 @@ export default class ExploitTable extends React.Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.state.exploits.map(exploit =>
-                            <TableRow key={exploit}>
-                                <Tooltip title={exploit.name} enterDelay={500} leaveDelay={0}>
+                        {this.state.viruses.map(virus =>
+                            <TableRow key={virus}>
+                                <Tooltip title={virus.name} enterDelay={500} leaveDelay={0}>
                                     <TableCell>
-                                        {(exploit.name.length > 20) ? exploit.name.substring(0, 17) + "..." : exploit.name}
+                                        {(virus.name.length > 20) ? virus.name.substring(0, 17) + "..." : virus.name}
                                     </TableCell>
                                 </Tooltip>
-                                <Tooltip title={exploit.description} enterDelay={500} leaveDelay={0}>
+                                <Tooltip title={virus.description} enterDelay={500} leaveDelay={0}>
                                     <TableCell style={{maxWidth: "300px"}}>
-                                        {(exploit.description.length > 40) ? exploit.description.substring(0, 37) + "..." : exploit.description}
+                                        {(virus.description.length > 40) ? virus.description.substring(0, 37) + "..." : virus.description}
                                     </TableCell>
                                 </Tooltip>
                                 <TableCell style={{maxWidth: "65px"}}>
                                     <Tooltip title="Редактировать">
                                         <Button
-                                            onClick={() => this.editExploit(exploit.se_id)}
+                                            onClick={() => this.editVirus(virus.virus_id)}
                                             startIcon={<EditIcon/>}
                                         />
                                     </Tooltip>
                                     <Tooltip title="Удалить">
                                         <Button
-                                            onClick={() => this.setState({idToDelete: exploit.se_id, openModal: true})}
+                                            onClick={() => this.setState({idToDelete: virus.virus_id, openModal: true})}
                                             startIcon={<DeleteIcon style={{color: "#ff5555"}}/>}
                                         />
                                     </Tooltip>
@@ -126,19 +126,19 @@ export default class ExploitTable extends React.Component {
                         onClose={() => this.handleClose}
                     >
                         <DialogTitle id="delete-alert">
-                            <h4 className={"text-center"}>"Вы действительно хотите удалить эту уязвимость?"</h4>
+                            <h4 className={"text-center"}>"Вы действительно хотите удалить этот вирус?"</h4>
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="delete-alert">
                                 <h5 className={"text-center"}>
-                                    Нажимая "Да", Вы подтверждаете удаление из базы данных уязвимости и всех связей с
-                                    ней
+                                    Нажимая "Да", Вы подтверждаете удаление из базы данных вируса и всех связей с
+                                    ним
                                 </h5>
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
                             <Button
-                                onClick={() => this.deleteExploit(this.state.idToDelete)}
+                                onClick={() => this.deleteVirus(this.state.idToDelete)}
                                 startIcon={<DeleteIcon style={{color: "#ff5555"}}/>}
                             >
                                 Да

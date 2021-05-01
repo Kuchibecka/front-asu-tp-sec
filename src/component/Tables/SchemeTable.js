@@ -1,5 +1,5 @@
 import React from 'react';
-import ExploitService from "../../service/ExploitService";
+import SchemeService from "../../service/SchemeService";
 import {
     Container,
     Table,
@@ -20,42 +20,42 @@ import AddIcon from '@material-ui/icons/Add';
 import CancelIcon from "@material-ui/icons/Cancel";
 
 
-export default class ExploitTable extends React.Component {
+export default class SchemeTable extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            exploits: [],
+            schemes: [],
             openModal: '',
             idToDelete: '',
         };
-        this.createExploit = this.createExploit.bind(this);
-        this.editExploit = this.editExploit.bind(this);
-        this.deleteExploit = this.deleteExploit.bind(this);
+        this.createScheme = this.createScheme.bind(this);
+        this.editScheme = this.editScheme.bind(this);
+        this.deleteScheme = this.deleteScheme.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
     }
 
     componentDidMount() {
-        ExploitService.getAll()
+        SchemeService.getAll()
             .then((res) => {
-                this.setState({exploits: res.data, openModal: false})
+                this.setState({schemes: res.data, openModal: false})
             });
         this.state.openModal = false
     }
 
-    createExploit() {
-        this.props.history.push('/exploit/-1');
+    createScheme() {
+        this.props.history.push('/scheme/-1');
     }
 
-    editExploit(id) {
-        this.props.history.push(`/exploit/${id}`);
+    editScheme(id) {
+        this.props.history.push(`/scheme/${id}`);
     }
 
-    deleteExploit(id) {
-        ExploitService.delete(id).then(() => {
-            this.setState({exploits: this.state.exploits.filter(exp => exp.se_id !== id), openModal: false})
+    deleteScheme(id) {
+        SchemeService.delete(id).then(() => {
+            this.setState({schemes: this.state.schemes.filter(sch => sch.scheme_id !== id), openModal: false})
         });
     }
 
@@ -75,10 +75,10 @@ export default class ExploitTable extends React.Component {
         return (
             <Container>
                 <h3 style={{borderBottomStyle: "solid", marginTop: "10px", borderBottomWidth: "thin"}}
-                    className={"text-center"}> Список уязвимостей</h3>
-                <Tooltip title="Создать уязвимость">
+                    className={"text-center"}> Список схем</h3>
+                <Tooltip title="Создать схему">
                     <Button
-                        onClick={this.createExploit}
+                        onClick={this.createScheme}
                         startIcon={<AddIcon/>}
                         style={{backgroundColor: "#b3ffb3", marginTop: "35px"}}
                     />
@@ -92,28 +92,31 @@ export default class ExploitTable extends React.Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.state.exploits.map(exploit =>
-                            <TableRow key={exploit}>
-                                <Tooltip title={exploit.name} enterDelay={500} leaveDelay={0}>
+                        {this.state.schemes.map(scheme =>
+                            <TableRow key={scheme}>
+                                <Tooltip title={scheme.name} enterDelay={500} leaveDelay={0}>
                                     <TableCell>
-                                        {(exploit.name.length > 20) ? exploit.name.substring(0, 17) + "..." : exploit.name}
+                                        {(scheme.name.length > 20) ? scheme.name.substring(0, 17) + "..." : scheme.name}
                                     </TableCell>
                                 </Tooltip>
-                                <Tooltip title={exploit.description} enterDelay={500} leaveDelay={0}>
+                                <Tooltip title={scheme.description} enterDelay={500} leaveDelay={0}>
                                     <TableCell style={{maxWidth: "300px"}}>
-                                        {(exploit.description.length > 40) ? exploit.description.substring(0, 37) + "..." : exploit.description}
+                                        {(scheme.description.length > 40) ? scheme.description.substring(0, 37) + "..." : scheme.description}
                                     </TableCell>
                                 </Tooltip>
                                 <TableCell style={{maxWidth: "65px"}}>
                                     <Tooltip title="Редактировать">
                                         <Button
-                                            onClick={() => this.editExploit(exploit.se_id)}
+                                            onClick={() => this.editScheme(scheme.scheme_id)}
                                             startIcon={<EditIcon/>}
                                         />
                                     </Tooltip>
                                     <Tooltip title="Удалить">
                                         <Button
-                                            onClick={() => this.setState({idToDelete: exploit.se_id, openModal: true})}
+                                            onClick={() => this.setState({
+                                                idToDelete: scheme.scheme_id,
+                                                openModal: true
+                                            })}
                                             startIcon={<DeleteIcon style={{color: "#ff5555"}}/>}
                                         />
                                     </Tooltip>
@@ -126,19 +129,19 @@ export default class ExploitTable extends React.Component {
                         onClose={() => this.handleClose}
                     >
                         <DialogTitle id="delete-alert">
-                            <h4 className={"text-center"}>"Вы действительно хотите удалить эту уязвимость?"</h4>
+                            <h4 className={"text-center"}>"Вы действительно хотите удалить эту схему?"</h4>
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="delete-alert">
                                 <h5 className={"text-center"}>
-                                    Нажимая "Да", Вы подтверждаете удаление из базы данных уязвимости и всех связей с
+                                    Нажимая "Да", Вы подтверждаете удаление из базы данных схемы и всех связей с
                                     ней
                                 </h5>
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
                             <Button
-                                onClick={() => this.deleteExploit(this.state.idToDelete)}
+                                onClick={() => this.deleteScheme(this.state.idToDelete)}
                                 startIcon={<DeleteIcon style={{color: "#ff5555"}}/>}
                             >
                                 Да

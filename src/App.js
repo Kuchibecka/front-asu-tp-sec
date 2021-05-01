@@ -6,6 +6,12 @@ import ObjectTable from "./component/Tables/ObjectTable";
 import ObjectForm from "./component/Forms/ObjectForm";
 import ExploitTable from "./component/Tables/ExploitTable";
 import ExploitForm from "./component/Forms/ExploitForm";
+import SchemeTable from "./component/Tables/SchemeTable";
+import SchemeForm from "./component/Forms/SchemeForm";
+import SecuritySwTable from "./component/Tables/SecuritySwTable";
+import SecuritySwForm from "./component/Forms/SecuritySwForm";
+import VirusTable from "./component/Tables/VirusTable";
+import VirusForm from "./component/Forms/VirusForm";
 // todo: 0*) удалить redux + thunk
 
 // todo: 1) Use Atomic Layout
@@ -27,6 +33,16 @@ export default function App() {
 
                         <Route path="/exploits" component={ExploitTable}/>
                         <Route path="/exploit/:id" component={ExploitForm}/>
+
+                        <Route path="/schemes" component={SchemeTable}/>
+                        <Route path="/scheme/:id" component={SchemeForm}/>
+
+                        <Route path="/securitysws" component={SecuritySwTable}/>
+                        <Route path="/securitysw/:id" component={SecuritySwForm}/>
+
+                        <Route path="/viruses" component={VirusTable}/>
+                        <Route path="/virus/:id" component={VirusForm}/>
+
                         {/*<Route path = "/update-object/:id" component = {UpdateObjectComponent}/>*/}
                     </Switch>
                 </div>

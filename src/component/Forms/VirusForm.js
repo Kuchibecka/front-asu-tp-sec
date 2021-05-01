@@ -1,18 +1,19 @@
 import React from "react";
-import ExploitService from "../../service/ExploitService";
+import VirusService from "../../service/VirusService";
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
 import FormControl from '@material-ui/core/FormControl';
 import {Card, CardContent, CardHeader, Container, TextField} from "@material-ui/core";
 
-export default class ExploitForm extends React.Component {
+export default class VirusForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             id: this.props.match.params.id,
             name: '',
             description: '',
+            virusExploit: [],
         }
         this.changeInputHandler = this.changeInputHandler.bind(this);
         this.cancel = this.cancel.bind(this);
@@ -22,13 +23,14 @@ export default class ExploitForm extends React.Component {
         if (this.state.id === -1) {
             return
         } else {
-            ExploitService.getById(this.state.id)
+            VirusService.getById(this.state.id)
                 .then((res) => {
-                    let exp = res.data;
+                    let virus = res.data;
                     this.setState({
                         id: this.state.id,
-                        name: exp.name,
-                        description: exp.description,
+                        name: virus.name,
+                        description: virus.description,
+                        virusExploit: virus.virusExploit,
                     });
                 });
         }
@@ -50,37 +52,39 @@ export default class ExploitForm extends React.Component {
         const description = event.target.description.value.replace(/\s+/g, ' ').trim()
 
         if (this.state.id == -1) {
-            const newExploit = {
+            const newVirus = {
                 name: name,
                 description: description,
+                virusExploit: [],
             }
-            ExploitService.create(newExploit)
+            VirusService.create(newVirus)
                 .then(() => {
                     this.setState({name: '', type: '', description: ''});
-                    this.props.history.push('/exploits');
+                    this.props.history.push('/viruses');
                 });
         } else {
-            const editedExploit = {
-                se_id: this.state.id,
+            const editedVirus = {
+                virus_id: this.state.id,
                 name: name,
                 description: description,
+                virusExploit: this.state.virusExploit,
             }
-            ExploitService.update(editedExploit, this.state.id)
+            VirusService.update(editedVirus, this.state.id)
                 .then(() => {
-                    this.props.history.push('/exploits');
+                    this.props.history.push('/viruses');
                 })
         }
     }
 
     cancel() {
-        this.props.history.push('/exploits')
+        this.props.history.push('/viruses')
     }
 
     getTitle() {
         if (this.state.id == -1) {
-            return <h3 className="text-center">Создание новой уязвимости</h3>
+            return <h3 className="text-center">Создание нового вируса</h3>
         } else {
-            return <h3 className="text-center">Редактирование существующей уязвимости</h3>
+            return <h3 className="text-center">Редактирование существующего вируса</h3>
         }
     }
 
@@ -123,7 +127,7 @@ export default class ExploitForm extends React.Component {
                                     type="submit"
                                     color="primary"
                                     startIcon={<SaveIcon/>}
-                                    onClick={this.createExploit}
+                                    onClick={this.createVirus}
                                 >
                                     Сохранить
                                 </Button>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import VirusService from "./VirusService";
-import SecuritySWService from "./SecuritySWService";
+import SecuritySWService from "./SecuritySwService";
 
 const OBJECT_REST_API_URL = 'http://localhost:8081/api/object/'
 
