@@ -1,6 +1,6 @@
 import axios from "axios";
 import VirusService from "./VirusService";
-import SecuritySWService from "./SecuritySWService";
+import SecuritySWService from "./SecuritySwService";
 
 const OBJECT_REST_API_URL = 'http://localhost:8081/api/object/'
 
@@ -21,7 +21,7 @@ class ObjectService {
         return await axios.put(OBJECT_REST_API_URL + id + '/edit/', object);
     }
 
-    async deleteObject(id) {
+    async delete(id) {
         return await axios.delete(OBJECT_REST_API_URL + id + '/delete/')
     }
 

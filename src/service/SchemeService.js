@@ -1,7 +1,7 @@
 import axios from "axios";
 import ObjectService from "./ObjectService";
 import VirusService from "./VirusService";
-import SecuritySWService from "./SecuritySWService";
+import SecuritySWService from "./SecuritySwService";
 
 const SCHEME_REST_API_URL = 'http://localhost:8081/api/scheme/'
 
@@ -10,7 +10,7 @@ class SchemeService {
         return await axios.post(SCHEME_REST_API_URL, data);
     }
 
-    async get() {
+    async getAll() {
         return await axios.get(SCHEME_REST_API_URL);
     }
 

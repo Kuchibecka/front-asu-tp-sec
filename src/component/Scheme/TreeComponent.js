@@ -24,7 +24,7 @@ class TreeComponent extends React.Component {
     treeShow(tree) {
         const graphStyles = {width: "100%", height: "500px"};
         /*todo: Показ изображения, если схема не выбрана*/
-        if (tree.length == 0) {
+        if (tree.length <= 1) {
             return (
                 <h3>Нет дерева отказов</h3>
             )
