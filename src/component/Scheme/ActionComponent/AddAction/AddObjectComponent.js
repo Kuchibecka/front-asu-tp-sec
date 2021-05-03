@@ -6,7 +6,8 @@ import FormControl from "@material-ui/core/FormControl";
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import ListItemText from '@material-ui/core/ListItemText';
-import {Input, InputLabel, Select} from "@material-ui/core";
+import {Box, Input, InputLabel, Select} from "@material-ui/core";
+import SchemeService from "../../../../service/SchemeService";
 
 export class AddElementComponent extends React.Component {
     constructor(props) {
@@ -14,17 +15,26 @@ export class AddElementComponent extends React.Component {
         this.state = {
             allObjects: [],
             selectedObjects: [],
+            schemeId: '',
         }
         this.changeInputHandler = this.changeInputHandler.bind(this)
         this.submitHandler = this.submitHandler.bind(this)
     }
 
     componentDidMount() {
+        console.log("Scheme ID: ", this.props.schemeId);
+        this.setState({schemeId: this.props.schemeId})
         ObjectService.getAll()
             .then((res) => {
                 this.setState({allObjects: res.data}); //todo: Изменить на загрузку только отсутствующих на схеме объектов?
             });                                             //todo: Можно все получать и .filter убрать те, что уже есть (нужна передача id схемы)
-        console.log(this.state.allObjects);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.schemeId !== this.props.schemeId) {
+            this.setState({schemeId: this.props.schemeId})
+        }
+        console.log("Add object scheme id: ", this.state.schemeId)
     }
 
     changeInputHandler(event) {
@@ -32,15 +42,21 @@ export class AddElementComponent extends React.Component {
         this.setState({
             selectedObjects: event.target.value
         });
-        // console.log("Selected objects: ", this.state.selectedObjects);
     }
 
     submitHandler = (event) => {
-        if (this.state.selectedObjects.isEmpty){
+        if (this.state.selectedObjects.length === 0){
             alert("Выберите хотя бы один объект или нажмите кнопку Назад")
+            // this.props.handleChange('initial');
         } else {
             //todo: вызов метода сервера добавления на схему
+            let arr = this.state.selectedObjects;
+            let schemeId = this.state.schemeId;
+            this.state.selectedObjects.forEach(function (obj, i, arr){
+                SchemeService.addObject(obj, schemeId)
+            });
             console.log(this.state.selectedObjects)
+
         }
         // this.props.handleChange('initial') //todo: Изменить handleChange на только изменение step
     }
@@ -48,7 +64,7 @@ export class AddElementComponent extends React.Component {
     render() {
         const {handleChange} = this.props;
         return (
-            <Dialog
+            <Box
                 open
                 fullWidth
                 maxWidth='sm'
@@ -91,7 +107,7 @@ export class AddElementComponent extends React.Component {
                 >
                     Назад
                 </Button>
-            </Dialog>
+            </Box>
         );
     }
 }

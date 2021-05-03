@@ -1,13 +1,14 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
+import {Box} from "@material-ui/core";
 
 export class AddElementComponent extends React.Component {
 
     render() {
         const {handleChange} = this.props;
         return (
-                    <Dialog
+                    <Box
                         open
                         fullWidth
                         maxWidth='sm'
@@ -35,7 +36,7 @@ export class AddElementComponent extends React.Component {
                             variant="contained"
                             onClick={handleChange('elements')}
                         >Назад</Button>
-                    </Dialog>
+                    </Box>
         );
     }
 }

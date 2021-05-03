@@ -13,6 +13,7 @@ export class UserForm extends React.Component {
         super(props);
         this.state = {
             step: 'initial',
+            schemeId: '',
             target: '',
             firstType: '',
             secondType: '',
@@ -22,6 +23,23 @@ export class UserForm extends React.Component {
             isAnd: false,
         };
         this.handleChange = this.handleChange.bind(this)
+    }
+
+    async componentDidMount() {
+        await this.setState({schemeId: this.props.schemeId})
+        if (this.props.schemeId === '')
+            this.setState({step: '0'})
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.schemeId !== this.props.schemeId) {
+            this.setState({schemeId: this.props.schemeId})
+            if (this.props.schemeId === '') {
+                this.setState({step: '0'})
+            } else {
+                this.setState({step: 'initial'});
+            }
+        }
     }
 
     handleChange = input => e => {
@@ -35,6 +53,10 @@ export class UserForm extends React.Component {
         const values = {target, firstType, secondType, firstElement, secondElement, isLogical, isAnd};
 
         switch (step) {
+            case '0':
+                return (
+                    <h1>Выберите схему</h1>
+                )
             case 'initial':
                 return (
                     <ActionListComponent
@@ -57,6 +79,7 @@ export class UserForm extends React.Component {
             case 'addObject':
                 return (
                     <AddObjectComponent
+                        schemeId={this.state.schemeId}
                         handleChange={this.handleChange}
                     />
                 )
@@ -72,7 +95,6 @@ export class UserForm extends React.Component {
                         handleChange={this.handleChange}
                     />
                 )
-
 
 
             case 'editElement':

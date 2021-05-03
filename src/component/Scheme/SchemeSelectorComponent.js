@@ -35,12 +35,13 @@ class SchemeSelectorComponent extends React.Component {
         await GraphService.getTree(currentId)
             .then((res) => {
                 this.setState({tree: res});
-                console.log("Tree initialised: ", res)
             });
     }
 
     handleSchemeSelect = e => {
         if (e.target.value !== "Выберите схему...") {
+            this.state.currentId = e.target.value;
+            this.props.updateId(this.state.currentId)
             this.objectInit(e.target.value)
                 .then(() => this.props.updateElements(this.state.elements));
             this.treeInit(e.target.value)
@@ -49,6 +50,7 @@ class SchemeSelectorComponent extends React.Component {
             this.state = initialState;
             this.props.updateElements(this.state.elements)
             this.props.updateTree(this.state.tree)
+            this.props.updateId(this.state.currentId)
         }
     };
 
@@ -62,7 +64,7 @@ class SchemeSelectorComponent extends React.Component {
                         {
                             this.state.schemes.map(scheme => {
                                 return (
-                                    <option value={scheme.scheme_id} id="scheme_id" key={scheme}>{scheme.name}</option>
+                                    <option value={scheme.scheme_id} id="scheme_id" key={scheme.scheme_id}>{scheme.name}</option>
                                 )
                             })
                         }

@@ -1,16 +1,14 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
+import {Box} from "@material-ui/core";
 
 export class SchemeElementsComponent extends React.Component {
 
     render() {
         const {handleChange} = this.props;
         return (
-                    <Dialog
-                        open
-                        fullWidth
-                        maxWidth='sm'
+                    <Box
                     >
                         <h3 style={{borderBottomStyle: "solid"}} className={"text-center"}>Выберите действие</h3>
                         <Button
@@ -35,7 +33,7 @@ export class SchemeElementsComponent extends React.Component {
                             variant="contained"
                             onClick={handleChange('initial')}
                         >Назад</Button>
-                    </Dialog>
+                    </Box>
         );
     }
 }
