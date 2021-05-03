@@ -1,5 +1,4 @@
 import axios from "axios";
-import ExploitService from "./ExploitService";
 
 const VIRUS_REST_API_URL = 'http://localhost:8081/api/virus/'
 
@@ -25,8 +24,7 @@ class VirusService {
     }
 
     async addExploit(exploit_id, id) {
-        const exploit = await ExploitService.getById(exploit_id);
-        return await axios.put(VIRUS_REST_API_URL + id + '/add_exploit/', exploit);
+        return await axios.put(VIRUS_REST_API_URL + id + '/add_exploit/' + exploit_id);
     }
 }
 

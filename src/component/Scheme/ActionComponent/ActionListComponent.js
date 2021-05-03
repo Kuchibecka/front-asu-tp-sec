@@ -3,6 +3,16 @@ import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 
 export class ActionListComponent extends React.Component {
+    constructor(props) {
+        super(props);
+
+    }
+
+    componentDidMount() {
+        console.log(this.props);
+    }
+
+
 
     render() {
         const {values, handleChange} = this.props;
@@ -14,20 +24,17 @@ export class ActionListComponent extends React.Component {
                     >
                         <h3 style={{borderBottomStyle: "solid"}} className={"text-center"}>Выберите действие</h3>
                         <Button
-                            id={'elements'}
-                            onClick={handleChange('step')}
+                            onClick={handleChange('elements')}
                         >
                             Редактировать элементы
                         </Button>
                         <Button
-                            id={"connections"}
-                            onClick={handleChange('step')}
+                            onClick={handleChange('connections')}
                         >
                             Редактировать связи
                         </Button>
                         <Button
-                            id={"params"}
-                            onClick={handleChange('step')}
+                            onClick={handleChange('params')}
                         >
                             Изменить данные схемы
                         </Button>

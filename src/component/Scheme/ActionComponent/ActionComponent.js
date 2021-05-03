@@ -2,34 +2,31 @@ import React from 'react';
 import ActionListComponent from "./ActionListComponent";
 import SchemeElementsComponent from "./SchemeElementsComponent";
 import AddElementComponent from "./AddElementComponent";
+import AddObjectComponent from "./AddAction/AddObjectComponent"
+import AddSecuritySwComponent from "./AddAction/AddSecuritySwComponent"
+import AddVirusComponent from "./AddAction/AddVirusComponent"
+
 
 export class UserForm extends React.Component {
-    state = {
-        step: 'initial',
-        target: '',
-        firstType: '',
-        secondType: '',
-        firstElement: '',
-        secondElement: '',
-        isLogical: false,
-        isAnd: false,
-    };
-
-    nextStep = (step) => {
-        this.setState({
-            step: step
-        });
-    };
-
-    prevStep = (step) => {
-        console.log("PREV STEP", step)
-        this.setState({
-            step: step
-        });
-    };
+//todo: убрать за ненадобностью из-за использования всего в дочерних компонентах
+    constructor(props) {
+        super(props);
+        this.state = {
+            step: 'initial',
+            target: '',
+            firstType: '',
+            secondType: '',
+            firstElement: '',
+            secondElement: '',
+            isLogical: false,
+            isAnd: false,
+        };
+        this.handleChange = this.handleChange.bind(this)
+    }
 
     handleChange = input => e => {
-        this.setState({[input]: e.target.offsetParent.id});
+        console.log("Target: ", input)
+        this.setState({step: input});
     };
 
     render() {
@@ -44,7 +41,7 @@ export class UserForm extends React.Component {
                         handleChange={this.handleChange}
                     />
                 );
-            // todo: Выбор: редактировать схему ИЛИ дерево отказа
+            // todo: Выбор: редактировать схему ИЛИ !дерево отказа!
             case 'elements':
                 return (
                     <SchemeElementsComponent
@@ -57,6 +54,27 @@ export class UserForm extends React.Component {
                         handleChange={this.handleChange}
                     />
                 )
+            case 'addObject':
+                return (
+                    <AddObjectComponent
+                        handleChange={this.handleChange}
+                    />
+                )
+            case 'addVirus':
+                return (
+                    <AddVirusComponent
+                        handleChange={this.handleChange}
+                    />
+                )
+            case 'addSecuritySw':
+                return (
+                    <AddSecuritySwComponent
+                        handleChange={this.handleChange}
+                    />
+                )
+
+
+
             case 'editElement':
                 return (
                     <br/>

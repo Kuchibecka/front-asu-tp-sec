@@ -1,7 +1,4 @@
 import axios from "axios";
-import ObjectService from "./ObjectService";
-import VirusService from "./VirusService";
-import SecuritySWService from "./SecuritySwService";
 
 const SCHEME_REST_API_URL = 'http://localhost:8081/api/scheme/'
 
@@ -27,43 +24,35 @@ class SchemeService {
     }
 
     async addObject(object_id, id) {
-        const object = await ObjectService.getById(object_id);
-        return await axios.put(SCHEME_REST_API_URL + id + '/add_object/', object);
+        return await axios.put(SCHEME_REST_API_URL + id + '/add_object/' + object_id);
     }
 
     async addVirus(virus_id, id) {
-        const virus = await VirusService.getById(virus_id);
-        return await axios.put(SCHEME_REST_API_URL + id + '/add_virus/', virus);
+        return await axios.put(SCHEME_REST_API_URL + id + '/add_virus/' + virus_id);
     }
 
     async addSecuritySW(securitySW_id, id) {
-        const securitySW = await SecuritySWService.getById(securitySW_id);
-        return await axios.put(SCHEME_REST_API_URL + id + '/add_securitysw/', securitySW);
+        return await axios.put(SCHEME_REST_API_URL + id + '/add_securitysw/' + securitySW_id);
     }
 
     async addCriteriaObject(criteriaObject_id, id) {
-        const criteriaObject = await ObjectService.getById(criteriaObject_id);
-        return await axios.put(SCHEME_REST_API_URL + id + '/add_criteria_object/', criteriaObject);
+        return await axios.put(SCHEME_REST_API_URL + id + '/add_criteria_object/' + criteriaObject_id);
     }
 
     async removeObject(object_id, id) {
-        const object = await ObjectService.getById(object_id);
-        return await axios.put(SCHEME_REST_API_URL + id + '/remove_object/', object);
+        return await axios.put(SCHEME_REST_API_URL + id + '/remove_object/' + object_id);
     }
 
     async removeVirus(virus_id, id) {
-        const virus = await VirusService.getById(virus_id);
-        return await axios.put(SCHEME_REST_API_URL + id + '/remove_virus/', virus);
+        return await axios.put(SCHEME_REST_API_URL + id + '/remove_virus/' + virus_id);
     }
 
     async removeSecuritySW(securitySW_id, id) {
-        const securitySW = await SecuritySWService.getById(securitySW_id);
-        return await axios.put(SCHEME_REST_API_URL + id + '/remove_securitysw/', securitySW);
+        return await axios.put(SCHEME_REST_API_URL + id + '/remove_securitysw/' + securitySW_id);
     }
 
     async removeCriteriaObject(criteriaObject_id, id) {
-        const criteriaObject = await ObjectService.getById(criteriaObject_id);
-        return await axios.put(SCHEME_REST_API_URL + id + '/remove_criteria_object/', criteriaObject);
+        return await axios.put(SCHEME_REST_API_URL + id + '/remove_criteria_object/' + criteriaObject_id);
     }
 }
 
