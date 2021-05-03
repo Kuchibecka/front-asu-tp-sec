@@ -19,6 +19,7 @@ class ElementsComponent extends React.Component {
         if (prevProps.data !== this.props.data) {
             this.setState({elements: this.props.data})
         }
+        console.log(this.state.elements)
     }
 
     elementsShow(elements) {

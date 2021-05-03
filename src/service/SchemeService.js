@@ -24,6 +24,7 @@ class SchemeService {
     }
 
     async addObject(object_id, id) {
+        console.log(SCHEME_REST_API_URL + id + '/add_object/' + object_id)
         return await axios.put(SCHEME_REST_API_URL + id + '/add_object/' + object_id);
     }
 
