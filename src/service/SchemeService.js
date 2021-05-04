@@ -1,5 +1,4 @@
 import axios from "axios";
-import ObjectService from "./ObjectService";
 
 const SCHEME_REST_API_URL = 'http://localhost:8081/api/scheme/'
 
@@ -25,7 +24,6 @@ class SchemeService {
     }
 
     addObject(object, id) {
-        console.log("Object in addObject(): ", object)
         return axios.put(SCHEME_REST_API_URL + id + '/add_object/', object);
     }
 
