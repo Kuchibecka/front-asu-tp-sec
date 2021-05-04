@@ -64,7 +64,6 @@ export class AddElementComponent extends React.Component {
             }
             this.setState({selectedObjects: []});
         }
-        // this.props.handleChange('initial') //todo: Изменить handleChange на только изменение step
     }
 
     render() {
