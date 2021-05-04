@@ -17,6 +17,7 @@ export default class ObjectForm extends React.Component {
             type: '',
             name: '',
             description: '',
+            isInstance: false,
             virusList: [],
             securitySWList: [],
             objectList: [],
@@ -27,9 +28,7 @@ export default class ObjectForm extends React.Component {
     }
 
     componentDidMount() {
-        if (this.state.id === -1) {
-            return
-        } else {
+        if (this.state.id !== -1) {
             ObjectService.getById(this.state.id)
                 .then((res) => {
                     let obj = res.data;
@@ -38,6 +37,7 @@ export default class ObjectForm extends React.Component {
                         type: obj.type,
                         name: obj.name,
                         description: obj.description,
+                        isInstance: obj.isInstance,
                         virusList: obj.virusList,
                         securitySWList: obj.securitySWList,
                         objectList: obj.objectList,
@@ -63,15 +63,16 @@ export default class ObjectForm extends React.Component {
         const name = event.target.name.value.replace(/\s+/g, ' ').trim()
         const description = event.target.description.value.replace(/\s+/g, ' ').trim()
 
-        if (this.state.id == -1) {
+        if (this.state.id === -1) {
             const newObject = {
                 type: Number(type),
                 name: name,
                 description: description,
+                isInstance: false,
                 virusList: [],
                 securitySWList: [],
                 objectList: [],
-                andCriteriaList: []
+                andCriteriaList: [],
             }
             ObjectService.create(newObject)
                 .then(() => {
@@ -84,6 +85,7 @@ export default class ObjectForm extends React.Component {
                 type: Number(type),
                 name: name,
                 description: description,
+                isInstance: this.state.isInstance,
                 virusList: this.state.virusList,
                 securitySWList: this.state.securitySWList,
                 objectList: this.state.objectList,
@@ -101,7 +103,7 @@ export default class ObjectForm extends React.Component {
     }
 
     getTitle() {
-        if (this.state.id == -1) {
+        if (this.state.id === -1) {
             return <h3 className="text-center">Создание нового объекта</h3>
         } else {
             return <h3 className="text-center">Редактирование существующего объекта</h3>

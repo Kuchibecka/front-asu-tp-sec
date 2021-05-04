@@ -13,6 +13,7 @@ export default class VirusForm extends React.Component {
             id: this.props.match.params.id,
             name: '',
             description: '',
+            isInstance: false,
             virusExploit: [],
         }
         this.changeInputHandler = this.changeInputHandler.bind(this);
@@ -20,9 +21,7 @@ export default class VirusForm extends React.Component {
     }
 
     componentDidMount() {
-        if (this.state.id === -1) {
-            return
-        } else {
+        if (this.state.id !== -1) {
             VirusService.getById(this.state.id)
                 .then((res) => {
                     let virus = res.data;
@@ -30,6 +29,7 @@ export default class VirusForm extends React.Component {
                         id: this.state.id,
                         name: virus.name,
                         description: virus.description,
+                        isInstance: virus.isInstance,
                         virusExploit: virus.virusExploit,
                     });
                 });
@@ -51,10 +51,11 @@ export default class VirusForm extends React.Component {
         const name = event.target.name.value.replace(/\s+/g, ' ').trim()
         const description = event.target.description.value.replace(/\s+/g, ' ').trim()
 
-        if (this.state.id == -1) {
+        if (this.state.id === -1) {
             const newVirus = {
                 name: name,
                 description: description,
+                isInstance: false,
                 virusExploit: [],
             }
             VirusService.create(newVirus)
@@ -67,6 +68,7 @@ export default class VirusForm extends React.Component {
                 virus_id: this.state.id,
                 name: name,
                 description: description,
+                isInstance: this.state.isInstance,
                 virusExploit: this.state.virusExploit,
             }
             VirusService.update(editedVirus, this.state.id)
@@ -81,7 +83,7 @@ export default class VirusForm extends React.Component {
     }
 
     getTitle() {
-        if (this.state.id == -1) {
+        if (this.state.id === -1) {
             return <h3 className="text-center">Создание нового вируса</h3>
         } else {
             return <h3 className="text-center">Редактирование существующего вируса</h3>

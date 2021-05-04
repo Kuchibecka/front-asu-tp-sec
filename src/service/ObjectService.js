@@ -54,6 +54,10 @@ class ObjectService {
     async removeCriteriaObject(criteriaObject_id, id) {
         return await axios.put(OBJECT_REST_API_URL + id + '/remove_criteria_object/' + criteriaObject_id);
     }
+
+    async newInstance(id) {
+        return await axios.post(OBJECT_REST_API_URL + 'new_instance/' + id);
+    }
 }
 
 export default new ObjectService();

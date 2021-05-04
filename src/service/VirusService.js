@@ -26,6 +26,10 @@ class VirusService {
     async addExploit(exploit_id, id) {
         return await axios.put(VIRUS_REST_API_URL + id + '/add_exploit/' + exploit_id);
     }
+
+    async newInstance(id) {
+        return await axios.post(VIRUS_REST_API_URL + 'new_instance/' + id);
+    }
 }
 
 export default new VirusService();

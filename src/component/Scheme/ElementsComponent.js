@@ -24,9 +24,9 @@ class ElementsComponent extends React.Component {
 
     elementsShow(elements) {
         const graphStyles = {width: "100%", height: "500px"};
-        /*todo: Показ изображения, если схема не выбрана*/
-        if (elements.length == 0) {
+        if (elements.length === 0) {
             return (
+                /*todo: Показ изображения, если схема не выбрана*/
                 <h3>Схема не сконфигурирована</h3>
             )
         } else {

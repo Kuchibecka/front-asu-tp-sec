@@ -43,7 +43,6 @@ export class UserForm extends React.Component {
     }
 
     handleChange = input => e => {
-        console.log("Target: ", input)
         this.setState({step: input});
     };
 

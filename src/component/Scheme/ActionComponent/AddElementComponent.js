@@ -9,9 +9,6 @@ export class AddElementComponent extends React.Component {
         const {handleChange} = this.props;
         return (
                     <Box
-                        open
-                        fullWidth
-                        maxWidth='sm'
                     >
                         <h3 style={{borderBottomStyle: "solid"}} className={"text-center"}>Выберите действие</h3>
                         <Button

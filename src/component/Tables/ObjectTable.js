@@ -40,7 +40,7 @@ export default class ObjectTable extends React.Component {
     componentDidMount() {
         ObjectService.getAll()
             .then((res) => {
-                this.setState({objects: res.data, openModal: false});
+                this.setState({objects: res.data.filter(obj => obj.isInstance === false), openModal: false});
             });
         this.state.openModal = false
     }

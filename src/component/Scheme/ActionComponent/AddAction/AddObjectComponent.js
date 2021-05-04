@@ -22,11 +22,10 @@ export class AddElementComponent extends React.Component {
     }
 
     componentDidMount() {
-        console.log("Scheme ID: ", this.props.schemeId);
         this.setState({schemeId: this.props.schemeId})
         ObjectService.getAll()
             .then((res) => {
-                this.setState({allObjects: res.data}); //todo: Изменить на загрузку только отсутствующих на схеме объектов?
+                this.setState({allObjects: res.data.filter(obj => obj.isInstance === false)}); //todo: Изменить на загрузку только отсутствующих на схеме объектов?
             });                                             //todo: Можно все получать и .filter убрать те, что уже есть (нужна передача id схемы)
     }
 
@@ -34,7 +33,6 @@ export class AddElementComponent extends React.Component {
         if (prevProps.schemeId !== this.props.schemeId) {
             this.setState({schemeId: this.props.schemeId})
         }
-        console.log("Add object scheme id: ", this.state.schemeId)
     }
 
     changeInputHandler(event) {
@@ -45,18 +43,26 @@ export class AddElementComponent extends React.Component {
     }
 
     submitHandler = (event) => {
-        if (this.state.selectedObjects.length === 0){
-            alert("Выберите хотя бы один объект или нажмите кнопку Назад")
+        if (this.state.selectedObjects.length === 0) {
+            alert("Выберите хотя бы один объект или нажмите кнопку Назад для возврата")
             // this.props.handleChange('initial');
         } else {
             //todo: вызов метода сервера добавления на схему
             let arr = this.state.selectedObjects;
-            let schemeId = this.state.schemeId;
-            this.state.selectedObjects.forEach(function (obj, i, arr){
-                SchemeService.addObject(obj, schemeId)
-            });
-            console.log(this.state.selectedObjects)
-
+            let i = 0;
+            while (i < arr.length) {
+                console.log("Push to instance creation: ", arr[i]);
+                ObjectService.newInstance(arr[i])
+                    .then(inst => {
+                        console.log("Instance created: ", inst)
+                        SchemeService.addObject(inst.data, this.state.schemeId)
+                            .then(sch => {
+                                console.log("Result scheme: ", sch);
+                            });
+                    });
+                i++;
+            }
+            this.setState({selectedObjects: []});
         }
         // this.props.handleChange('initial') //todo: Изменить handleChange на только изменение step
     }
@@ -65,11 +71,9 @@ export class AddElementComponent extends React.Component {
         const {handleChange} = this.props;
         return (
             <Box
-                open
-                fullWidth
-                maxWidth='sm'
             >
-                <h3 style={{borderBottomStyle: "solid"}} className={"text-center"}>Выберите действие</h3> {/*todo: Сменить заголовок*/}
+                <h3 style={{borderBottomStyle: "solid"}} className={"text-center"}>Выберите
+                    действие</h3> {/*todo: Сменить заголовок*/}
                 <FormControl>
                     <InputLabel id="demo-mutiple-checkbox-label">Tag</InputLabel>
                     <Select
@@ -83,7 +87,7 @@ export class AddElementComponent extends React.Component {
                     >
                         {this.state.allObjects.map(object => (
                             <MenuItem key={object.obj_id} value={object.obj_id}>
-                                <Checkbox checked={this.state.selectedObjects.indexOf(object.obj_id) > -1} />
+                                <Checkbox checked={this.state.selectedObjects.indexOf(object.obj_id) > -1}/>
                                 <ListItemText primary={object.name}/>
                             </MenuItem>
                         ))}

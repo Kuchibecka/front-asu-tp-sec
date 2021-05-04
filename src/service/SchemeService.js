@@ -1,4 +1,5 @@
 import axios from "axios";
+import ObjectService from "./ObjectService";
 
 const SCHEME_REST_API_URL = 'http://localhost:8081/api/scheme/'
 
@@ -23,9 +24,9 @@ class SchemeService {
         return await axios.delete(SCHEME_REST_API_URL + id + '/delete/');
     }
 
-    async addObject(object_id, id) {
-        console.log(SCHEME_REST_API_URL + id + '/add_object/' + object_id)
-        return await axios.put(SCHEME_REST_API_URL + id + '/add_object/' + object_id);
+    addObject(object, id) {
+        console.log("Object in addObject(): ", object)
+        return axios.put(SCHEME_REST_API_URL + id + '/add_object/', object);
     }
 
     async addVirus(virus_id, id) {

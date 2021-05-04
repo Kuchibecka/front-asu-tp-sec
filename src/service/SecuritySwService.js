@@ -26,6 +26,10 @@ class SecuritySwService {
     async addExploit(exploit_id, id) {
         return await axios.put(SECURITYSW_REST_API_URL + id + '/add_exploit/' + exploit_id);
     }
+
+    async newInstance(id) {
+        return await axios.post(SECURITYSW_REST_API_URL + 'new_instance/' + id);
+    }
 }
 
 export default new SecuritySwService();

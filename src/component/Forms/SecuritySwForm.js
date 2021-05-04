@@ -5,7 +5,6 @@ import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
 import FormControl from '@material-ui/core/FormControl';
 import {Card, CardContent, CardHeader, Container, TextField} from "@material-ui/core";
-import {range} from "lodash-es";
 
 export default class SecuritySwForm extends React.Component {
     constructor(props) {
@@ -15,6 +14,7 @@ export default class SecuritySwForm extends React.Component {
             name: '',
             price: '',
             description: '',
+            isInstance: false,
             securityExploit: [],
         }
         this.changeInputHandler = this.changeInputHandler.bind(this);
@@ -22,9 +22,7 @@ export default class SecuritySwForm extends React.Component {
     }
 
     componentDidMount() {
-        if (this.state.id === -1) {
-            return
-        } else {
+        if (this.state.id !== -1) {
             SecuritySwService.getById(this.state.id)
                 .then((res) => {
                     let secSW = res.data;
@@ -33,6 +31,7 @@ export default class SecuritySwForm extends React.Component {
                         name: secSW.name,
                         price: secSW.price,
                         description: secSW.description,
+                        isInstance: secSW.isInstance,
                         securityExploit: secSW.securityExploit,
                     });
                 });
@@ -44,7 +43,7 @@ export default class SecuritySwForm extends React.Component {
         const target = event.target;
         const key = target.name
         const value = target.value
-        if (key == 'price') {
+        if (key === 'price') {
             if (value.match(/\D/g)) {
                 alert("Это поле только для числовых значений!")
                 this.setState({[key]: value.replace(/\D/g, '')})
@@ -67,11 +66,12 @@ export default class SecuritySwForm extends React.Component {
         const description = event.target.description.value.replace(/\s+/g, ' ').trim()
         const price = event.target.price.value
 
-        if (this.state.id == -1) {
+        if (this.state.id === -1) {
             const newSecuritySw = {
                 name: name,
                 price: price,
                 description: description,
+                isInstance: false,
                 securityExploit: [],
             }
             SecuritySwService.create(newSecuritySw)
@@ -85,6 +85,7 @@ export default class SecuritySwForm extends React.Component {
                 name: name,
                 price: price,
                 description: description,
+                isInstance: this.state.isInstance,
                 securityExploit: this.state.securityExploit,
             }
             SecuritySwService.update(editedSecuritySw, this.state.id)
@@ -99,7 +100,7 @@ export default class SecuritySwForm extends React.Component {
     }
 
     getTitle() {
-        if (this.state.id == -1) {
+        if (this.state.id === -1) {
             return <h3 className="text-center">Создание нового средства защиты информации</h3>
         } else {
             return <h3 className="text-center">Редактирование существующего средства защиты информации</h3>
