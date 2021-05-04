@@ -14,7 +14,7 @@ export class AddElementComponent extends React.Component {
         super(props);
         this.state = {
             allObjects: [],
-            selectedObjects: [],
+            selectedObject: '',
             schemeId: '',
         }
         this.changeInputHandler = this.changeInputHandler.bind(this)
@@ -35,34 +35,27 @@ export class AddElementComponent extends React.Component {
         }
     }
 
-    changeInputHandler(event) {
+    async changeInputHandler(event) {
         event.persist();
-        this.setState({
-            selectedObjects: event.target.value
+        console.log(event.target.value)
+        await this.setState({
+            selectedObject: event.target.value
         });
+        console.log("Selected object: ", this.state.selectedObject)
     }
 
     submitHandler = (event) => {
-        if (this.state.selectedObjects.length === 0) {
+        if (this.state.selectedObject.length === 0) {
             alert("Выберите хотя бы один объект или нажмите кнопку Назад для возврата")
-            // this.props.handleChange('initial');
         } else {
-            //todo: вызов метода сервера добавления на схему
-            let arr = this.state.selectedObjects;
-            let i = 0;
-            while (i < arr.length) {
-                console.log("Push to instance creation: ", arr[i]);
-                ObjectService.newInstance(arr[i])
-                    .then(inst => {
-                        console.log("Instance created: ", inst)
-                        SchemeService.addObject(inst.data, this.state.schemeId)
-                            .then(sch => {
-                                console.log("Result scheme: ", sch);
-                            });
-                    });
-                i++;
-            }
-            this.setState({selectedObjects: []});
+            ObjectService.newInstance(this.state.selectedObject)
+                .then(inst => {
+                    SchemeService.addObject(inst.data, this.state.schemeId)
+                        .then(sch => {
+                            console.log("Result scheme: ", sch.data.objectList);
+                        });
+                });
+            this.setState({selectedObject: ''});
         }
     }
 
@@ -71,23 +64,19 @@ export class AddElementComponent extends React.Component {
         return (
             <Box
             >
-                <h3 style={{borderBottomStyle: "solid"}} className={"text-center"}>Выберите
-                    действие</h3> {/*todo: Сменить заголовок*/}
+                <h5 style={{borderBottomStyle: "solid"}} className={"text-center"}>Выберите
+                    объект для добавления на текущую схему</h5> {/*todo: Сменить заголовок*/}
                 <FormControl>
-                    <InputLabel id="demo-mutiple-checkbox-label">Tag</InputLabel>
+                    <InputLabel id="demo-mutiple-checkbox-label">Объект</InputLabel>
                     <Select
                         labelId="demo-mutiple-checkbox-label"
                         id="demo-mutiple-checkbox"
-                        multiple
-                        value={this.state.selectedObjects}
+                        value={this.state.selectedObject}
                         onChange={this.changeInputHandler}
-                        input={<Input/>}
-                        renderValue={(selected) => selected.join(', ')}
                     >
                         {this.state.allObjects.map(object => (
                             <MenuItem key={object.obj_id} value={object.obj_id}>
-                                <Checkbox checked={this.state.selectedObjects.indexOf(object.obj_id) > -1}/>
-                                <ListItemText primary={object.name}/>
+                                {object.name}
                             </MenuItem>
                         ))}
                     </Select>
