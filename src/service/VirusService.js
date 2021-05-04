@@ -23,8 +23,12 @@ class VirusService {
         return await axios.delete(VIRUS_REST_API_URL + id + '/delete/');
     }
 
-    async addExploit(exploit_id, id) {
-        return await axios.put(VIRUS_REST_API_URL + id + '/add_exploit/' + exploit_id);
+    async addExploit(exploit, id) {
+        return await axios.put(VIRUS_REST_API_URL + id + '/add_exploit/', exploit);
+    }
+
+    async removeExploit(exploit_id, id) {
+        return await axios.put(VIRUS_REST_API_URL + id + '/remove_exploit/' + exploit_id);
     }
 
     async newInstance(id) {

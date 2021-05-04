@@ -27,16 +27,16 @@ class SchemeService {
         return axios.put(SCHEME_REST_API_URL + id + '/add_object/', object);
     }
 
-    async addVirus(virus_id, id) {
-        return await axios.put(SCHEME_REST_API_URL + id + '/add_virus/' + virus_id);
+    async addVirus(virus, id) {
+        return await axios.put(SCHEME_REST_API_URL + id + '/add_virus/', virus);
     }
 
-    async addSecuritySW(securitySW_id, id) {
-        return await axios.put(SCHEME_REST_API_URL + id + '/add_securitysw/' + securitySW_id);
+    async addSecuritySW(securitySW, id) {
+        return await axios.put(SCHEME_REST_API_URL + id + '/add_securitysw/', securitySW);
     }
 
-    async addCriteriaObject(criteriaObject_id, id) {
-        return await axios.put(SCHEME_REST_API_URL + id + '/add_criteria_object/' + criteriaObject_id);
+    async addCriteriaObject(criteriaObject, id) {
+        return await axios.put(SCHEME_REST_API_URL + id + '/add_criteria_object/', criteriaObject);
     }
 
     async removeObject(object_id, id) {

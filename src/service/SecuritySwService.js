@@ -23,8 +23,12 @@ class SecuritySwService {
         return await axios.delete(SECURITYSW_REST_API_URL + id + '/delete/');
     }
 
-    async addExploit(exploit_id, id) {
-        return await axios.put(SECURITYSW_REST_API_URL + id + '/add_exploit/' + exploit_id);
+    async addExploit(exploit, id) {
+        return await axios.put(SECURITYSW_REST_API_URL + id + '/add_exploit/', exploit);
+    }
+
+    async removeExploit(exploit_id, id) {
+        return await axios.put(SECURITYSW_REST_API_URL + id + '/remove_exploit/' + exploit_id);
     }
 
     async newInstance(id) {
