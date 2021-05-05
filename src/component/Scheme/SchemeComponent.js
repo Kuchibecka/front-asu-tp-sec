@@ -9,6 +9,7 @@ const initialState = {
     currentId: '',
     elements: [],
     tree: [],
+    deleteMode: false,
 };
 
 class SchemeComponent extends React.Component {
@@ -30,12 +31,18 @@ class SchemeComponent extends React.Component {
         this.state.currentId = value;
     }
 
+    deleteMode = () => {
+        this.setState({deleteMode: !this.state.deleteMode})
+        console.log("Delete mode toggled to: ", this.state.deleteMode)
+    }
+
     render() {
         return (
             <div className="container-fluid">
-                <SchemeSelectorComponent updateId={this.updateId} updateElements={this.updateElements} updateTree={this.updateTree}/>
+                <SchemeSelectorComponent updateId={this.updateId} updateElements={this.updateElements}
+                                         updateTree={this.updateTree}/>
                 <div className="container-fluid" style={{borderStyle: "solid", borderWidth: "thin"}}>
-                    <ElementsComponent data={this.state.elements}/>
+                    <ElementsComponent data={this.state.elements} deleteMode={this.state.deleteMode}/>
                 </div>
                 <div className="container-fluid" style={{borderStyle: "solid", borderWidth: "thin"}}>
                     <TreeComponent data={this.state.tree}/>
@@ -45,6 +52,7 @@ class SchemeComponent extends React.Component {
                         schemeId={this.state.currentId}
                         updateElements={this.updateElements}
                         updateTree={this.updateTree}
+                        deleteMode={this.deleteMode}
                     />
                 </div>
             </div>

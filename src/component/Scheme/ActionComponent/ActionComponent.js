@@ -5,6 +5,7 @@ import AddElementComponent from "./AddElementComponent";
 import AddObjectComponent from "./AddAction/AddObjectComponent"
 import AddSecuritySwComponent from "./AddAction/AddSecuritySwComponent"
 import AddVirusComponent from "./AddAction/AddVirusComponent"
+import DeleteComponent from "./DeleteComponent";
 
 
 export class UserForm extends React.Component {
@@ -16,6 +17,7 @@ export class UserForm extends React.Component {
             schemeId: '',
             elements: '',
             tree: '',
+            deleteMode: false,
             target: '',
             firstType: '',
             secondType: '',
@@ -107,15 +109,16 @@ export class UserForm extends React.Component {
                         handleChange={this.handleChange}
                     />
                 )
-
-
             case 'editElement':
                 return (
                     <br/>
                 )
             case 'deleteElement':
                 return (
-                    <br/>
+                    <DeleteComponent
+                        handleChange={this.handleChange}
+                        deleteMode={this.props.deleteMode}
+                    />
                 )
             case 'connections':
                 return (

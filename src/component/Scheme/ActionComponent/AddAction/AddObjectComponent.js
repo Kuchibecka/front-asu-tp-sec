@@ -24,7 +24,7 @@ export class AddElementComponent extends React.Component {
         ObjectService.getAll()
             .then((res) => {
                 this.setState({allObjects: res.data.filter(obj => obj.isInstance === false)}); //todo: Изменить на загрузку только отсутствующих на схеме объектов?
-            });                                             //todo: Можно все получать и .filter убрать те, что уже есть (нужна передача id схемы)
+            });
     }
 
     componentDidUpdate(prevProps) {
