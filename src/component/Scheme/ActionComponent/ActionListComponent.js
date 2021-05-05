@@ -1,38 +1,36 @@
 import React, {Component} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
+import {Box} from "@material-ui/core";
 
 export class ActionListComponent extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
         const {values, handleChange} = this.props;
         return (
-                    <Dialog
-                        open
-                        fullWidth
-                        maxWidth='sm'
+                    <Box
                     >
                         <h3 style={{borderBottomStyle: "solid"}} className={"text-center"}>Выберите действие</h3>
                         <Button
-                            id={'elements'}
-                            onClick={handleChange('step')}
+                            onClick={handleChange('elements')}
                         >
                             Редактировать элементы
                         </Button>
                         <Button
-                            id={"connections"}
-                            onClick={handleChange('step')}
+                            onClick={handleChange('connections')}
                         >
                             Редактировать связи
                         </Button>
                         <Button
-                            id={"params"}
-                            onClick={handleChange('step')}
+                            onClick={handleChange('params')}
                         >
                             Изменить данные схемы
                         </Button>
                         <br/>
-                    </Dialog>
+                    </Box>
         );
     }
 }

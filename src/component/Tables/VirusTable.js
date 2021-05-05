@@ -40,7 +40,7 @@ export default class VirusTable extends React.Component {
     componentDidMount() {
         VirusService.getAll()
             .then((res) => {
-                this.setState({viruses: res.data, openModal: false})
+                this.setState({viruses: res.data.filter(virus => virus.isInstance === false), openModal: false})
             });
         this.state.openModal = false
     }

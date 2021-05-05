@@ -1,6 +1,4 @@
 import axios from "axios";
-import VirusService from "./VirusService";
-import SecuritySWService from "./SecuritySwService";
 
 const OBJECT_REST_API_URL = 'http://localhost:8081/api/object/'
 
@@ -25,44 +23,40 @@ class ObjectService {
         return await axios.delete(OBJECT_REST_API_URL + id + '/delete/')
     }
 
-    async addVirus(virus_id, id) {
-        const virus = await VirusService.getById(virus_id);
+    async addVirus(virus, id) {
         return await axios.put(OBJECT_REST_API_URL + id + '/add_virus/', virus);
     }
 
-    async addSecuritySW(securitySW_id, id) {
-        const securitySW = await SecuritySWService.getById(securitySW_id);
+    async addSecuritySW(securitySW, id) {
         return await axios.put(OBJECT_REST_API_URL + id + '/add_securitysw/', securitySW);
     }
 
-    async addObject(object_id, id) {
-        const object = await this.getById(object_id);
+    async addObject(object, id) {
         return await axios.put(OBJECT_REST_API_URL + id + '/add_object/', object);
     }
 
-    async addCriteriaObject(criteriaObject_id, id) {
-        const criteriaObject = await this.getById(criteriaObject_id);
+    async addCriteriaObject(criteriaObject, id) {
         return await axios.put(OBJECT_REST_API_URL + id + '/add_criteria_object/', criteriaObject);
     }
 
     async removeVirus(virus_id, id) {
-        const virus = await VirusService.getById(virus_id);
-        return await axios.put(OBJECT_REST_API_URL + id + '/remove_virus/', virus);
+        return await axios.put(OBJECT_REST_API_URL + id + '/remove_virus/' + virus_id);
     }
 
     async removeSecuritySW(securitySW_id, id) {
-        const securitySW = await SecuritySWService.getById(securitySW_id);
-        return await axios.put(OBJECT_REST_API_URL + id + '/remove_securitysw/', securitySW);
+        return await axios.put(OBJECT_REST_API_URL + id + '/remove_securitysw/' + securitySW_id);
     }
 
     async removeObject(object_id, id) {
-        const object = await this.getById(object_id);
-        return await axios.put(OBJECT_REST_API_URL + id + '/remove_object/', object);
+        return await axios.put(OBJECT_REST_API_URL + id + '/remove_object/' + object_id);
     }
 
     async removeCriteriaObject(criteriaObject_id, id) {
-        const criteriaObject = await this.getById(criteriaObject_id);
-        return await axios.put(OBJECT_REST_API_URL + id + '/remove_criteria_object/', criteriaObject);
+        return await axios.put(OBJECT_REST_API_URL + id + '/remove_criteria_object/' + criteriaObject_id);
+    }
+
+    async newInstance(id) {
+        return await axios.post(OBJECT_REST_API_URL + 'new_instance/' + id);
     }
 }
 

@@ -1,5 +1,4 @@
 import axios from "axios";
-import ExploitService from "./ExploitService";
 
 const VIRUS_REST_API_URL = 'http://localhost:8081/api/virus/'
 
@@ -24,9 +23,16 @@ class VirusService {
         return await axios.delete(VIRUS_REST_API_URL + id + '/delete/');
     }
 
-    async addExploit(exploit_id, id) {
-        const exploit = await ExploitService.getById(exploit_id);
+    async addExploit(exploit, id) {
         return await axios.put(VIRUS_REST_API_URL + id + '/add_exploit/', exploit);
+    }
+
+    async removeExploit(exploit_id, id) {
+        return await axios.put(VIRUS_REST_API_URL + id + '/remove_exploit/' + exploit_id);
+    }
+
+    async newInstance(id) {
+        return await axios.post(VIRUS_REST_API_URL + 'new_instance/' + id);
     }
 }
 

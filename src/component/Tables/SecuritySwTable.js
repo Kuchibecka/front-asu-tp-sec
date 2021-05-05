@@ -40,7 +40,7 @@ export default class SecuritySwTable extends React.Component {
     componentDidMount() {
         SecuritySwService.getAll()
             .then((res) => {
-                this.setState({securitySws: res.data, openModal: false})
+                this.setState({securitySws: res.data.filter(secSw => secSw.isInstance === false), openModal: false})
             });
         this.state.openModal = false
     }

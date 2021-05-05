@@ -1,48 +1,39 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
-import ObjectService from "../../../service/ObjectService";
+import {Box} from "@material-ui/core";
 
 export class AddElementComponent extends React.Component {
-    state = {
-        button: false,
-        objects: [],
-    }
-
-    componentDidMount() {
-        console.log(this.props.prevStep)
-        this.setState({objects: ObjectService.getAll()})
-    }
-
-    back = e => {
-        e.preventDefault();
-        this.props.prevStep(this.state.prev);
-    };
 
     render() {
         const {handleChange} = this.props;
         return (
-                    <Dialog
-                        open
-                        fullWidth
-                        maxWidth='sm'
+                    <Box
                     >
                         <h3 style={{borderBottomStyle: "solid"}} className={"text-center"}>Выберите действие</h3>
                         <Button
-                            id={'elements'}
-                            onClick={handleChange('step')}
+                            onClick={handleChange('addObject')}
                         >
-                            Добавить элементы на схему
+                            Добавить объекты на схему
+                        </Button>
+                        <Button
+                            onClick={handleChange('addVirus')}
+                        >
+                            Добавить вирусы на схему
+                        </Button>
+                        <Button
+                            onClick={handleChange('addSecuritySw')}
+                        >
+                            Добавить СЗИ на схему
                         </Button>
                         <br/>
 
                         <Button
                             color="secondary"
                             variant="contained"
-                            id={'elements'}
-                            onClick={handleChange('step')}
+                            onClick={handleChange('elements')}
                         >Назад</Button>
-                    </Dialog>
+                    </Box>
         );
     }
 }
