@@ -14,6 +14,8 @@ export class UserForm extends React.Component {
         this.state = {
             step: 'initial',
             schemeId: '',
+            elements: '',
+            tree: '',
             target: '',
             firstType: '',
             secondType: '',
@@ -40,6 +42,15 @@ export class UserForm extends React.Component {
                 this.setState({step: 'initial'});
             }
         }
+    }
+
+    updateElements = (value) => {
+        console.log("In ActionComponent: ", value);
+        this.props.updateElements(value);
+    }
+
+    updateTree = (value) => {
+        this.props.updateTree(value);
     }
 
     handleChange = input => e => {
@@ -80,6 +91,8 @@ export class UserForm extends React.Component {
                     <AddObjectComponent
                         schemeId={this.state.schemeId}
                         handleChange={this.handleChange}
+                        updateElements={this.updateElements}
+                        /*updateTree={this.updateTree}*/
                     />
                 )
             case 'addVirus':

@@ -22,6 +22,7 @@ class SchemeComponent extends React.Component {
     }
 
     updateElements = (value) => {
+        console.log("In SchemeComponent: ", value);
         this.setState({elements: value});
     }
 
@@ -42,6 +43,8 @@ class SchemeComponent extends React.Component {
                 <div>
                     <ActionComponent
                         schemeId={this.state.currentId}
+                        updateElements={this.updateElements}
+                        updateTree={this.updateTree}
                     />
                 </div>
             </div>

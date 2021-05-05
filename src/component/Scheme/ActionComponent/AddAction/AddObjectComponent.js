@@ -1,13 +1,11 @@
 import React from 'react';
-import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import ObjectService from "../../../../service/ObjectService";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from '@material-ui/core/MenuItem';
-import Checkbox from '@material-ui/core/Checkbox';
-import ListItemText from '@material-ui/core/ListItemText';
-import {Box, Input, InputLabel, Select} from "@material-ui/core";
+import {Box, InputLabel, Select} from "@material-ui/core";
 import SchemeService from "../../../../service/SchemeService";
+import GraphService from "../../../../service/GraphService";
 
 export class AddElementComponent extends React.Component {
     constructor(props) {
@@ -53,6 +51,10 @@ export class AddElementComponent extends React.Component {
                     SchemeService.addObject(inst.data, this.state.schemeId)
                         .then(sch => {
                             console.log("Result scheme: ", sch.data.objectList);
+                            GraphService.getObjects(this.state.schemeId)
+                                .then(scheme => {
+                                    this.props.updateElements(scheme);
+                                });
                         });
                 });
             this.setState({selectedObject: ''});

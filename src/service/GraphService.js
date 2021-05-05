@@ -11,30 +11,35 @@ class GraphService {
         const INFECTIONS_REST_API_URL = SCHEME_REST_API_URL + id.toString() + '/infections'
         const SECURITYSWS_REST_API_URL = SCHEME_REST_API_URL + id.toString() + '/securitysws'
         const PROTECTIONS_REST_API_URL = SCHEME_REST_API_URL + id.toString() + '/protections'
-
-        // todo: fetch -> axios.get ?
+        
         // todo: раздельная загрузка для ускорения
+        const a = await axios.get(NODES_REST_API_URL)
+        await console.log("Nodes: ", a.data)
+        const b = await axios.get(RELATIONS_REST_API_URL)
+        await console.log("Rels: ", b.data)
+        const ab = await a.data.concat(b.data)
+        await console.log("All: ", ab)
 
         const nodes = await
-            fetch(NODES_REST_API_URL)
+            axios.get(NODES_REST_API_URL)
         const rels = await
-            fetch(RELATIONS_REST_API_URL)
-        const nodesJson = await nodes.json()
-        const relsJson = await rels.json()
+            axios.get(RELATIONS_REST_API_URL)
+        const nodesJson = await nodes.data
+        const relsJson = await rels.data
 
         const viruses = await
-            fetch(VIRUSES_REST_API_URL)
+            axios.get(VIRUSES_REST_API_URL)
         const infections = await
-            fetch(INFECTIONS_REST_API_URL)
-        const virusesJson = await viruses.json()
-        const infectionsJson = await infections.json()
+            axios.get(INFECTIONS_REST_API_URL)
+        const virusesJson = await viruses.data
+        const infectionsJson = await infections.data
 
         const securitySWs = await
-            fetch(SECURITYSWS_REST_API_URL)
+            axios.get(SECURITYSWS_REST_API_URL)
         const protections = await
-            fetch(PROTECTIONS_REST_API_URL)
-        const securitySWsJson = await securitySWs.json()
-        const protectionsJson = await protections.json()
+            axios.get(PROTECTIONS_REST_API_URL)
+        const securitySWsJson = await securitySWs.data
+        const protectionsJson = await protections.data
 
         return await nodesJson.concat(relsJson).concat(virusesJson).concat(infectionsJson).concat(securitySWsJson).concat(protectionsJson)
     }
@@ -44,11 +49,11 @@ class GraphService {
         const TREE_RELATIONS_REST_API_URL = SCHEME_REST_API_URL + id.toString() + '/fault_tree_relations'
 
         const treeNodes = await
-            fetch(TREE_NODES_REST_API_URL)
+            axios.get(TREE_NODES_REST_API_URL)
         const treeRels = await
-            fetch(TREE_RELATIONS_REST_API_URL)
-        const treeNodesJson = await treeNodes.json()
-        const treeRelsJson = await treeRels.json()
+            axios.get(TREE_RELATIONS_REST_API_URL)
+        const treeNodesJson = await treeNodes.data
+        const treeRelsJson = await treeRels.data
 
         return await treeNodesJson.concat(treeRelsJson)
     }

@@ -1,5 +1,5 @@
 import React from "react";
-import ReactFlow, {ReactFlowProvider} from "react-flow-renderer";
+import ReactFlow, {ReactFlowProvider, addEdge, Handle} from "react-flow-renderer";
 
 const initialState = {
     elements: [],
@@ -26,19 +26,49 @@ class ElementsComponent extends React.Component {
         if (elements.length === 0) {
             return (
                 /*todo: Показ изображения, если схема не выбрана*/
-                <h3>Схема не сконфигурирована</h3>
+                <h3>Упс, схема не сконфигурирована!</h3>
             )
         } else {
             return (
                 <ReactFlowProvider>
                     <ReactFlow
                         elements={this.state.elements}
+                        onConnect={this.onConnect}
                         style={graphStyles}
+                        nodeTypes={{customNode: this.CustomNode}}
+                        onConnectStart={this.onConnectStart}
+                        onConnectStop={this.onConnectStop}
+                        onConnectEnd={this.onConnectEnd}
                     />
                 </ReactFlowProvider>
             )
         }
     }
+
+    onConnect = (params) => {
+        // this.state.elements = addEdge(params, )
+        const setElements = (els) => {addEdge(params, els)};
+        console.log(params)
+    }
+
+    //todo: сделать кастомный Node без точки входа для: Вирусов, СЗИ
+    CustomNode = ({id}) => (
+        <>
+            <Handle type="target" position="left" isValidConnection={this.isValidConnection} />
+            <div>{id}</div>
+            <Handle type="source" position="right" isValidConnection={this.isValidConnection} />
+        </>
+    );
+
+    isValidConnection = (connection) => {
+        console.log(connection.target)
+        return true /*connection.target === 'qwerty'*/;
+    }
+
+    onConnectStart = (event, { nodeId, handleType }) => console.log('on connect start', { nodeId, handleType });
+    onConnectStop = (event) => console.log('on connect stop', event);
+    onConnectEnd = (event) => console.log('on connect end', event);
+
 
     render() {
         return (
