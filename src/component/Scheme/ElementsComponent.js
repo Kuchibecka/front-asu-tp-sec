@@ -18,13 +18,15 @@ import SecuritySwService from "../../service/SecuritySwService";
 const initialState = {
     elements: [],
     deleteMode: false,
+    editMode: false,
     openModal: false,
 };
 
-class ElementsComponent extends React.Component {
+export default class ElementsComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = initialState;
+        this.click = this.click.bind(this);
     }
 
     async componentDidMount() {
@@ -38,14 +40,28 @@ class ElementsComponent extends React.Component {
         if (prevProps.deleteMode !== this.props.deleteMode) {
             this.setState({deleteMode: this.props.deleteMode})
         }
+        if (prevProps.editMode !== this.props.editMode) {
+            this.setState({editMode: this.props.editMode})
+        }
     }
 
-    delete = (event, element) => {
+    click = (event, element) => {
         if (this.state.deleteMode) {
             this.setState({idToDelete: element.id, openModal: true})
 
             // todo: Когда не delete-mode добавить вывод информации об объекте в отдельном окошке
             // todo: Добавить edit-mode => по кнопке переход к редактированию нужной записи
+        }
+        if (this.state.editMode) {
+            if (element.id.startsWith("virus")) {
+                window.location.assign(`/virus/${element.id.slice(5)}`);
+            } else {
+                if (element.id.startsWith("securitySW")) {
+                    window.location.assign(`/securitysw/${element.id.slice(10)}`);
+                } else {
+                    window.location.assign(`/object/${element.id}`);
+                }
+            }
         }
     }
 
@@ -53,11 +69,18 @@ class ElementsComponent extends React.Component {
         this.setState({openModal: false, idToDelete: -1})
     }
 
-    deleteModeCheck() {
+    modCheck() {
         if (this.state.deleteMode) {
             return (
-                <h2 style={{color: "red"}}>
+                <h2 style={{color: "darkred"}}>
                     DELETE MODE ACTIVATED
+                </h2>
+            )
+        }
+        if (this.state.editMode) {
+            return (
+                <h2 style={{color: "darkorange"}}>
+                    EDIT MODE ACTIVATED
                 </h2>
             )
         }
@@ -70,7 +93,7 @@ class ElementsComponent extends React.Component {
                     this.setState({elements: this.state.elements.filter(el => el.id !== id), openModal: false})
                 });
         } else {
-            if (id.substr(0, 10) === "securitySW") {
+            if (id.startsWith("securitySW")) {
                 SecuritySwService.delete(id.slice(10))
                     .then(() => {
                         this.setState({elements: this.state.elements.filter(el => el.id !== id), openModal: false})
@@ -95,13 +118,13 @@ class ElementsComponent extends React.Component {
             return (
                 <Container>
                     <div>
-                        {this.deleteModeCheck()}
+                        {this.modCheck()}
                     </div>
                     <ReactFlowProvider>
                         <ReactFlow
                             elements={this.state.elements}
                             onConnect={this.onConnect}
-                            onElementClick={this.delete}
+                            onElementClick={this.click}
                             style={graphStyles}
                             nodeTypes={{customNode: this.CustomNode}}
                             onConnectStart={this.onConnectStart}
@@ -179,5 +202,3 @@ class ElementsComponent extends React.Component {
         )
     }
 }
-
-export default ElementsComponent;
