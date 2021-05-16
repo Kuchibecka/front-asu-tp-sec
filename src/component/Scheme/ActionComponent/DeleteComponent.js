@@ -26,7 +26,7 @@ export default class DeleteComponent extends React.Component {
                 <Button
                     color="secondary"
                     variant="contained"
-                    onClick={handleChange('initial')}
+                    onClick={handleChange('elements')}
                 >
                     Назад
                 </Button>

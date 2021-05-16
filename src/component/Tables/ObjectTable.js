@@ -61,7 +61,7 @@ export default class ObjectTable extends React.Component {
     }
 
     getType(type) {
-        if (type == 1) {
+        if (type === 1) {
             return <TableCell>ПК</TableCell>
         }
         return <TableCell>Контроллер</TableCell>

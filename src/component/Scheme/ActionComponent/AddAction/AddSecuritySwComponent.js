@@ -38,8 +38,6 @@ export default class AddSecuritySwComponent extends React.Component {
         await this.setState({
             selectedSecuritySw: event.target.value
         });
-        console.log("Selected SecuritySw: ", this.state.selectedSecuritySw)
-        console.log("On Scheme: ", this.state.schemeId)
     }
 
     submitHandler = (event) => {

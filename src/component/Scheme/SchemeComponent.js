@@ -23,7 +23,6 @@ class SchemeComponent extends React.Component {
     }
 
     updateElements = (value) => {
-        console.log("In SchemeComponent: ", value);
         this.setState({elements: value});
     }
 
@@ -33,7 +32,6 @@ class SchemeComponent extends React.Component {
 
     deleteMode = () => {
         this.setState({deleteMode: !this.state.deleteMode})
-        console.log("Delete mode toggled to: ", this.state.deleteMode)
     }
 
     render() {

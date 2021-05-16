@@ -1,9 +1,24 @@
 import React from "react";
 import ReactFlow, {ReactFlowProvider, addEdge, Handle} from "react-flow-renderer";
+import {
+    Button,
+    Container,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
+} from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import CancelIcon from "@material-ui/icons/Cancel";
+import ObjectService from "../../service/ObjectService";
+import VirusService from "../../service/VirusService";
+import SecuritySwService from "../../service/SecuritySwService";
 
 const initialState = {
     elements: [],
     deleteMode: false,
+    openModal: false,
 };
 
 class ElementsComponent extends React.Component {
@@ -27,15 +42,15 @@ class ElementsComponent extends React.Component {
 
     delete = (event, element) => {
         if (this.state.deleteMode) {
-            console.log("Delete mode ON. Deleting: ")
-            console.log(element)
-            alert("Удалить эелемент? " + element.id)
-            // todo: парсинг id => тип удаляемого элемента => нужный call в Service
-            // todo: Окно подтверждения удаления?
+            this.setState({idToDelete: element.id, openModal: true})
 
             // todo: Когда не delete-mode добавить вывод информации об объекте в отдельном окошке
             // todo: Добавить edit-mode => по кнопке переход к редактированию нужной записи
         }
+    }
+
+    handleClose = () => {
+        this.setState({openModal: false, idToDelete: -1})
     }
 
     deleteModeCheck() {
@@ -48,6 +63,27 @@ class ElementsComponent extends React.Component {
         }
     }
 
+    deleteElement(id) {
+        if (id.startsWith("virus")) {
+            VirusService.delete(id.slice(5))
+                .then(() => {
+                    this.setState({elements: this.state.elements.filter(el => el.id !== id), openModal: false})
+                });
+        } else {
+            if (id.substr(0, 10) === "securitySW") {
+                SecuritySwService.delete(id.slice(10))
+                    .then(() => {
+                        this.setState({elements: this.state.elements.filter(el => el.id !== id), openModal: false})
+                    });
+            } else {
+                ObjectService.delete(id)
+                    .then(() => {
+                        this.setState({elements: this.state.elements.filter(el => el.id !== id), openModal: false})
+                    });
+            }
+        }
+    }
+
     elementsShow(elements) {
         const graphStyles = {width: "100%", height: "500px"};
         if (elements.length === 0) {
@@ -57,10 +93,10 @@ class ElementsComponent extends React.Component {
             )
         } else {
             return (
-                <div className={"container-fluid"}>
-                    <h1>
+                <Container>
+                    <div>
                         {this.deleteModeCheck()}
-                    </h1>
+                    </div>
                     <ReactFlowProvider>
                         <ReactFlow
                             elements={this.state.elements}
@@ -73,7 +109,38 @@ class ElementsComponent extends React.Component {
                             onConnectEnd={this.onConnectEnd}
                         />
                     </ReactFlowProvider>
-                </div>
+                    <Dialog
+                        open={this.state.openModal}
+                        onClose={() => this.handleClose}
+                    >
+                        <DialogTitle id="delete-alert">
+                            <h4 className="text-center">
+                                "Вы действительно хотите удалить этот объект?"
+                            </h4>
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="delete-alert">
+                                <h5 className={"text-center"}>
+                                    Нажимая "Да", Вы подтверждаете удаление из базы данных объекта и всех связей с ним
+                                </h5>
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button
+                                onClick={() => this.deleteElement(this.state.idToDelete)}
+                                startIcon={<DeleteIcon style={{color: "#ff5555"}}/>}
+                            >
+                                Да
+                            </Button>
+                            <Button
+                                onClick={() => this.handleClose()}
+                                startIcon={<CancelIcon/>}
+                            >
+                                Отмена
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </Container>
             )
         }
     }
@@ -95,7 +162,7 @@ class ElementsComponent extends React.Component {
     );
 
     isValidConnection = (connection) => {
-        console.log(connection.target)
+        console.log("Validator: ", connection.target)
         return true /*connection.target === 'qwerty'; connection.source === 'qwerty'*/;
     }
 
