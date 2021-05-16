@@ -108,7 +108,9 @@ export class UserForm extends React.Component {
             case 'addSecuritySw':
                 return (
                     <AddSecuritySwComponent
+                        schemeId={this.state.schemeId}
                         handleChange={this.handleChange}
+                        updateElements={this.updateElements}
                     />
                 )
             case 'editElement':
