@@ -9,7 +9,7 @@ import DeleteComponent from "./DeleteComponent";
 
 
 export class UserForm extends React.Component {
-//todo: убрать за ненадобностью из-за использования всего в дочерних компонентах
+//todo: подчистить ненужное
     constructor(props) {
         super(props);
         this.state = {
@@ -100,7 +100,9 @@ export class UserForm extends React.Component {
             case 'addVirus':
                 return (
                     <AddVirusComponent
+                        schemeId={this.state.schemeId}
                         handleChange={this.handleChange}
+                        updateElements={this.updateElements}
                     />
                 )
             case 'addSecuritySw':

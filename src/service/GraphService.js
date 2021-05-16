@@ -14,11 +14,8 @@ class GraphService {
         
         // todo: раздельная загрузка для ускорения
         const a = await axios.get(NODES_REST_API_URL)
-        await console.log("Nodes: ", a.data)
         const b = await axios.get(RELATIONS_REST_API_URL)
-        await console.log("Rels: ", b.data)
         const ab = await a.data.concat(b.data)
-        await console.log("All: ", ab)
 
         const nodes = await
             axios.get(NODES_REST_API_URL)
