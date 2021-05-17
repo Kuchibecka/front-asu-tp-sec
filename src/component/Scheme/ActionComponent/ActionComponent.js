@@ -6,10 +6,11 @@ import AddObjectComponent from "./AddAction/AddObjectComponent"
 import AddSecuritySwComponent from "./AddAction/AddSecuritySwComponent"
 import AddVirusComponent from "./AddAction/AddVirusComponent"
 import DeleteComponent from "./DeleteComponent";
+import EditComponent from "./EditComponent";
 
 
-export class UserForm extends React.Component {
-//todo: убрать за ненадобностью из-за использования всего в дочерних компонентах
+export default class ActionComponent extends React.Component {
+//todo: подчистить ненужное
     constructor(props) {
         super(props);
         this.state = {
@@ -18,6 +19,7 @@ export class UserForm extends React.Component {
             elements: '',
             tree: '',
             deleteMode: false,
+            editMode: false,
             target: '',
             firstType: '',
             secondType: '',
@@ -47,7 +49,6 @@ export class UserForm extends React.Component {
     }
 
     updateElements = (value) => {
-        console.log("In ActionComponent: ", value);
         this.props.updateElements(value);
     }
 
@@ -100,18 +101,25 @@ export class UserForm extends React.Component {
             case 'addVirus':
                 return (
                     <AddVirusComponent
+                        schemeId={this.state.schemeId}
                         handleChange={this.handleChange}
+                        updateElements={this.updateElements}
                     />
                 )
             case 'addSecuritySw':
                 return (
                     <AddSecuritySwComponent
+                        schemeId={this.state.schemeId}
                         handleChange={this.handleChange}
+                        updateElements={this.updateElements}
                     />
                 )
             case 'editElement':
                 return (
-                    <br/>
+                    <EditComponent
+                        handleChange={this.handleChange}
+                        editMode={this.props.editMode}
+                    />
                 )
             case 'deleteElement':
                 return (
@@ -133,5 +141,3 @@ export class UserForm extends React.Component {
         }
     }
 }
-
-export default UserForm;

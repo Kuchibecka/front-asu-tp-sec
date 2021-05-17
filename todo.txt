@@ -1,1 +1,2 @@
-todo: 1) Atomic Layout
+todo:   1) Добавить кнопку "создать новую схему"
+        2) Atomic Layout

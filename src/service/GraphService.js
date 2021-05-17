@@ -13,12 +13,9 @@ class GraphService {
         const PROTECTIONS_REST_API_URL = SCHEME_REST_API_URL + id.toString() + '/protections'
         
         // todo: раздельная загрузка для ускорения
-        const a = await axios.get(NODES_REST_API_URL)
-        await console.log("Nodes: ", a.data)
+        /*const a = await axios.get(NODES_REST_API_URL)
         const b = await axios.get(RELATIONS_REST_API_URL)
-        await console.log("Rels: ", b.data)
-        const ab = await a.data.concat(b.data)
-        await console.log("All: ", ab)
+        const ab = await a.data.concat(b.data)*/
 
         const nodes = await
             axios.get(NODES_REST_API_URL)

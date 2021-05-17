@@ -7,6 +7,7 @@ import FormControl from '@material-ui/core/FormControl';
 import {Card, CardContent, CardHeader, Container, TextField} from "@material-ui/core";
 
 export default class SecuritySwForm extends React.Component {
+    //todo: Реализовать добавление и удаление эксплоитов
     constructor(props) {
         super(props);
         this.state = {

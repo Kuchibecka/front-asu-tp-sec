@@ -7,7 +7,7 @@ import {Box, InputLabel, Select} from "@material-ui/core";
 import SchemeService from "../../../../service/SchemeService";
 import GraphService from "../../../../service/GraphService";
 
-export class AddElementComponent extends React.Component {
+export class AddObjectComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -50,7 +50,7 @@ export class AddElementComponent extends React.Component {
                 .then(inst => {
                     SchemeService.addObject(inst.data, this.state.schemeId)
                         .then(sch => {
-                            console.log("Result scheme: ", sch.data.objectList);
+                            // console.log("Result scheme: ", sch.data.objectList);
                             GraphService.getObjects(this.state.schemeId)
                                 .then(scheme => {
                                     this.props.updateElements(scheme);
@@ -68,13 +68,14 @@ export class AddElementComponent extends React.Component {
             >
                 <h5 style={{borderBottomStyle: "solid"}} className={"text-center"}>Выберите
                     объект для добавления на текущую схему</h5> {/*todo: Сменить заголовок*/}
-                <FormControl>
+                <FormControl fullWidth style={{marginBottom: 15}}>
                     <InputLabel id="demo-mutiple-checkbox-label">Объект</InputLabel>
                     <Select
                         labelId="demo-mutiple-checkbox-label"
                         id="demo-mutiple-checkbox"
                         value={this.state.selectedObject}
                         onChange={this.changeInputHandler}
+                        autoWidth
                     >
                         {this.state.allObjects.map(object => (
                             <MenuItem key={object.obj_id} value={object.obj_id}>
@@ -83,16 +84,18 @@ export class AddElementComponent extends React.Component {
                         ))}
                     </Select>
                 </FormControl>
+
+                <br/>
+
                 <Button
                     color="primary"
                     variant="contained"
                     id={'elements'}
+                    style={{marginRight: 10}}
                     onClick={this.submitHandler} /*todo: Тут сабмит к серверу + переход в 'initial' состояние*/
                 >
                     Добавить
                 </Button>
-
-                <br/>
 
                 <Button
                     color="secondary"
@@ -106,4 +109,4 @@ export class AddElementComponent extends React.Component {
     }
 }
 
-export default AddElementComponent;
+export default AddObjectComponent;

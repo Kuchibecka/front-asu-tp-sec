@@ -10,6 +10,7 @@ const initialState = {
     elements: [],
     tree: [],
     deleteMode: false,
+    editMode: false,
 };
 
 class SchemeComponent extends React.Component {
@@ -23,7 +24,6 @@ class SchemeComponent extends React.Component {
     }
 
     updateElements = (value) => {
-        console.log("In SchemeComponent: ", value);
         this.setState({elements: value});
     }
 
@@ -33,7 +33,10 @@ class SchemeComponent extends React.Component {
 
     deleteMode = () => {
         this.setState({deleteMode: !this.state.deleteMode})
-        console.log("Delete mode toggled to: ", this.state.deleteMode)
+    }
+
+    editMode = () => {
+        this.setState({editMode: !this.state.editMode})
     }
 
     render() {
@@ -42,7 +45,7 @@ class SchemeComponent extends React.Component {
                 <SchemeSelectorComponent updateId={this.updateId} updateElements={this.updateElements}
                                          updateTree={this.updateTree}/>
                 <div className="container-fluid" style={{borderStyle: "solid", borderWidth: "thin"}}>
-                    <ElementsComponent data={this.state.elements} deleteMode={this.state.deleteMode}/>
+                    <ElementsComponent data={this.state.elements} schemeId={this.state.currentId} deleteMode={this.state.deleteMode} editMode={this.state.editMode}/>
                 </div>
                 <div className="container-fluid" style={{borderStyle: "solid", borderWidth: "thin"}}>
                     <TreeComponent data={this.state.tree}/>
@@ -53,6 +56,7 @@ class SchemeComponent extends React.Component {
                         updateElements={this.updateElements}
                         updateTree={this.updateTree}
                         deleteMode={this.deleteMode}
+                        editMode={this.editMode}
                     />
                 </div>
             </div>
