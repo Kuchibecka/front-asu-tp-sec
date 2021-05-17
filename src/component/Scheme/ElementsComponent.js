@@ -14,6 +14,8 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import ObjectService from "../../service/ObjectService";
 import VirusService from "../../service/VirusService";
 import SecuritySwService from "../../service/SecuritySwService";
+import GraphService from "../../service/GraphService";
+import {range} from "lodash-es";
 
 const initialState = {
     elements: [],
@@ -35,22 +37,22 @@ export default class ElementsComponent extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.data !== this.props.data) {
-            this.setState({elements: this.props.data})
+            this.setState({elements: this.props.data, deleteMode: false, editMode: false})
         }
         if (prevProps.deleteMode !== this.props.deleteMode) {
-            this.setState({deleteMode: this.props.deleteMode})
+            this.setState({deleteMode: this.props.deleteMode, editMode: false})
         }
         if (prevProps.editMode !== this.props.editMode) {
-            this.setState({editMode: this.props.editMode})
+            this.setState({editMode: this.props.editMode, deleteMode: false})
         }
+        console.log(this.state.elements)
     }
 
     click = (event, element) => {
         if (this.state.deleteMode) {
             this.setState({idToDelete: element.id, openModal: true})
 
-            // todo: Когда не delete-mode добавить вывод информации об объекте в отдельном окошке
-            // todo: Добавить edit-mode => по кнопке переход к редактированию нужной записи
+            // todo: Когда не delete-mode и не edit-mode добавить вывод информации об объекте в отдельном поле
         }
         if (this.state.editMode) {
             if (element.id.startsWith("virus")) {
@@ -72,16 +74,16 @@ export default class ElementsComponent extends React.Component {
     modCheck() {
         if (this.state.deleteMode) {
             return (
-                <h2 style={{color: "darkred"}}>
-                    DELETE MODE ACTIVATED
-                </h2>
+                <h5 style={{color: "darkred"}}>
+                    РЕЖИМ УДАЛЕНИЯ АКТИВИРОВАН
+                </h5>
             )
         }
         if (this.state.editMode) {
             return (
-                <h2 style={{color: "darkorange"}}>
-                    EDIT MODE ACTIVATED
-                </h2>
+                <h5 style={{color: "darkorange"}}>
+                    РЕЖИМ РЕДАКТИРОВАНИЯ АКТИВИРОВАН
+                </h5>
             )
         }
     }
@@ -168,12 +170,6 @@ export default class ElementsComponent extends React.Component {
         }
     }
 
-    onConnect = (params) => {
-        const setElements = (els) => {
-            addEdge(params, els)
-        };
-        console.log(params)
-    }
 
     //todo: сделать кастомный Node без точки входа для: Вирусов, СЗИ
     CustomNode = ({id}) => (
@@ -189,10 +185,173 @@ export default class ElementsComponent extends React.Component {
         return true /*connection.target === 'qwerty'; connection.source === 'qwerty'*/;
     }
 
-    onConnectStart = (event, {nodeId, handleType}) => console.log('on connect start', {nodeId, handleType});
-    onConnectStop = (event) => console.log('on connect stop', event);
-    onConnectEnd = (event) => console.log('on connect end', event);
-
+    onConnect = (params) => {
+        const setElements = (els) => {
+            addEdge(params, els)
+        };
+        let source = params.source;
+        let target = params.target;
+        let id = "e" + source + "-" + target;
+        let contains = false;
+        if (!this.state.deleteMode) {
+            if (source.startsWith("virus") && (/^\d+$/.test(target))) {
+                console.log("virus ", source.slice(5), " to ", target)
+                for (let i in range(0, this.state.elements.length)) {
+                    if (this.state.elements[i].id === id) {
+                        console.log("CONTAINS!");
+                        contains = true;
+                        break;
+                    }
+                }
+                if (!contains) {
+                    VirusService.getById(source.slice(5))
+                        .then(vi => {
+                            ObjectService.addVirus(vi.data, target)
+                                .then(() => {
+                                    console.log(vi, "to ", target)
+                                    GraphService.getObjects(this.props.schemeId)
+                                        .then(scheme => {
+                                            this.setState({elements: scheme});
+                                            console.log("Current elements: ", this.state.elements)
+                                        });
+                                });
+                        });
+                }
+            } else {
+                if (source.startsWith("securitySW") && (/^\d+$/.test(target))) {
+                    console.log("securitysw ", source.slice(10), " to ", target)
+                    for (let i in range(0, this.state.elements.length)) {
+                        if (this.state.elements[i].id === id) {
+                            console.log("CONTAINS!");
+                            contains = true;
+                            break;
+                        }
+                    }
+                    if (!contains) {
+                        SecuritySwService.getById(source.slice(10))
+                            .then(secSW => {
+                                ObjectService.addSecuritySW(secSW.data, target)
+                                    .then(() => {
+                                        console.log(secSW, "to ", target)
+                                        GraphService.getObjects(this.props.schemeId)
+                                            .then(scheme => {
+                                                this.setState({elements: scheme});
+                                            });
+                                    });
+                            });
+                    }
+                } else {
+                    if ((/^\d+$/.test(source)) && (/^\d+$/.test(target))) {
+                        console.log("Connecting object ", source, " to object ", target)
+                        let alterId = "e" + target + "-" + source;
+                        for (let i in range(0, this.state.elements.length)) {
+                            if ((this.state.elements[i].id === id) || (this.state.elements[i].id === alterId)) {
+                                console.log("CONTAINS!");
+                                contains = true;
+                                break;
+                            }
+                        }
+                        if (!contains) {
+                            ObjectService.getById(source)
+                                .then(obj => {
+                                    ObjectService.addObject(obj.data, target)
+                                        .then(() => {
+                                            GraphService.getObjects(this.props.schemeId)
+                                                .then(scheme => {
+                                                    this.setState({elements: scheme});
+                                                });
+                                        });
+                                });
+                        }
+                    }
+                }
+            }
+            console.log(params)
+        } else {
+            if (source.startsWith("virus") && (/^\d+$/.test(target))) {
+                console.log("virus ", source.slice(5), " to ", target)
+                for (let i in range(0, this.state.elements.length)) {
+                    if (this.state.elements[i].id === id) {
+                        console.log("CONTAINS!");
+                        contains = true;
+                        break;
+                    }
+                }
+                if (contains) {
+                    VirusService.getById(source.slice(5))
+                        .then(vi => {
+                            ObjectService.removeVirus(vi.data.virus_id, target)
+                                .then(() => {
+                                    GraphService.getObjects(this.props.schemeId)
+                                        .then(scheme => {
+                                            this.setState({elements: scheme});
+                                        });
+                                });
+                        });
+                }
+            } else {
+                if (source.startsWith("securitySW") && (/^\d+$/.test(target))) {
+                    for (let i in range(0, this.state.elements.length)) {
+                        if (this.state.elements[i].id === id) {
+                            contains = true;
+                            break;
+                        }
+                    }
+                    if (contains) {
+                        SecuritySwService.getById(source.slice(10))
+                            .then(secSW => {
+                                ObjectService.removeSecuritySW(secSW.data.secSW_id, target)
+                                    .then(() => {
+                                        GraphService.getObjects(this.props.schemeId)
+                                            .then(scheme => {
+                                                this.setState({elements: scheme});
+                                            });
+                                    });
+                            });
+                    }
+                } else {
+                    if ((/^\d+$/.test(source)) && (/^\d+$/.test(target))) {
+                        let alterId = "e" + target + "-" + source;
+                        for (let i in range(0, this.state.elements.length)) {
+                            if (this.state.elements[i].id === id) {
+                                contains = true;
+                                [source, target] = [target, source];
+                                break;
+                            }
+                            if (this.state.elements[i].id === alterId) {
+                                contains = true;
+                                break;
+                            }
+                        }
+                        if (contains) {
+                            ObjectService.getById(source)
+                                .then(obj => {
+                                    console.log(obj)
+                                    ObjectService.removeObject(obj.data.obj_id, target)
+                                        .then(() => {
+                                            GraphService.getObjects(this.props.schemeId)
+                                                .then(scheme => {
+                                                    //todo: можно заменить на фильтрацию удалённого для ускорения
+                                                    this.setState({elements: scheme});
+                                                });
+                                        });
+                                });
+                        }
+                    }
+                }
+            }
+            console.log(params)
+        }
+    }
+    onConnectStart = (event, {nodeId, handleType}) => {
+        // console.log('on connect start', {nodeId, handleType})
+    };
+    onConnectStop = (event) => {
+        // console.log('on connect stop', event)
+    };
+    onConnectEnd = (event) => {
+        // console.log('on connect end', event)
+    };
 
     render() {
         return (

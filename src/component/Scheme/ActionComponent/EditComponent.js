@@ -16,18 +16,22 @@ export default class EditComponent extends React.Component {
                     Нажмите ещё раз для выхода из режима.
                     В режиме редактирования нажмите на элемент схемы для редактирования.
                 </h5>
+
+                <br/>
+
                 <Button
                     color="primary"
                     variant="contained"
                     id={'elements'}
                     onClick={editMode}
                 >
-                    Удаление
+                    Редактирование
                 </Button>
-                <br/>
+
                 <Button
                     color="secondary"
                     variant="contained"
+                    style={{marginLeft: 15}}
                     onClick={handleChange('elements')}
                 >
                     Назад

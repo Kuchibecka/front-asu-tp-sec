@@ -50,7 +50,7 @@ export class AddObjectComponent extends React.Component {
                 .then(inst => {
                     SchemeService.addObject(inst.data, this.state.schemeId)
                         .then(sch => {
-                            console.log("Result scheme: ", sch.data.objectList);
+                            // console.log("Result scheme: ", sch.data.objectList);
                             GraphService.getObjects(this.state.schemeId)
                                 .then(scheme => {
                                     this.props.updateElements(scheme);

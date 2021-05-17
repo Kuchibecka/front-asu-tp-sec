@@ -9,7 +9,7 @@ import DeleteComponent from "./DeleteComponent";
 import EditComponent from "./EditComponent";
 
 
-export class UserForm extends React.Component {
+export default class ActionComponent extends React.Component {
 //todo: подчистить ненужное
     constructor(props) {
         super(props);
@@ -49,7 +49,6 @@ export class UserForm extends React.Component {
     }
 
     updateElements = (value) => {
-        console.log("In ActionComponent: ", value);
         this.props.updateElements(value);
     }
 
@@ -142,5 +141,3 @@ export class UserForm extends React.Component {
         }
     }
 }
-
-export default UserForm;

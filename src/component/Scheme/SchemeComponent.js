@@ -45,7 +45,7 @@ class SchemeComponent extends React.Component {
                 <SchemeSelectorComponent updateId={this.updateId} updateElements={this.updateElements}
                                          updateTree={this.updateTree}/>
                 <div className="container-fluid" style={{borderStyle: "solid", borderWidth: "thin"}}>
-                    <ElementsComponent data={this.state.elements} deleteMode={this.state.deleteMode} editMode={this.state.editMode}/>
+                    <ElementsComponent data={this.state.elements} schemeId={this.state.currentId} deleteMode={this.state.deleteMode} editMode={this.state.editMode}/>
                 </div>
                 <div className="container-fluid" style={{borderStyle: "solid", borderWidth: "thin"}}>
                     <TreeComponent data={this.state.tree}/>
