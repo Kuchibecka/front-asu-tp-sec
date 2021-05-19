@@ -91,13 +91,21 @@ export default class SecuritySwForm extends React.Component {
             }
             SecuritySwService.update(editedSecuritySw, this.state.id)
                 .then(() => {
-                    this.props.history.push('/securitySws');
+                    if (!this.state.isInstance) {
+                        this.props.history.push('/securitySws')
+                    } else {
+                        this.props.history.push('/')
+                    }
                 })
         }
     }
 
     cancel() {
-        this.props.history.push('/securitySws')
+        if (!this.state.isInstance) {
+            this.props.history.push('/securitySws')
+        } else {
+            this.props.history.push('/')
+        }
     }
 
     getTitle() {

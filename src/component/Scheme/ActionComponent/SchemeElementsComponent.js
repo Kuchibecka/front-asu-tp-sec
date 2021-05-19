@@ -1,9 +1,8 @@
 import React from 'react';
-import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import {Box} from "@material-ui/core";
 
-export class SchemeElementsComponent extends React.Component {
+export default class SchemeElementsComponent extends React.Component {
 
     render() {
         const {handleChange} = this.props;
@@ -37,5 +36,3 @@ export class SchemeElementsComponent extends React.Component {
         );
     }
 }
-
-export default SchemeElementsComponent;

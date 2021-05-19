@@ -7,10 +7,12 @@ import AddSecuritySwComponent from "./AddAction/AddSecuritySwComponent"
 import AddVirusComponent from "./AddAction/AddVirusComponent"
 import DeleteComponent from "./DeleteComponent";
 import EditComponent from "./EditComponent";
+import DeleteTreeObjectComponent from "./DeleteTreeObjectComponent";
+import TreeElementsComponent from "./TreeElementsComponent";
+import AddTreeObjectComponent from "./AddTreeObjectComponent";
 
 
 export default class ActionComponent extends React.Component {
-//todo: подчистить ненужное
     constructor(props) {
         super(props);
         this.state = {
@@ -19,14 +21,8 @@ export default class ActionComponent extends React.Component {
             elements: '',
             tree: '',
             deleteMode: false,
+            treeDeleteMode: false,
             editMode: false,
-            target: '',
-            firstType: '',
-            secondType: '',
-            firstElement: '',
-            secondElement: '',
-            isLogical: false,
-            isAnd: false,
         };
         this.handleChange = this.handleChange.bind(this)
     }
@@ -62,8 +58,6 @@ export default class ActionComponent extends React.Component {
 
     render() {
         const {step} = this.state;
-        const {target, firstType, secondType, firstElement, secondElement, isLogical, isAnd} = this.state;
-        const values = {target, firstType, secondType, firstElement, secondElement, isLogical, isAnd};
 
         switch (step) {
             case '0':
@@ -125,12 +119,30 @@ export default class ActionComponent extends React.Component {
                 return (
                     <DeleteComponent
                         handleChange={this.handleChange}
-                        deleteMode={this.props.deleteMode}
+                        treeDeleteMode={this.props.treeDeleteMode}
                     />
                 )
-            case 'connections':
+            case 'treeElements':
                 return (
-                    <h1>connections</h1>
+                    <TreeElementsComponent
+                        handleChange={this.handleChange}
+                    />
+                )
+            case 'addTreeElement':
+                return (
+                    <AddTreeObjectComponent
+                        handleChange={this.handleChange}
+                        schemeId={this.state.schemeId}
+                        // deleteMode={this.props.treeDeleteMode}
+                        updateTree={this.updateTree}
+                    />
+                )
+            case 'deleteTreeElement':
+                return (
+                    <DeleteTreeObjectComponent
+                        handleChange={this.handleChange}
+                        treeDeleteMode={this.props.treeDeleteMode}
+                    />
                 )
             case 'params':
                 return (
