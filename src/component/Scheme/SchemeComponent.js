@@ -10,6 +10,7 @@ const initialState = {
     elements: [],
     tree: [],
     deleteMode: false,
+    treeDeleteMode: false,
     editMode: false,
 };
 
@@ -35,6 +36,10 @@ class SchemeComponent extends React.Component {
         this.setState({deleteMode: !this.state.deleteMode})
     }
 
+    treeDeleteMode = () => {
+        this.setState({treeDeleteMode: !this.state.treeDeleteMode})
+    }
+
     editMode = () => {
         this.setState({editMode: !this.state.editMode})
     }
@@ -48,7 +53,7 @@ class SchemeComponent extends React.Component {
                     <ElementsComponent data={this.state.elements} schemeId={this.state.currentId} deleteMode={this.state.deleteMode} editMode={this.state.editMode}/>
                 </div>
                 <div className="container-fluid" style={{borderStyle: "solid", borderWidth: "thin"}}>
-                    <TreeComponent data={this.state.tree}/>
+                    <TreeComponent data={this.state.tree} schemeId={this.state.currentId} treeDeleteMode={this.state.treeDeleteMode}/>
                 </div>
                 <div>
                     <ActionComponent
@@ -56,6 +61,7 @@ class SchemeComponent extends React.Component {
                         updateElements={this.updateElements}
                         updateTree={this.updateTree}
                         deleteMode={this.deleteMode}
+                        treeDeleteMode={this.treeDeleteMode}
                         editMode={this.editMode}
                     />
                 </div>

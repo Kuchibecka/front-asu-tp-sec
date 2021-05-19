@@ -32,6 +32,7 @@ export default class ObjectForm extends React.Component {
             ObjectService.getById(this.state.id)
                 .then((res) => {
                     let obj = res.data;
+                    console.log(obj)
                     this.setState({
                         id: this.state.id,
                         type: obj.type,
@@ -93,13 +94,21 @@ export default class ObjectForm extends React.Component {
             }
             ObjectService.update(editedObject, this.state.id)
                 .then(() => {
-                    this.props.history.push('/objects');
+                    if (!this.state.isInstance) {
+                        this.props.history.push('/objects')
+                    } else {
+                        this.props.history.push('/')
+                    }
                 })
         }
     }
 
     cancel() {
-        this.props.history.push('/objects')
+        if (!this.state.isInstance) {
+            this.props.history.push('/objects')
+        } else {
+            this.props.history.push('/')
+        }
     }
 
     getTitle() {

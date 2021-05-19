@@ -17,12 +17,12 @@ export class ActionListComponent extends React.Component {
                         <Button
                             onClick={handleChange('elements')}
                         >
-                            Редактировать элементы
+                            Редактировать схему
                         </Button>
                         <Button
-                            onClick={handleChange('connections')}
+                            onClick={handleChange('treeElements')}
                         >
-                            Редактировать связи
+                            Редактировать дерево отказа
                         </Button>
                         <Button
                             onClick={handleChange('params')}

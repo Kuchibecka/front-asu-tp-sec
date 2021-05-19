@@ -74,13 +74,21 @@ export default class VirusForm extends React.Component {
             }
             VirusService.update(editedVirus, this.state.id)
                 .then(() => {
-                    this.props.history.push('/viruses');
+                    if (!this.state.isInstance) {
+                        this.props.history.push('/viruses')
+                    } else {
+                        this.props.history.push('/')
+                    }
                 })
         }
     }
 
     cancel() {
-        this.props.history.push('/viruses')
+        if (!this.state.isInstance) {
+            this.props.history.push('/viruses')
+        } else {
+            this.props.history.push('/')
+        }
     }
 
     getTitle() {

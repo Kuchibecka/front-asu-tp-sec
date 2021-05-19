@@ -45,7 +45,6 @@ export default class ElementsComponent extends React.Component {
         if (prevProps.editMode !== this.props.editMode) {
             this.setState({editMode: this.props.editMode, deleteMode: false})
         }
-        console.log(this.state.elements)
     }
 
     click = (event, element) => {
@@ -125,13 +124,10 @@ export default class ElementsComponent extends React.Component {
                     <ReactFlowProvider>
                         <ReactFlow
                             elements={this.state.elements}
+                            style={graphStyles}
                             onConnect={this.onConnect}
                             onElementClick={this.click}
-                            style={graphStyles}
                             nodeTypes={{customNode: this.CustomNode}}
-                            onConnectStart={this.onConnectStart}
-                            onConnectStop={this.onConnectStop}
-                            onConnectEnd={this.onConnectEnd}
                         />
                     </ReactFlowProvider>
                     <Dialog
@@ -195,10 +191,8 @@ export default class ElementsComponent extends React.Component {
         let contains = false;
         if (!this.state.deleteMode) {
             if (source.startsWith("virus") && (/^\d+$/.test(target))) {
-                console.log("virus ", source.slice(5), " to ", target)
                 for (let i in range(0, this.state.elements.length)) {
                     if (this.state.elements[i].id === id) {
-                        console.log("CONTAINS!");
                         contains = true;
                         break;
                     }
@@ -208,21 +202,17 @@ export default class ElementsComponent extends React.Component {
                         .then(vi => {
                             ObjectService.addVirus(vi.data, target)
                                 .then(() => {
-                                    console.log(vi, "to ", target)
                                     GraphService.getObjects(this.props.schemeId)
                                         .then(scheme => {
                                             this.setState({elements: scheme});
-                                            console.log("Current elements: ", this.state.elements)
                                         });
                                 });
                         });
                 }
             } else {
                 if (source.startsWith("securitySW") && (/^\d+$/.test(target))) {
-                    console.log("securitysw ", source.slice(10), " to ", target)
                     for (let i in range(0, this.state.elements.length)) {
                         if (this.state.elements[i].id === id) {
-                            console.log("CONTAINS!");
                             contains = true;
                             break;
                         }
@@ -232,7 +222,6 @@ export default class ElementsComponent extends React.Component {
                             .then(secSW => {
                                 ObjectService.addSecuritySW(secSW.data, target)
                                     .then(() => {
-                                        console.log(secSW, "to ", target)
                                         GraphService.getObjects(this.props.schemeId)
                                             .then(scheme => {
                                                 this.setState({elements: scheme});
@@ -242,11 +231,9 @@ export default class ElementsComponent extends React.Component {
                     }
                 } else {
                     if ((/^\d+$/.test(source)) && (/^\d+$/.test(target))) {
-                        console.log("Connecting object ", source, " to object ", target)
                         let alterId = "e" + target + "-" + source;
                         for (let i in range(0, this.state.elements.length)) {
                             if ((this.state.elements[i].id === id) || (this.state.elements[i].id === alterId)) {
-                                console.log("CONTAINS!");
                                 contains = true;
                                 break;
                             }
@@ -266,13 +253,10 @@ export default class ElementsComponent extends React.Component {
                     }
                 }
             }
-            console.log(params)
         } else {
             if (source.startsWith("virus") && (/^\d+$/.test(target))) {
-                console.log("virus ", source.slice(5), " to ", target)
                 for (let i in range(0, this.state.elements.length)) {
                     if (this.state.elements[i].id === id) {
-                        console.log("CONTAINS!");
                         contains = true;
                         break;
                     }
@@ -326,7 +310,6 @@ export default class ElementsComponent extends React.Component {
                         if (contains) {
                             ObjectService.getById(source)
                                 .then(obj => {
-                                    console.log(obj)
                                     ObjectService.removeObject(obj.data.obj_id, target)
                                         .then(() => {
                                             GraphService.getObjects(this.props.schemeId)
@@ -340,18 +323,8 @@ export default class ElementsComponent extends React.Component {
                     }
                 }
             }
-            console.log(params)
         }
     }
-    onConnectStart = (event, {nodeId, handleType}) => {
-        // console.log('on connect start', {nodeId, handleType})
-    };
-    onConnectStop = (event) => {
-        // console.log('on connect stop', event)
-    };
-    onConnectEnd = (event) => {
-        // console.log('on connect end', event)
-    };
 
     render() {
         return (
