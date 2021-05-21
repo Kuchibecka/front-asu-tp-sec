@@ -15,6 +15,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import {range} from "lodash-es";
 import GraphService from "../../service/GraphService";
 import SchemeService from "../../service/SchemeService";
+import {esES} from "@material-ui/core/locale";
 
 const initialState = {
     tree: [],
@@ -45,7 +46,6 @@ export default class TreeComponent extends React.Component {
     click = (event, element) => {
         if (this.state.deleteMode) {
             this.setState({idToDelete: element.id, openModal: true})
-
             // todo: Когда не delete-mode и не edit-mode добавить вывод информации об объекте в отдельном поле
         }
     }
@@ -65,16 +65,31 @@ export default class TreeComponent extends React.Component {
     }
 
     deleteElement(id) {
-        console.log("Id to delete: ", id)
-        console.log("Current scheme: ", this.state.schemeId)
-        console.log("Tree: ", this.state.tree)
-        let count = 0;
+        if (id.includes("treeRoot")) {
+            alert("Ошибка: Нельзя удалить корневой элемент дерева!");
+            this.setState({openModal: false})
+            return;
+        }
+        if (id.includes("_")) {
+            let source = id.replace(/_\d*/gm, "");
+            let target = id.replace(/\d*_/gm, "")
+            ObjectService.removeCriteriaObject(target, source)
+                .then(() => {
+                    GraphService.getTree(this.state.schemeId)
+                        .then((tree) => {
+                            this.setState({tree: tree, openModal: false})
+                        });
+                })
+            return;
+        }
+        let andAppear = [];
         for (let i in range(0, this.state.tree.length)) {
-            if (this.state.tree[i].id.includes(id.toString())) {
-                count++;
+            if (this.state.tree[i].id.includes(id.toString() + "_") || this.state.tree[i].id.includes("_" + id.toString())) {
+                andAppear.push(Number(i));
             }
         }
-        if (count === 1) {
+
+        if (andAppear.length === 0) {
             SchemeService.removeCriteriaObject(id, this.state.schemeId)
                 .then(() => {
                     GraphService.getTree(this.state.schemeId)
@@ -82,13 +97,40 @@ export default class TreeComponent extends React.Component {
                             this.setState({tree: tree, openModal: false})
                         });
                 });
+        } else {
+            for (let i = 0; i < andAppear.length; i++) {
+                let connectionId = this.state.tree[andAppear[i]].id;
+                if (connectionId.includes(id.toString() + "_")) {
+                    let detach = connectionId.replace(id.toString() + "_", "")
+                    SchemeService.removeCriteriaObject(id, this.state.schemeId)
+                        .then(() => {
+                            ObjectService.removeCriteriaObject(detach, id)
+                                .then(() => {
+                                    GraphService.getTree(this.state.schemeId)
+                                        .then((tree) => {
+                                            this.setState({tree: tree, openModal: false})
+                                        });
+                                })
+                        });
+                } else {
+                    if (connectionId.includes("_" + id.toString())) {
+                        let detach = connectionId.replace("_" + id.toString(), "")
+                        SchemeService.removeCriteriaObject(id, this.state.schemeId)
+                            .then(() => {
+                                ObjectService.removeCriteriaObject(id, detach)
+                                    .then(() => {
+                                        GraphService.getTree(this.state.schemeId)
+                                            .then((tree) => {
+                                                this.setState({tree: tree, openModal: false})
+                                            });
+                                    })
+                            });
+                    }
+                }
+            }
+
         }
-        /*
-        ObjectService.delete(id) //todo: del just 2 connections (and & or)
-            .then(() => {
-                this.setState({elements: this.state.elements.filter(el => el.id !== id), openModal: false})
-            });
-        */
+
     }
 
     treeShow(tree) {
@@ -151,83 +193,46 @@ export default class TreeComponent extends React.Component {
 
     CustomNode = ({id}) => (
         <>
-            <Handle type="target" position="left" isValidConnection={this.isValidConnection}/>
+            <Handle type="target" position="left"/>
             <div>{id}</div>
-            <Handle type="source" position="right" isValidConnection={this.isValidConnection}/>
+            <Handle type="source" position="right"/>
         </>
     );
 
-    isValidConnection = (connection) => {
-        console.log("Validator: ", connection.target)
-        return true /*connection.target === 'qwerty'; connection.source === 'qwerty'*/;
-    }
-
     onConnect = (params) => {
-        const setElements = (els) => {
-            addEdge(params, els)
-        };
         let source = params.source;
         let target = params.target;
-        let id = "e" + source + "-" + target;
+        let id = source + "_" + target;
         let contains = false;
-        let alterId = "e" + target + "-" + source;
-        if (!this.state.deleteMode) {
-            if ((/^\d+$/.test(source)) && (/^\d+$/.test(target))) {
-                for (let i in range(0, this.state.elements.length)) {
-                    if ((this.state.elements[i].id === id) || (this.state.elements[i].id === alterId)) {
-                        contains = true;
-                        break;
-                    }
-                }
-                if (!contains) {
-                    ObjectService.getById(source)
-                        .then(obj => {
-                            ObjectService.addCriteriaObject(obj.data, target)
-                                .then(() => {
-                                    GraphService.getTree(this.props.schemeId)
-                                        .then(tree => {
-                                            this.setState({tree: tree});
-                                        });
-                                });
-                        });
+        let alterId = target + "_" + source;
+        if ((/^\d+$/.test(source)) && (/^\d+$/.test(target))) {
+            for (let i in range(0, this.state.tree.length)) {
+                if ((this.state.tree[i].id === id) || (this.state.tree[i].id === alterId)) {
+                    contains = true;
+                    break;
                 }
             }
-        } else {
-            if ((/^\d+$/.test(source)) && (/^\d+$/.test(target))) {
-                for (let i in range(0, this.state.elements.length)) {
-                    if (this.state.elements[i].id === id) {
-                        contains = true;
-                        [source, target] = [target, source];
-                        break;
-                    }
-                    if (this.state.elements[i].id === alterId) {
-                        contains = true;
-                        break;
-                    }
-                }
-                if (contains) {
-                    ObjectService.getById(source)
-                        .then(obj => {
-                            ObjectService.removeObject(obj.data.obj_id, target)
-                                .then(() => {
-                                    GraphService.getTree(this.props.schemeId)
-                                        .then(tree => {
-                                            //todo: можно заменить на фильтрацию удалённого для ускорения
-                                            this.setState({tree: tree});
-                                        });
-                                });
-                        });
-                }
+            if (contains) {
+                alert("Связь между выбранными элементами уже существует!")
+            } else {
+                ObjectService.getById(source)
+                    .then(obj => {
+                        ObjectService.addCriteriaObject(obj.data, target)
+                            .then(() => {
+                                GraphService.getTree(this.props.schemeId)
+                                    .then(tree => {
+                                        this.setState({tree: tree});
+                                    });
+                            });
+                    });
             }
         }
     }
 
     render() {
         return (
-            <div className="container-fluid"> {
-                this
-                    .treeShow(this.props.data)
-            }
+            <div className="container-fluid">
+                {this.treeShow(this.props.data)}
             </div>
         )
     }
