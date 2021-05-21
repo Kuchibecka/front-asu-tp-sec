@@ -65,13 +65,30 @@ export default class TreeComponent extends React.Component {
     }
 
     deleteElement(id) {
+        if (id.includes("treeRoot")) {
+            alert("Ошибка: Нельзя удалить корневой элемент дерева!");
+            this.setState({openModal: false})
+            return;
+        }
+        if (id.includes("_")) {
+            let source = id.replace(/_\d*/gm, "");
+            let target = id.replace(/\d*_/gm, "")
+            ObjectService.removeCriteriaObject(target, source)
+                .then(() => {
+                    GraphService.getTree(this.state.schemeId)
+                        .then((tree) => {
+                            this.setState({tree: tree, openModal: false})
+                        });
+                })
+            return;
+        }
         let andAppear = [];
         for (let i in range(0, this.state.tree.length)) {
             if (this.state.tree[i].id.includes(id.toString() + "_") || this.state.tree[i].id.includes("_" + id.toString())) {
                 andAppear.push(Number(i));
             }
         }
-        
+
         if (andAppear.length === 0) {
             SchemeService.removeCriteriaObject(id, this.state.schemeId)
                 .then(() => {
@@ -111,14 +128,9 @@ export default class TreeComponent extends React.Component {
                     }
                 }
             }
-            
+
         }
-        /*
-        ObjectService.delete(id) //todo: del just 2 connections (and & or)
-            .then(() => {
-                this.setState({elements: this.state.elements.filter(el => el.id !== id), openModal: false})
-            });
-        */
+
     }
 
     treeShow(tree) {
@@ -188,66 +200,35 @@ export default class TreeComponent extends React.Component {
     );
 
     isValidConnection = (connection) => {
-        
-        return true /*connection.target === 'qwerty'; connection.source === 'qwerty'*/;
+        return true;
     }
 
     onConnect = (params) => {
-        const setElements = (els) => {
-            addEdge(params, els)
-        };
         let source = params.source;
         let target = params.target;
-        let id = "e" + source + "-" + target;
+        let id = source + "_" + target;
         let contains = false;
-        let alterId = "e" + target + "-" + source;
-        if (!this.state.deleteMode) {
-            if ((/^\d+$/.test(source)) && (/^\d+$/.test(target))) {
-                for (let i in range(0, this.state.elements.length)) {
-                    if ((this.state.elements[i].id === id) || (this.state.elements[i].id === alterId)) {
-                        contains = true;
-                        break;
-                    }
-                }
-                if (!contains) {
-                    ObjectService.getById(source)
-                        .then(obj => {
-                            ObjectService.addCriteriaObject(obj.data, target)
-                                .then(() => {
-                                    GraphService.getTree(this.props.schemeId)
-                                        .then(tree => {
-                                            this.setState({tree: tree});
-                                        });
-                                });
-                        });
+        let alterId = target + "_" + source;
+        if ((/^\d+$/.test(source)) && (/^\d+$/.test(target))) {
+            for (let i in range(0, this.state.tree.length)) {
+                if ((this.state.tree[i].id === id) || (this.state.tree[i].id === alterId)) {
+                    contains = true;
+                    break;
                 }
             }
-        } else {
-            if ((/^\d+$/.test(source)) && (/^\d+$/.test(target))) {
-                for (let i in range(0, this.state.elements.length)) {
-                    if (this.state.elements[i].id === id) {
-                        contains = true;
-                        [source, target] = [target, source];
-                        break;
-                    }
-                    if (this.state.elements[i].id === alterId) {
-                        contains = true;
-                        break;
-                    }
-                }
-                if (contains) {
-                    ObjectService.getById(source)
-                        .then(obj => {
-                            ObjectService.removeObject(obj.data.obj_id, target)
-                                .then(() => {
-                                    GraphService.getTree(this.props.schemeId)
-                                        .then(tree => {
-                                            //todo: можно заменить на фильтрацию удалённого для ускорения
-                                            this.setState({tree: tree});
-                                        });
-                                });
-                        });
-                }
+            if (contains) {
+                alert("Связь между выбранными элементами уже существует!")
+            } else {
+                ObjectService.getById(source)
+                    .then(obj => {
+                        ObjectService.addCriteriaObject(obj.data, target)
+                            .then(() => {
+                                GraphService.getTree(this.props.schemeId)
+                                    .then(tree => {
+                                        this.setState({tree: tree});
+                                    });
+                            });
+                    });
             }
         }
     }

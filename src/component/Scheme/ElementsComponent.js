@@ -182,9 +182,6 @@ export default class ElementsComponent extends React.Component {
     }
 
     onConnect = (params) => {
-        const setElements = (els) => {
-            addEdge(params, els)
-        };
         let source = params.source;
         let target = params.target;
         let id = "e" + source + "-" + target;
