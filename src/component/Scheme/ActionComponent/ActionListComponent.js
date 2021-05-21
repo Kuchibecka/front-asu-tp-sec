@@ -19,17 +19,18 @@ export class ActionListComponent extends React.Component {
                         >
                             Редактировать схему
                         </Button>
+                        <br/>
                         <Button
                             onClick={handleChange('treeElements')}
                         >
                             Редактировать дерево отказа
                         </Button>
+                        <br/>
                         <Button
-                            onClick={handleChange('params')}
+                            onClick={handleChange('schemeParams')}
                         >
                             Изменить данные схемы
                         </Button>
-                        <br/>
                     </Box>
         );
     }
