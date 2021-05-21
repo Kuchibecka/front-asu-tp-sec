@@ -193,15 +193,11 @@ export default class TreeComponent extends React.Component {
 
     CustomNode = ({id}) => (
         <>
-            <Handle type="target" position="left" isValidConnection={this.isValidConnection}/>
+            <Handle type="target" position="left"/>
             <div>{id}</div>
-            <Handle type="source" position="right" isValidConnection={this.isValidConnection}/>
+            <Handle type="source" position="right"/>
         </>
     );
-
-    isValidConnection = (connection) => {
-        return true;
-    }
 
     onConnect = (params) => {
         let source = params.source;
@@ -235,10 +231,8 @@ export default class TreeComponent extends React.Component {
 
     render() {
         return (
-            <div className="container-fluid"> {
-                this
-                    .treeShow(this.props.data)
-            }
+            <div className="container-fluid">
+                {this.treeShow(this.props.data)}
             </div>
         )
     }
