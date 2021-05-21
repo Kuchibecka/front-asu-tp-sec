@@ -1,5 +1,5 @@
 import React from "react";
-import ReactFlow, {ReactFlowProvider, addEdge, Handle} from "react-flow-renderer";
+import ReactFlow, {ReactFlowProvider, Handle} from "react-flow-renderer";
 import {
     Button,
     Container,
@@ -170,16 +170,11 @@ export default class ElementsComponent extends React.Component {
     //todo: сделать кастомный Node без точки входа для: Вирусов, СЗИ
     CustomNode = ({id}) => (
         <>
-            <Handle type="target" position="left" isValidConnection={this.isValidConnection}/>
+            <Handle type="target" position="left"/>
             <div>{id}</div>
-            <Handle type="source" position="right" isValidConnection={this.isValidConnection}/>
+            <Handle type="source" position="right"/>
         </>
     );
-
-    isValidConnection = (connection) => {
-        console.log("Validator: ", connection.target)
-        return true /*connection.target === 'qwerty'; connection.source === 'qwerty'*/;
-    }
 
     onConnect = (params) => {
         let source = params.source;
