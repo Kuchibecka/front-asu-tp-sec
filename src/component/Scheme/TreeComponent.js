@@ -159,16 +159,12 @@ export default class TreeComponent extends React.Component {
                         open={this.state.openModal}
                         onClose={() => this.handleClose}
                     >
-                        <DialogTitle id="delete-alert">
-                            <h4 className="text-center"> {/* todo: убрать h4 и h5 */}
-                                "Вы действительно хотите удалить этот объект из дерева отказа?"
-                            </h4>
+                        <DialogTitle id="delete-alert" style={{textAlign: "center"}}>
+                            "Вы действительно хотите удалить этот объект из дерева отказа?"
                         </DialogTitle>
                         <DialogContent>
-                            <DialogContentText id="delete-alert">
-                                <h5 className={"text-center"}>
-                                    Нажимая "Да", Вы подтверждаете удаление из дерева отказа выбранного объекта
-                                </h5>
+                            <DialogContentText id="delete-alert" style={{textAlign: "center"}}>
+                                Нажимая "Да", Вы подтверждаете удаление из дерева отказа выбранного объекта
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>

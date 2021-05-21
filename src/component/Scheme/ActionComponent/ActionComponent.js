@@ -70,7 +70,6 @@ export default class ActionComponent extends React.Component {
                         handleChange={this.handleChange}
                     />
                 );
-            // todo: Выбор: редактировать схему ИЛИ !дерево отказа!
             case 'elements':
                 return (
                     <SchemeElementsComponent
@@ -89,7 +88,6 @@ export default class ActionComponent extends React.Component {
                         schemeId={this.state.schemeId}
                         handleChange={this.handleChange}
                         updateElements={this.updateElements}
-                        /*updateTree={this.updateTree}*/
                     />
                 )
             case 'addVirus':
@@ -133,7 +131,6 @@ export default class ActionComponent extends React.Component {
                     <AddTreeObjectComponent
                         handleChange={this.handleChange}
                         schemeId={this.state.schemeId}
-                        // deleteMode={this.props.treeDeleteMode}
                         updateTree={this.updateTree}
                     />
                 )
@@ -144,9 +141,9 @@ export default class ActionComponent extends React.Component {
                         treeDeleteMode={this.props.treeDeleteMode}
                     />
                 )
-            case 'params':
+            case 'schemeParams':
                 return (
-                    <h1>params</h1>
+                    window.location.assign(`/scheme/${this.state.schemeId}`)
                 )
             default:
                 (console.log('This is a multi-step form built with React.'))

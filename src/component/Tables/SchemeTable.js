@@ -128,15 +128,12 @@ export default class SchemeTable extends React.Component {
                         open={this.state.openModal}
                         onClose={() => this.handleClose}
                     >
-                        <DialogTitle id="delete-alert">
-                            <h4 className={"text-center"}>"Вы действительно хотите удалить эту схему?"</h4>
+                        <DialogTitle id="delete-alert" style={{textAlign: "center"}}>
+                            "Вы действительно хотите удалить эту схему?"
                         </DialogTitle>
                         <DialogContent>
-                            <DialogContentText id="delete-alert">
-                                <h5 className={"text-center"}>
-                                    Нажимая "Да", Вы подтверждаете удаление из базы данных схемы и всех связей с
-                                    ней
-                                </h5>
+                            <DialogContentText id="delete-alert" style={{textAlign: "center"}}>
+                                Нажимая "Да", Вы подтверждаете удаление из базы данных схемы и всех связей с ней
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>

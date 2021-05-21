@@ -134,16 +134,12 @@ export default class ElementsComponent extends React.Component {
                         open={this.state.openModal}
                         onClose={() => this.handleClose}
                     >
-                        <DialogTitle id="delete-alert">
-                            <h4 className="text-center">
-                                "Вы действительно хотите удалить этот объект?"
-                            </h4>
+                        <DialogTitle id="delete-alert" style={{textAlign: "center"}}>
+                            "Вы действительно хотите удалить этот объект?"
                         </DialogTitle>
                         <DialogContent>
-                            <DialogContentText id="delete-alert">
-                                <h5 className={"text-center"}>
-                                    Нажимая "Да", Вы подтверждаете удаление из базы данных объекта и всех связей с ним
-                                </h5>
+                            <DialogContentText id="delete-alert" style={{textAlign: "center"}}>
+                                Нажимая "Да", Вы подтверждаете удаление из базы данных объекта и всех связей с ним
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
