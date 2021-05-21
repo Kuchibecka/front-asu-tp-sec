@@ -46,7 +46,6 @@ export default class TreeComponent extends React.Component {
     click = (event, element) => {
         if (this.state.deleteMode) {
             this.setState({idToDelete: element.id, openModal: true})
-
             // todo: Когда не delete-mode и не edit-mode добавить вывод информации об объекте в отдельном поле
         }
     }
@@ -66,17 +65,14 @@ export default class TreeComponent extends React.Component {
     }
 
     deleteElement(id) {
-        console.log("Id to delete: ", id)
-        console.log("Tree: ", this.state.tree)
         let andAppear = [];
         for (let i in range(0, this.state.tree.length)) {
             if (this.state.tree[i].id.includes(id.toString() + "_") || this.state.tree[i].id.includes("_" + id.toString())) {
                 andAppear.push(Number(i));
             }
         }
-        console.log("Appears in ", andAppear)
+        
         if (andAppear.length === 0) {
-            console.log("DELETE 1 ELEMENT")
             SchemeService.removeCriteriaObject(id, this.state.schemeId)
                 .then(() => {
                     GraphService.getTree(this.state.schemeId)
@@ -87,11 +83,8 @@ export default class TreeComponent extends React.Component {
         } else {
             for (let i = 0; i < andAppear.length; i++) {
                 let connectionId = this.state.tree[andAppear[i]].id;
-                console.log("Связь: ", connectionId)
                 if (connectionId.includes(id.toString() + "_")) {
-                    console.log("Корневой элемент: ", id)
                     let detach = connectionId.replace(id.toString() + "_", "")
-                    console.log("Отсоединить от него: ", detach)
                     SchemeService.removeCriteriaObject(id, this.state.schemeId)
                         .then(() => {
                             ObjectService.removeCriteriaObject(detach, id)
@@ -103,11 +96,8 @@ export default class TreeComponent extends React.Component {
                                 })
                         });
                 } else {
-                    console.log("ELSE")
                     if (connectionId.includes("_" + id.toString())) {
                         let detach = connectionId.replace("_" + id.toString(), "")
-                        console.log("Корневой элемент: ", detach)
-                        console.log("Отсоединить от него: ", id)
                         SchemeService.removeCriteriaObject(id, this.state.schemeId)
                             .then(() => {
                                 ObjectService.removeCriteriaObject(id, detach)
@@ -121,7 +111,7 @@ export default class TreeComponent extends React.Component {
                     }
                 }
             }
-            console.log("Tree: ", this.state.tree)
+            
         }
         /*
         ObjectService.delete(id) //todo: del just 2 connections (and & or)
@@ -198,7 +188,7 @@ export default class TreeComponent extends React.Component {
     );
 
     isValidConnection = (connection) => {
-        console.log("Validator: ", connection.target)
+        
         return true /*connection.target === 'qwerty'; connection.source === 'qwerty'*/;
     }
 
