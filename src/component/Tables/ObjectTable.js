@@ -42,7 +42,7 @@ export default class ObjectTable extends React.Component {
             .then((res) => {
                 this.setState({objects: res.data.filter(obj => obj.isInstance === false), openModal: false});
             });
-        this.state.openModal = false
+        this.state.openModal = false //todo: убрать?
     }
 
     createObject() {
@@ -57,7 +57,6 @@ export default class ObjectTable extends React.Component {
         ObjectService.delete(id).then(() => {
             this.setState({objects: this.state.objects.filter(obj => obj.obj_id !== id), openModal: false})
         });
-
     }
 
     getType(type) {
