@@ -117,7 +117,7 @@ export default class ActionComponent extends React.Component {
                 return (
                     <DeleteComponent
                         handleChange={this.handleChange}
-                        treeDeleteMode={this.props.treeDeleteMode}
+                        deleteMode={this.props.deleteMode}
                     />
                 )
             case 'treeElements':

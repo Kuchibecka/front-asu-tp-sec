@@ -30,6 +30,7 @@ class SchemeComponent extends React.Component {
 
     updateId = (value) => {
         this.state.currentId = value;
+        console.log("Current ID: ", this.state.currentId)
     }
 
     deleteMode = () => {

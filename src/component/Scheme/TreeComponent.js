@@ -15,7 +15,6 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import {range} from "lodash-es";
 import GraphService from "../../service/GraphService";
 import SchemeService from "../../service/SchemeService";
-import {esES} from "@material-ui/core/locale";
 
 const initialState = {
     tree: [],
@@ -41,6 +40,10 @@ export default class TreeComponent extends React.Component {
         if (prevProps.treeDeleteMode !== this.props.treeDeleteMode) {
             this.setState({deleteMode: this.props.treeDeleteMode, editMode: false})
         }
+        if (prevProps.schemeId !== this.props.schemeId) {
+            this.setState({schemeId: this.props.schemeId})
+        }
+        console.log(this.state.schemeId)
     }
 
     click = (event, element) => {
