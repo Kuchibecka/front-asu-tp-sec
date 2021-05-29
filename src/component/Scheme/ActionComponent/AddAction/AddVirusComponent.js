@@ -46,9 +46,9 @@ export default class AddVirusComponent extends React.Component {
         if (this.state.selectedVirus.length === 0) {
             alert("Выберите хотя бы один вирус или нажмите кнопку Назад для возврата")
         } else {
-            VirusService.newInstance(this.state.selectedVirus)
-                .then(inst => {
-                    SchemeService.addVirus(inst.data, this.state.schemeId)
+            VirusService.getById(this.state.selectedVirus)
+                .then(virus => {
+                    SchemeService.addVirus(virus.data, this.state.schemeId)
                         .then(sch => {
                             GraphService.getObjects(this.state.schemeId)
                                 .then(scheme => {
