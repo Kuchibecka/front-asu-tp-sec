@@ -31,6 +31,12 @@ export class ActionListComponent extends React.Component {
                         >
                             Изменить данные схемы
                         </Button>
+                        <br/>
+                        <Button
+                            onClick={handleChange('modeling')}
+                        >
+                            Проверить на отказоустойчивость
+                        </Button>
                     </Box>
         );
     }

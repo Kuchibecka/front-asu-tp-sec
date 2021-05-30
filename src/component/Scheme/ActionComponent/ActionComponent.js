@@ -1,15 +1,16 @@
 import React from 'react';
 import ActionListComponent from "./ActionListComponent";
 import SchemeElementsComponent from "./SchemeElementsComponent";
-import AddElementComponent from "./AddElementComponent";
+import AddElementComponent from "./AddAction/AddElementComponent";
 import AddObjectComponent from "./AddAction/AddObjectComponent"
 import AddSecuritySwComponent from "./AddAction/AddSecuritySwComponent"
 import AddVirusComponent from "./AddAction/AddVirusComponent"
-import DeleteComponent from "./DeleteComponent";
+import DeleteComponent from "./DeleteAction/DeleteComponent";
 import EditComponent from "./EditComponent";
-import DeleteTreeObjectComponent from "./DeleteTreeObjectComponent";
+import DeleteTreeObjectComponent from "./DeleteAction/DeleteTreeObjectComponent";
 import TreeElementsComponent from "./TreeElementsComponent";
-import AddTreeObjectComponent from "./AddTreeObjectComponent";
+import AddTreeObjectComponent from "./AddAction/AddTreeObjectComponent";
+import ModelingComponent from "./ModelingComponent";
 
 
 export default class ActionComponent extends React.Component {
@@ -18,7 +19,7 @@ export default class ActionComponent extends React.Component {
         this.state = {
             step: 'initial',
             schemeId: '',
-            elements: '',
+            scheme: '',
             tree: '',
             deleteMode: false,
             treeDeleteMode: false,
@@ -28,7 +29,11 @@ export default class ActionComponent extends React.Component {
     }
 
     async componentDidMount() {
-        await this.setState({schemeId: this.props.schemeId})
+        await this.setState({
+            schemeId: this.props.schemeId,
+            scheme: this.props.scheme,
+            tree: this.props.tree,
+        })
         if (this.props.schemeId === '')
             this.setState({step: '0'})
     }
@@ -41,6 +46,12 @@ export default class ActionComponent extends React.Component {
             } else {
                 this.setState({step: 'initial'});
             }
+        }
+        if (prevProps.scheme !== this.props.scheme) {
+            this.setState({scheme: this.props.scheme})
+        }
+        if (prevProps.tree !== this.props.tree) {
+            this.setState({tree: this.props.tree})
         }
     }
 
@@ -144,6 +155,15 @@ export default class ActionComponent extends React.Component {
             case 'schemeParams':
                 return (
                     window.location.assign(`/scheme/${this.state.schemeId}`)
+                )
+            case 'modeling':
+                return (
+                    <ModelingComponent
+                        schemeId={this.state.schemeId}
+                        scheme={this.state.scheme}
+                        tree={this.state.tree}
+                        handleChange={this.handleChange}
+                    />
                 )
             default:
                 (console.log('This is a multi-step form built with React.'))

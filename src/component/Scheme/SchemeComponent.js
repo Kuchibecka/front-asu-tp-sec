@@ -1,7 +1,7 @@
 import React from "react";
 import SchemeSelectorComponent from "./SchemeSelectorComponent";
-import TreeComponent from "./TreeComponent";
-import ElementsComponent from "./ElementsComponent";
+import TreeComponent from "./Displaying/TreeComponent";
+import ElementsComponent from "./Displaying/ElementsComponent";
 import ActionComponent from "./ActionComponent/ActionComponent";
 
 const initialState = {
@@ -64,6 +64,8 @@ class SchemeComponent extends React.Component {
                         deleteMode={this.deleteMode}
                         treeDeleteMode={this.treeDeleteMode}
                         editMode={this.editMode}
+                        scheme={this.state.elements}
+                        tree={this.state.tree}
                     />
                 </div>
             </div>

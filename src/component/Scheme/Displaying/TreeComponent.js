@@ -1,6 +1,6 @@
 import React from "react";
 import ReactFlow, {addEdge, Handle, ReactFlowProvider} from "react-flow-renderer";
-import ObjectService from "../../service/ObjectService";
+import ObjectService from "../../../service/ObjectService";
 import {
     Button,
     Container,
@@ -13,8 +13,8 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import CancelIcon from "@material-ui/icons/Cancel";
 import {range} from "lodash-es";
-import GraphService from "../../service/GraphService";
-import SchemeService from "../../service/SchemeService";
+import GraphService from "../../../service/GraphService";
+import SchemeService from "../../../service/SchemeService";
 
 const initialState = {
     tree: [],
