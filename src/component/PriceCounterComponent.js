@@ -21,7 +21,6 @@ export default class PriceCounterComponent extends React.Component {
         } else {
             await this.setState({allowPriceCounting: true});
         }
-        console.log("State is: ", this.state);
     }
 
     componentDidUpdate(prevProps) {
