@@ -65,7 +65,7 @@ export default class PriceCounterComponent extends React.Component {
     }
 
     render() {
-        const {schemeId, handleChange} = this.props
+        const {handleChange} = this.props
 
         return (
             <Box>
