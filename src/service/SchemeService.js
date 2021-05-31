@@ -58,6 +58,10 @@ class SchemeService {
     async modeling(id) {
         return await axios.get(SCHEME_REST_API_URL + id + '/modeling')
     }
+
+    async priceCounting(id) {
+        return await axios.get(SCHEME_REST_API_URL + id + '/secSwPrice')
+    }
 }
 
 export default new SchemeService();

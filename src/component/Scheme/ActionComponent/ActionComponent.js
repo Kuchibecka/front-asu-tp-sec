@@ -11,6 +11,7 @@ import DeleteTreeObjectComponent from "./DeleteAction/DeleteTreeObjectComponent"
 import TreeElementsComponent from "./TreeElementsComponent";
 import AddTreeObjectComponent from "./AddAction/AddTreeObjectComponent";
 import ModelingComponent from "./ModelingComponent";
+import PriceCounterComponent from "../../PriceCounterComponent";
 
 
 export default class ActionComponent extends React.Component {
@@ -162,6 +163,13 @@ export default class ActionComponent extends React.Component {
                         schemeId={this.state.schemeId}
                         scheme={this.state.scheme}
                         tree={this.state.tree}
+                        handleChange={this.handleChange}
+                    />
+                )
+            case 'price':
+                return (
+                    <PriceCounterComponent
+                        schemeId={this.state.schemeId}
                         handleChange={this.handleChange}
                     />
                 )

@@ -13,18 +13,14 @@ import SecuritySwForm from "./component/Forms/SecuritySwForm";
 import VirusTable from "./component/Tables/VirusTable";
 import VirusForm from "./component/Forms/VirusForm";
 import ActionComponent from "./component/Scheme/ActionComponent/ActionComponent";
-// todo: 0*) удалить redux + thunk
-
-// todo: 1) Use Atomic Layout
-//          to configure structure of main page
-//  https://redd.gitbook.io/atomic-layout/motivation
-
+import HeaderComponent from "./component/HeaderComponent";
+import FooterComponent from "./component/FooterComponent";
 
 export default function App() {
     return (
         <div>
             <Router>
-                {/* todo: <HeaderComponent/>*/}
+                <HeaderComponent />
                 <div className="container">
                     <Switch> {/*http://localhost:3000/*/}
                         <Route exact path="/" component={SchemeComponent}/>
@@ -48,7 +44,7 @@ export default function App() {
                         {/*<Route path = "/update-object/:id" component = {UpdateObjectComponent}/>*/}
                     </Switch>
                 </div>
-                {/* todo: <FooterComponent />*/}
+                <FooterComponent />
             </Router>
         </div>
     );

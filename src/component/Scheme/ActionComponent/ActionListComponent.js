@@ -37,6 +37,12 @@ export class ActionListComponent extends React.Component {
                         >
                             Проверить на отказоустойчивость
                         </Button>
+                        <br/>
+                        <Button
+                            onClick={handleChange('price')}
+                        >
+                            Рассчитать суммарную цену использованных СЗИ
+                        </Button>
                     </Box>
         );
     }
