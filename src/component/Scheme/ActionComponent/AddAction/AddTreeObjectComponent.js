@@ -1,11 +1,11 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import ObjectService from "../../../service/ObjectService";
+import ObjectService from "../../../../service/ObjectService";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from '@material-ui/core/MenuItem';
 import {Box, InputLabel, Select} from "@material-ui/core";
-import SchemeService from "../../../service/SchemeService";
-import GraphService from "../../../service/GraphService";
+import SchemeService from "../../../../service/SchemeService";
+import GraphService from "../../../../service/GraphService";
 import {range} from "lodash-es";
 
 export default class AddTreeObjectComponent extends React.Component {

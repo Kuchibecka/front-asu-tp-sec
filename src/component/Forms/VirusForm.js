@@ -4,7 +4,24 @@ import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
 import FormControl from '@material-ui/core/FormControl';
-import {Card, CardContent, CardHeader, Container, TextField} from "@material-ui/core";
+import {
+    Box,
+    Card,
+    CardContent,
+    CardHeader,
+    Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, InputLabel, Select,
+    Table, TableBody, TableCell,
+    TableHead,
+    TableRow,
+    TextField,
+    Tooltip
+} from "@material-ui/core";
+import ExploitService from "../../service/ExploitService";
+import {range} from "lodash-es";
+import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import MenuItem from "@material-ui/core/MenuItem";
 
 export default class VirusForm extends React.Component {
     //todo: Реализовать добавление и удаление эксплоитов
@@ -16,14 +33,17 @@ export default class VirusForm extends React.Component {
             description: '',
             isInstance: false,
             virusExploit: [],
+            allExploits: [],
+            selectedExploit: '',
         }
         this.changeInputHandler = this.changeInputHandler.bind(this);
         this.cancel = this.cancel.bind(this);
+        this.addExploit = this.addExploit.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (this.state.id !== -1) {
-            VirusService.getById(this.state.id)
+            await VirusService.getById(this.state.id)
                 .then((res) => {
                     let virus = res.data;
                     this.setState({
@@ -35,6 +55,20 @@ export default class VirusForm extends React.Component {
                     });
                 });
         }
+        await ExploitService.getAll()
+            .then((res) => {
+                let arrId = []
+                for (let j in range(0, this.state.virusExploit.length)) {
+                    arrId.push(this.state.virusExploit[j].se_id);
+                }
+                let allExploits = [];
+                for (let i in range(0, res.data.length)) {
+                    if (!arrId.includes(res.data[i].se_id)) {
+                        allExploits.push(res.data[i])
+                    }
+                }
+                this.setState({allExploits: allExploits})
+            });
     }
 
     changeInputHandler(event) {
@@ -45,6 +79,8 @@ export default class VirusForm extends React.Component {
         this.setState({
             [key]: value
         });
+        console.log("Key: ", key, " Value: ", value)
+        console.log(this.state.selectedExploit)
     }
 
     submitHandler = event => {
@@ -81,6 +117,51 @@ export default class VirusForm extends React.Component {
                     }
                 })
         }
+    }
+
+    removeExploit(id) {
+        VirusService.removeExploit(id, this.state.id)
+            .then(() => {
+                this.setState({
+                    virusExploit: this.state.virusExploit.filter(ve => ve.se_id !== id),
+                })
+                ExploitService.getAll()
+                    .then((res) => {
+                        let arrId = []
+                        for (let j in range(0, this.state.virusExploit.length)) {
+                            arrId.push(this.state.virusExploit[j].se_id);
+                        }
+                        let allExploits = [];
+                        for (let i in range(0, res.data.length)) {
+                            if (!arrId.includes(res.data[i].se_id)) {
+                                allExploits.push(res.data[i])
+                            }
+                        }
+                        this.setState({allExploits: allExploits})
+                    });
+            })
+    }
+
+    editExploit(id) {
+        this.props.history.push(`/exploit/${id}`);
+    }
+
+    addExploit() {
+        console.log(this.state.virusExploit)
+        ExploitService.getById(this.state.selectedExploit)
+            .then(exp => {
+                VirusService.addExploit(exp.data, this.state.id)
+                    .then(() => {
+                        VirusService.getById(this.state.id)
+                            .then((res) => {
+                                let virus = res.data;
+                                this.setState({
+                                    virusExploit: virus.virusExploit,
+                                    allExploits: this.state.allExploits.filter(e => e.se_id !== exp.data.se_id)
+                                });
+                            });
+                    })
+            })
     }
 
     cancel() {
@@ -131,6 +212,78 @@ export default class VirusForm extends React.Component {
                                     rowsMax={4}
                                 />
                             </FormControl>
+                            <br/>
+                            <FormControl fullWidth style={{marginTop: "40px", marginBottom: "20px"}}>
+                                <h5>Добавление уязвимости безопасности</h5>
+                                <Select
+                                    labelId="demo-mutiple-checkbox-label"
+                                    id="demo-mutiple-checkbox"
+                                    name="selectedExploit"
+                                    value={this.state.selectedExploit}
+                                    onChange={this.changeInputHandler}
+                                    autoWidth
+                                >
+                                    {this.state.allExploits.map(exp => (
+                                        <MenuItem key={exp.se_id} value={exp.se_id}>
+                                            {exp.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <br/>
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                id={'addExploit'}
+                                style={{marginLeft: 10, marginBottom: 40}}
+                                onClick={this.addExploit}
+                            >
+                                Добавить
+                            </Button>
+                            <br/>
+                            <Container>
+                                <h5 style={{borderBottomStyle: "solid", marginTop: "25px", borderBottomWidth: "thin"}}
+                                    className={"text"}> Список имеющихся уязвимостей</h5>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Название</TableCell>
+                                            <TableCell>Описание</TableCell>
+                                            <TableCell/>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {this.state.virusExploit.map(exploit =>
+                                            <TableRow key={exploit}>
+                                                <Tooltip title={exploit.name} enterDelay={500} leaveDelay={0}>
+                                                    <TableCell>
+                                                        {(exploit.name.length > 20) ? exploit.name.substring(0, 17) + "..." : exploit.name}
+                                                    </TableCell>
+                                                </Tooltip>
+                                                <Tooltip title={exploit.description} enterDelay={500} leaveDelay={0}>
+                                                    <TableCell style={{maxWidth: "300px"}}>
+                                                        {(exploit.description.length > 40) ? exploit.description.substring(0, 37) + "..." : exploit.description}
+                                                    </TableCell>
+                                                </Tooltip>
+                                                <TableCell style={{maxWidth: "65px"}}>
+                                                    <Tooltip title="Редактировать">
+                                                        <Button
+                                                            onClick={() => this.editExploit(exploit.se_id)}
+                                                            startIcon={<EditIcon/>}
+                                                        />
+                                                    </Tooltip>
+                                                    <Tooltip title="Удалить">
+                                                        <Button
+                                                            onClick={() => this.removeExploit(exploit.se_id)}
+                                                            startIcon={<DeleteIcon style={{color: "#ff5555"}}/>}
+                                                        />
+                                                    </Tooltip>
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </Container>
                             <br/>
                             <Container style={{marginTop: 40}}>
                                 <Button

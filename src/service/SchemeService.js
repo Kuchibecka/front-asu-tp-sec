@@ -54,6 +54,14 @@ class SchemeService {
     async removeCriteriaObject(criteriaObject_id, id) {
         return await axios.put(SCHEME_REST_API_URL + id + '/remove_criteria_object/' + criteriaObject_id);
     }
+
+    async modeling(id) {
+        return await axios.get(SCHEME_REST_API_URL + id + '/modeling')
+    }
+
+    async priceCounting(id) {
+        return await axios.get(SCHEME_REST_API_URL + id + '/secSwPrice')
+    }
 }
 
 export default new SchemeService();

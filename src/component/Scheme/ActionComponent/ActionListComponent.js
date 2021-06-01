@@ -31,6 +31,18 @@ export class ActionListComponent extends React.Component {
                         >
                             Изменить данные схемы
                         </Button>
+                        <br/>
+                        <Button
+                            onClick={handleChange('modeling')}
+                        >
+                            Проверить на отказоустойчивость
+                        </Button>
+                        <br/>
+                        <Button
+                            onClick={handleChange('price')}
+                        >
+                            Рассчитать суммарную цену использованных СЗИ
+                        </Button>
                     </Box>
         );
     }

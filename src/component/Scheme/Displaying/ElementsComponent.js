@@ -11,10 +11,10 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CancelIcon from "@material-ui/icons/Cancel";
-import ObjectService from "../../service/ObjectService";
-import VirusService from "../../service/VirusService";
-import SecuritySwService from "../../service/SecuritySwService";
-import GraphService from "../../service/GraphService";
+import ObjectService from "../../../service/ObjectService";
+import VirusService from "../../../service/VirusService";
+import SecuritySwService from "../../../service/SecuritySwService";
+import GraphService from "../../../service/GraphService";
 import {range} from "lodash-es";
 
 const initialState = {

@@ -44,9 +44,9 @@ export default class AddSecuritySwComponent extends React.Component {
         if (this.state.selectedSecuritySw.length === 0) {
             alert("Выберите хотя бы одно СЗИ или нажмите кнопку Назад для возврата")
         } else {
-            SecuritySwService.newInstance(this.state.selectedSecuritySw)
-                .then(inst => {
-                    SchemeService.addSecuritySW(inst.data, this.state.schemeId)
+            SecuritySwService.getById(this.state.selectedSecuritySw)
+                .then(secSW => {
+                    SchemeService.addSecuritySW(secSW.data, this.state.schemeId)
                         .then(sch => {
                             GraphService.getObjects(this.state.schemeId)
                                 .then(scheme => {
