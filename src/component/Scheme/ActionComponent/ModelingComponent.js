@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from "@material-ui/core/Button";
-import {Box} from "@material-ui/core";
+import {Box, Grid} from "@material-ui/core";
 import SchemeService from "../../../service/SchemeService";
 
 export default class ModelingComponent extends React.Component {
@@ -90,7 +90,7 @@ export default class ModelingComponent extends React.Component {
             if (this.state.result === false) {
                 return (
                     <h5 style={{color: "red"}}>
-                         Моделирование завершено: система не отказоустойчива!
+                        Моделирование завершено: система не отказоустойчива!
                     </h5>
                 )
             } else {
@@ -111,23 +111,28 @@ export default class ModelingComponent extends React.Component {
                 {this.contentShow(schemeId, scheme, tree)}
                 <br/>
                 {this.resultShow()}
-                <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={() => this.modeling()}
-                    disabled={!this.state.allowModeling}
-                >
-                    Запустить моделирование
-                </Button>
-
-                <Button
-                    color="secondary"
-                    variant="contained"
-                    style={{marginLeft: 15}}
-                    onClick={handleChange('initial')}
-                >
-                    Назад
-                </Button>
+                <Grid container>
+                    <Grid item xs>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => this.modeling()}
+                            disabled={!this.state.allowModeling}
+                        >
+                            Запустить моделирование
+                        </Button>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Button
+                            color="secondary"
+                            variant="contained"
+                            style={{marginLeft: 15}}
+                            onClick={handleChange('initial')}
+                        >
+                            Назад
+                        </Button>
+                    </Grid>
+                </Grid>
             </Box>
         )
     }

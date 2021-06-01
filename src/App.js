@@ -15,13 +15,12 @@ import VirusForm from "./component/Forms/VirusForm";
 import ActionComponent from "./component/Scheme/ActionComponent/ActionComponent";
 import HeaderComponent from "./component/HeaderComponent";
 import FooterComponent from "./component/FooterComponent";
+import NotFoundComponent from "./component/NotFoundComponent";
 
 export default function App() {
     return (
-        <div>
             <Router>
                 <HeaderComponent />
-                <div className="container">
                     <Switch> {/*http://localhost:3000/*/}
                         <Route exact path="/" component={SchemeComponent}/>
                         <Route exact path="/action" component={ActionComponent}/>
@@ -41,12 +40,12 @@ export default function App() {
                         <Route path="/viruses" component={VirusTable}/>
                         <Route path="/virus/:id" component={VirusForm}/>
 
+                        <Route component={NotFoundComponent} />
+
                         {/*<Route path = "/update-object/:id" component = {UpdateObjectComponent}/>*/}
                     </Switch>
-                </div>
                 <FooterComponent />
             </Router>
-        </div>
     );
 }
 

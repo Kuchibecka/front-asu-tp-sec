@@ -1,6 +1,6 @@
 import React from 'react';
 import SchemeService from "../service/SchemeService";
-import {Box} from "@material-ui/core";
+import {Box, Grid} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
 export default class PriceCounterComponent extends React.Component {
@@ -75,23 +75,28 @@ export default class PriceCounterComponent extends React.Component {
                 {this.contentShow(this.state.allowModeling)}
                 <br/>
                 {this.resultShow()}
-                <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={() => this.priceCounting()}
-                    disabled={!this.state.allowPriceCounting}
-                >
-                    Запустить моделирование
-                </Button>
-
-                <Button
-                    color="secondary"
-                    variant="contained"
-                    style={{marginLeft: 15}}
-                    onClick={handleChange('initial')}
-                >
-                    Назад
-                </Button>
+                <Grid container>
+                    <Grid item xs>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => this.priceCounting()}
+                            disabled={!this.state.allowPriceCounting}
+                        >
+                            Рассчитать стоимость
+                        </Button>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Button
+                            color="secondary"
+                            variant="contained"
+                            style={{marginLeft: 15}}
+                            onClick={handleChange('initial')}
+                        >
+                            Назад
+                        </Button>
+                    </Grid>
+                </Grid>
             </Box>
         )
     }

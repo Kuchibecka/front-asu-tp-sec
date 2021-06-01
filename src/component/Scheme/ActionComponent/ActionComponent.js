@@ -74,7 +74,7 @@ export default class ActionComponent extends React.Component {
         switch (step) {
             case '0':
                 return (
-                    <h1>Выберите схему</h1>
+                    <h4>Меню неактивно Выберите схему</h4>
                 )
             case 'initial':
                 return (
