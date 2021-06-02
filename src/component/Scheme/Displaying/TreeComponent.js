@@ -1,5 +1,5 @@
 import React from "react";
-import ReactFlow, {addEdge, Handle, ReactFlowProvider} from "react-flow-renderer";
+import ReactFlow, {Handle, ReactFlowProvider, Controls, Background} from "react-flow-renderer";
 import ObjectService from "../../../service/ObjectService";
 import {
     Button,
@@ -145,7 +145,7 @@ export default class TreeComponent extends React.Component {
             )
         } else {
             return (
-                <Container>
+                <div className="container-fluid">
                     <div>
                         {this.modCheck()}
                     </div>
@@ -156,7 +156,12 @@ export default class TreeComponent extends React.Component {
                             onConnect={this.onConnect}
                             onElementClick={this.click}
                             nodeTypes={{customNode: this.CustomNode}}
-                        />
+                            snapToGrid={true}
+                            snapGrid={[15, 15]}
+                        >
+                            <Controls/>
+                            <Background color="#000" gap={16}/>
+                        </ReactFlow>
                     </ReactFlowProvider>
                     <Dialog
                         open={this.state.openModal}
@@ -185,7 +190,7 @@ export default class TreeComponent extends React.Component {
                             </Button>
                         </DialogActions>
                     </Dialog>
-                </Container>
+                </div>
             )
         }
     }

@@ -5,6 +5,7 @@ export default class FooterComponent extends Component {
         return (
             <div>
                 <footer className="footer">
+                    <nav className="navbar navbar-expand-md navbar-dark bg-dark">
                     <span style={{marginLeft: 10}} className="text-muted">
                         All rights reserved 2021.
                             Contacts:
@@ -14,8 +15,9 @@ export default class FooterComponent extends Component {
                             <a href="mailto:kuchibecka@icloud.com" style={{marginLeft: 10}}>
                                 E-mail
                             </a>
-                    </span>
 
+                    </span>
+                    </nav>
                 </footer>
             </div>
         );

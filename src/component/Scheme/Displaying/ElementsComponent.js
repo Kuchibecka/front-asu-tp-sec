@@ -1,8 +1,7 @@
 import React from "react";
-import ReactFlow, {ReactFlowProvider, Handle} from "react-flow-renderer";
+import ReactFlow, {ReactFlowProvider, Handle, Controls, Background} from "react-flow-renderer";
 import {
     Button,
-    Container,
     Dialog,
     DialogActions,
     DialogContent,
@@ -117,7 +116,7 @@ export default class ElementsComponent extends React.Component {
             )
         } else {
             return (
-                <Container>
+                <div className="container-fluid">
                     <div>
                         {this.modCheck()}
                     </div>
@@ -128,7 +127,12 @@ export default class ElementsComponent extends React.Component {
                             onConnect={this.onConnect}
                             onElementClick={this.click}
                             nodeTypes={{customNode: this.CustomNode}}
-                        />
+                            snapToGrid={true}
+                            snapGrid={[15, 15]}
+                        >
+                            <Controls/>
+                            <Background color="#000" gap={16}/>
+                        </ReactFlow>
                     </ReactFlowProvider>
                     <Dialog
                         open={this.state.openModal}
@@ -157,7 +161,7 @@ export default class ElementsComponent extends React.Component {
                             </Button>
                         </DialogActions>
                     </Dialog>
-                </Container>
+                </div>
             )
         }
     }
@@ -197,6 +201,9 @@ export default class ElementsComponent extends React.Component {
                                 });
                         });
                 }
+                else {
+                    alert("Связь между выбранными элементами уже существует!")
+                }
             } else {
                 if (source.startsWith("securitySW") && (/^\d+$/.test(target))) {
                     for (let i in range(0, this.state.elements.length)) {
@@ -216,6 +223,9 @@ export default class ElementsComponent extends React.Component {
                                             });
                                     });
                             });
+                    }
+                    else {
+                        alert("Связь между выбранными элементами уже существует!")
                     }
                 } else {
                     if ((/^\d+$/.test(source)) && (/^\d+$/.test(target))) {
@@ -237,6 +247,9 @@ export default class ElementsComponent extends React.Component {
                                                 });
                                         });
                                 });
+                        }
+                        else {
+                            alert("Связь между выбранными элементами уже существует!")
                         }
                     }
                 }

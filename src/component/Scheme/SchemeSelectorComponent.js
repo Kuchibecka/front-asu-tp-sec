@@ -56,7 +56,6 @@ class SchemeSelectorComponent extends React.Component {
 
     render() {
         return (
-            <div className="container">
                 <div className="input-group">
                     <label htmlFor="type" className="input-group-text">Выбор схемы</label>
                     <select className="form-select" onChange={this.handleSchemeSelect}>
@@ -70,7 +69,6 @@ class SchemeSelectorComponent extends React.Component {
                         }
                     </select>
                 </div>
-            </div>
         )
     }
 }

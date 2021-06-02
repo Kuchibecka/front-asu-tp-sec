@@ -23,9 +23,7 @@ export default class SchemeForm extends React.Component {
     }
 
     componentDidMount() {
-        if (this.state.id === -1) {
-            return
-        } else {
+        if (this.state.id !== -1) {
             SchemeService.getById(this.state.id)
                 .then((res) => {
                     let sch = res.data;
@@ -57,7 +55,7 @@ export default class SchemeForm extends React.Component {
         const name = event.target.name.value.replace(/\s+/g, ' ').trim()
         const description = event.target.description.value.replace(/\s+/g, ' ').trim()
 
-        if (this.state.id == -1) {
+        if (this.state.id === -1) {
             const newScheme = {
                 name: name,
                 description: description,

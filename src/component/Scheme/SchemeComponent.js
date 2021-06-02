@@ -49,7 +49,7 @@ class SchemeComponent extends React.Component {
 
     render() {
         return (
-            <Grid container spacing={4} style={{marginBottom: 10, borderStyle: "solid"}}>
+            <Grid container xs spacing={4} style={{marginBottom: 10}}>
                 <Grid item xs={2}>
                     <Grid container spacing={1}>
                         <Grid item xs={12}>
@@ -95,7 +95,7 @@ class SchemeComponent extends React.Component {
                                 Уязвимости безопасности
                             </Button>
                         </Grid>
-                        <Grid item xs={12} style={{borderStyle: "solid"}}>
+                        <Grid item xs style={{marginLeft: 10,borderStyle: "solid"}}>
                             <ActionComponent
                                 schemeId={this.state.currentId}
                                 updateElements={this.updateElements}

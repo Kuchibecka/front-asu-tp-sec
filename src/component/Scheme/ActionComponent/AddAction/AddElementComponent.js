@@ -9,18 +9,27 @@ export class AddElementComponent extends React.Component {
         return (
                     <Box
                     >
-                        <h3 style={{borderBottomStyle: "solid"}} className={"text-center"}>Выберите действие</h3>
+                        <h3 style={{borderBottomStyle: "solid"}} className={"text-center"}>Выберите элемент для добавления</h3>
                         <Button
+                            fullWidth
+                            variant="contained"
+                            style={{marginBottom: 5}}
                             onClick={handleChange('addObject')}
                         >
                             Добавить объекты на схему
                         </Button>
                         <Button
+                            fullWidth
+                            variant="contained"
+                            style={{marginBottom: 5}}
                             onClick={handleChange('addVirus')}
                         >
                             Добавить вирусы на схему
                         </Button>
                         <Button
+                            fullWidth
+                            variant="contained"
+                            style={{marginBottom: 5}}
                             onClick={handleChange('addSecuritySw')}
                         >
                             Добавить СЗИ на схему
@@ -28,8 +37,10 @@ export class AddElementComponent extends React.Component {
                         <br/>
 
                         <Button
-                            color="secondary"
+                            fullWidth
                             variant="contained"
+                            style={{marginBottom: 5}}
+                            color="secondary"
                             onClick={handleChange('elements')}
                         >Назад</Button>
                     </Box>

@@ -46,13 +46,13 @@ export default class SecuritySwForm extends React.Component {
         const value = target.value
         if (key === 'price') {
             if (value.match(/\D/g)) {
-                alert("Это поле только для числовых значений!")
+                alert("Это поле только для положительных числовых значений!")
                 this.setState({[key]: value.replace(/\D/g, '')})
             } else {
-                if (value > -2000000000 && value < 2000000001)
+                if (value >= 0 && value < 2000000001)
                     this.setState({[key]: value})
                 else
-                    alert("Укажите число в диапазоне [-2000000000, 2000000000]!")
+                    alert("Укажите положительное число в диапазоне [0, 2000000000]!")
             }
         } else {
             this.setState({
