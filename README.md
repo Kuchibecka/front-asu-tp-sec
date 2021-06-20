@@ -1,3 +1,10 @@
+# React-приложение, позволяющее:
+- Редактировать базы данных устройств, эксплоитов, вирусов и СЗИ;
+- Конфигурировать схемы АСУ ТП и деревья отказов
+- Проверять схему АСУ ТП на отказоустойчивость в соответствии с сконфигурированным деревом отказов
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
